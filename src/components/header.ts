@@ -3,7 +3,10 @@ const Header = {
     return `
       <header class="header ${customClass}" id="header">
         <h1 class="header__logo"><a href="">RSLang</a></h1>
-        <div class="header__auth"><button>Войти</button></div>
+        <div class="header__auth">
+          <button>Войти</button>
+          <div class="modal__auth"></div>
+        </div>
         <nav class="header__menu">
           <ul class="menu__list">
             <li class="menu__item menu__item_active"><a href="">Главная</a></li>
