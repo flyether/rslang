@@ -1,0 +1,107 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,500;1,700&family=Source+Sans+3&display=swap')
+
+$blue-color: #224a9a
+$light-grey-color: #dee2e4
+$orange-color: #fe8954
+%gradient-background
+  background: rgb(107,164,232)
+  background: linear-gradient(90deg, rgba(107,164,232,1) 0%, rgba(72,117,199,1) 100%)
+  color: white
+
+
+html,body
+  height: 100%
+  margin: 0
+  font-family: 'Roboto', sans-serif
+a
+  text-decoration: none
+  color: inherit
+ul,li
+  margin: 0
+  padding: 0
+  list-style: none
+#spa
+  display: flex
+  flex-direction: column
+  height: 100%
+  color: $blue-color
+.header
+  flex: 0 0 auto
+  padding: 0.5rem 1rem
+  display: flex
+  justify-content: space-between
+  align-items: center
+  flex-wrap: wrap
+.header__logo
+  font-family: 'Source Sans 3', sans-serif
+  font-size: 2rem
+  font-weight: bold
+  margin: 0.5rem 0
+.header__auth button
+  display: block
+  width: 5rem
+  height: 2rem
+  border: 0.05rem solid $blue-color
+  border-radius: 0.3rem
+  color: inherit
+  padding: 0.2rem
+  cursor: pointer
+  transition: 0.2s
+.header__auth button:hover
+  opacity: 0.8
+.header__auth button:active
+  transform: scale(0.95)
+.header__menu
+  width: 100%
+.menu__list
+  display: flex
+  justify-content: center
+  align-items: center
+.menu__item
+  display: inline-block
+  margin: 0.5rem
+  padding-left: 0.5rem
+  border-left: 0.1rem solid $light-grey-color
+.menu__item:hover
+  opacity: 0.8
+.menu__item_active
+  color: $orange-color
+.title
+  font-family: 'Source Sans 3', sans-serif
+  text-align: center
+
+.content
+  flex: 1 0 auto
+.main__page__description
+  @extend %gradient-background
+  padding: 1rem
+  text-align: center
+.main__page__advantages
+  margin-bottom: 1rem
+.advantages__list
+  display: flex
+  flex-wrap: wrap
+  justify-content: center
+.advantages__item
+  display: block
+  width: 18rem
+  height: 18rem
+  margin: 0.5rem
+  padding: 3rem 0.5rem 0.2rem
+  box-sizing: border-box
+  text-align: center
+  letter-spacing: 0.1rem
+  border-radius: 50%
+  background: radial-gradient(75.28% 75.28% at 88.61% 10%, rgba(71, 170, 252, 0.16) 0%, rgba(69, 97, 255, 0.16) 100%)
+  box-shadow: inset 0px -10px 10px rgba(26, 56, 227,0.3), inset -10px 10px 10px rgba(255, 255, 255, 0.3)
+.advantages__item__title
+  font-family: 'Source Sans 3', sans-serif
+  color: $orange-color
+  font-size: 1.3rem
+  font-weight: 500
+.advantages__item__text
+  color: black
+  font-size: 0.8rem
+.footer
+  flex: 0 0 auto
+  padding: 0.5rem 1rem
