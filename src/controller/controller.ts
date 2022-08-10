@@ -1,26 +1,24 @@
-import  ModuleModel  from '../model/model';
+import ModuleModel from '../model/model';
 
 class ModuleController {
   myModuleContainer!:HTMLElement;
 
   myModuleModel!: ModuleModel;
 
-
   init(container:HTMLElement, model: ModuleModel):void {
     this.myModuleContainer = container;
     this.myModuleModel = model;
-    /*window.addEventListener('hashchange', () => {
+    /* window.addEventListener('hashchange', () => {
       this.updateState();
-    });*/
+    }); */
 
     this.updateState();
   }
 
   updateState(): void {
-    const hashPageName = location.hash.slice(1).toLowerCase();
+    const hashPageName = window.location.hash.slice(1).toLowerCase();
     this.myModuleModel.updateState(hashPageName);
   }
-
 }
 
 export default ModuleController;

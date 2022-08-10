@@ -10,7 +10,9 @@
     "dev1": "webpack --env development",
     "lint": "eslint src",
     "watch": "webpack --watch --env development",
-    "start": "webpack --env development"
+    "start": "webpack --env development",
+    "lint": "eslint . --ext .ts",
+    "lint-and-fix": "eslint . --ext .ts --fix"
   },
   "author": "Team 2",
   "devDependencies": {
