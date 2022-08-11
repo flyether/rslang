@@ -1,3 +1,4 @@
+/* eslint-disable import/prefer-default-export */
 /* eslint-disable linebreak-style */
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable consistent-return */
