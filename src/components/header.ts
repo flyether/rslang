@@ -1,5 +1,6 @@
 const Header = {
-  render: (customClass = '') => `
+
+  render: (customClass = ''):string => `
       <header class="header ${customClass}" id="header">
         <h1 class="header__logo"><a href="">RSLang</a></h1>
         <div class="header__auth">

@@ -1,3 +1,5 @@
+/* eslint-disable import/no-named-as-default-member */
+/* eslint-disable import/no-named-as-default */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable linebreak-style */
 
@@ -33,7 +35,7 @@ const initialObj:InitialObj = {
 };
 
 /* ----- spa init module --- */
-const mySPA = (function () {
+const mySPA = (() => {
   let view:ModuleView;
   let model:ModuleModel;
   let controller:ModuleController;
@@ -53,12 +55,13 @@ const mySPA = (function () {
     renderComponents(container:string, componentsObj: Components) {
       const root = document.getElementById(container) as HTMLElement;
       const componentsList = Object.keys(componentsObj);
+      /* eslint-disable-next-line */
       for (const item of componentsList) {
         root.innerHTML += componentsObj[item as keyof Components].render();
       }
     },
   };
-}());
+})();
 
 /* ------ end app module ----- */
 

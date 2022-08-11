@@ -1,7 +1,9 @@
+/* eslint-disable import/prefer-default-export */
 /* eslint-disable max-len */
 const MainPage = {
   id: 'main',
-  render: () => `
+
+  render: ():string => `
        <div class="main__page">
          <div class="main__page__description">
            <h2 class="title">The World is Yours with RSLang!</h2>
@@ -36,4 +38,5 @@ const MainPage = {
     `,
 };
 
+// export { MainPage };
 export default MainPage;

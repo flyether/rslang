@@ -1,4 +1,5 @@
 /* eslint-disable no-restricted-globals */
+
 import ModuleModel from '../model/model';
 
 class ModuleController {
@@ -17,7 +18,7 @@ class ModuleController {
   }
 
   updateState(): void {
-    const hashPageName = location.hash.slice(1).toLowerCase();
+    const hashPageName = window.location.hash.slice(1).toLowerCase();
     this.myModuleModel.updateState(hashPageName);
   }
 }
