@@ -1,7 +1,6 @@
 const MainPage = {
   id: 'main',
-  render: () => {
-    return `
+  render: ():string => `
        <div class="main__page">
          <div class="main__page__description">
            <h2 class="title">The World is Yours with RSLang!</h2>
@@ -33,8 +32,7 @@ const MainPage = {
            </ul>
          </div>
        </div>
-    `;
-  },
+    `,
 };
 
 export default MainPage;

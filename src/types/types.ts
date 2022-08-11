@@ -4,7 +4,6 @@ import Footer from '../components/footer';
 
 import MainPage from '../pages/main';
 
-
 export interface Components {
   header: typeof Header,
   content: typeof Content,

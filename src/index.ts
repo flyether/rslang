@@ -1,3 +1,5 @@
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable linebreak-style */
 import './styles/style.sass';
 
 import ModuleController from './controller/controller';
@@ -25,17 +27,17 @@ const routes:Routes = {
 
 const initialObj:InitialObj = {
   container: 'spa',
-  routes: routes,
-  components: components,
+  routes,
+  components,
 };
 
 /* ----- spa init module --- */
-const mySPA = (function () {
+const mySPA = (() => {
   let view:ModuleView;
   let model:ModuleModel;
   let controller:ModuleController;
   return {
-    init: function (obj:InitialObj) {
+    init(obj:InitialObj) {
       this.renderComponents(obj.container, obj.components);
       const containerSPA = document.getElementById(obj.container) as HTMLElement;
       view = new ModuleView();
@@ -46,20 +48,20 @@ const mySPA = (function () {
       model.init(view);
       controller.init(containerSPA, model);
     },
-
-    renderComponents: function (container:string, componentsObj: Components) {
+    renderComponents(container:string, componentsObj: Components) {
       const root = document.getElementById(container) as HTMLElement;
       const componentsList = Object.keys(componentsObj);
+      /* eslint-disable-next-line */
       for (const item of componentsList) {
         root.innerHTML += componentsObj[item as keyof Components].render();
       }
     },
   };
-}());
+})();
 
 /* ------ end app module ----- */
 
-/*** --- init module --- ***/
+/** * --- init module --- ** */
 window.addEventListener('DOMContentLoaded', () => {
   mySPA.init(initialObj);
 });
