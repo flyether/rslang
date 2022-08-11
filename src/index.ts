@@ -1,5 +1,8 @@
+/* eslint-disable import/no-named-as-default-member */
+/* eslint-disable import/no-named-as-default */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable linebreak-style */
+
 import './styles/style.sass';
 
 import ModuleController from './controller/controller';
@@ -48,6 +51,7 @@ const mySPA = (() => {
       model.init(view);
       controller.init(containerSPA, model);
     },
+
     renderComponents(container:string, componentsObj: Components) {
       const root = document.getElementById(container) as HTMLElement;
       const componentsList = Object.keys(componentsObj);
