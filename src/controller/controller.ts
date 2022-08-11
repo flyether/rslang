@@ -1,3 +1,5 @@
+/* eslint-disable no-restricted-globals */
+
 import ModuleModel from '../model/model';
 
 class ModuleController {

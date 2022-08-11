@@ -1,5 +1,8 @@
+/* eslint-disable import/prefer-default-export */
+/* eslint-disable max-len */
 const MainPage = {
   id: 'main',
+
   render: ():string => `
        <div class="main__page">
          <div class="main__page__description">
@@ -35,4 +38,5 @@ const MainPage = {
     `,
 };
 
+// export { MainPage };
 export default MainPage;
