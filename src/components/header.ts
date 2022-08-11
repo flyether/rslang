@@ -1,10 +1,9 @@
 const Header = {
-  render: (customClass = '') => {
-    return `
+  render: (customClass = '') => `
       <header class="header ${customClass}" id="header">
         <h1 class="header__logo"><a href="">RSLang</a></h1>
         <div class="header__auth">
-          <button>Войти</button>
+          <button class="authorization">Войти</button>
           <div class="modal__auth"></div>
         </div>
         <nav class="header__menu">
@@ -18,8 +17,7 @@ const Header = {
           </ul>
         </nav>
       </header>
-    `;
-  },
+    `,
 };
 
 export default Header;

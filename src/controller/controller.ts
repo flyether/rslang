@@ -1,17 +1,17 @@
-import  ModuleModel  from '../model/model';
+/* eslint-disable no-restricted-globals */
+import ModuleModel from '../model/model';
 
 class ModuleController {
   myModuleContainer!:HTMLElement;
 
   myModuleModel!: ModuleModel;
 
-
   init(container:HTMLElement, model: ModuleModel):void {
     this.myModuleContainer = container;
     this.myModuleModel = model;
-    /*window.addEventListener('hashchange', () => {
+    /* window.addEventListener('hashchange', () => {
       this.updateState();
-    });*/
+    }); */
 
     this.updateState();
   }
@@ -20,7 +20,6 @@ class ModuleController {
     const hashPageName = location.hash.slice(1).toLowerCase();
     this.myModuleModel.updateState(hashPageName);
   }
-
 }
 
 export default ModuleController;

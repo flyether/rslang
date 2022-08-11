@@ -1,4 +1,4 @@
-import { Routes } from '../types/types'
+import { Routes } from '../types/types';
 
 class ModuleView {
   myModuleContainer!:HTMLElement;
@@ -7,12 +7,11 @@ class ModuleView {
 
   routesObj!:Routes;
 
-
   init(container: HTMLElement, routes: Routes) {
     this.myModuleContainer = container;
     this.routesObj = routes;
     this.contentContainer = this.myModuleContainer.querySelector('#content') as HTMLElement;
-    //this.findElements();
+    // this.findElements();
   }
 
   renderContent(hashPageName:string) {
@@ -20,15 +19,12 @@ class ModuleView {
     routeName = (hashPageName.length) ? hashPageName : routeName;
     const route = this.routesObj[routeName as keyof Routes];
     this.contentContainer.innerHTML = route.render();
-    //this.findElements();
-
+    // this.findElements();
   }
 
-  /*findElements() {
+  /* findElements() {
 
-  }*/
-
-
+  } */
 }
 
 export default ModuleView;
