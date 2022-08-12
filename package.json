@@ -6,9 +6,8 @@
   "scripts": {
     "test": "jest",
     "build": "webpack",
-    "dev": "webpack serve --env development",
+    "dev": "webpack serve --open --config ./webpack.config.js --env mode=dev",
     "dev1": "webpack --env development",
-    "lint": "eslint src",
     "watch": "webpack --watch --env development",
     "start": "webpack --env development",
     "lint": "eslint . --ext .ts",
