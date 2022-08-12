@@ -7,11 +7,11 @@
 import { apiPath, signIn } from '../api/api-path';
 import { api } from '../api/api';
 
-const formLogin = ` <form class="form-signin">       
+const formLogin = ` <form class="form-signin" id="reg">       
 <h3 class="form-signin-heading">Введите свои данные</h3>
 
-  <input type="text" id="user-email" class="form-control" name="user-email" placeholder="Email Address" required="" autofocus=""/>
-  <input type="password" id="user-password" class="form-control" name="password" placeholder="пароль" required=""/>      
+  <input type="email" id="user-email" class="form-control" name="email" placeholder="Email Address" required autofocus=""/>
+  <input type="password" minlength="6" id="user-password" class="form-control" name="password" placeholder="пароль" required/>      
   
   <button class="btn"  id="button-new-user" type ="button"> Регистрация </button> 
   
@@ -22,10 +22,10 @@ const formRegistration = ` <form class="form-signin">
 <h3 class="form-signin-heading">Введите свои данные</h3>
 
   <input type="text" id="user-name" class="form-control" name="user-name" placeholder="Имя пользователя" required="" autofocus=""/>
-  <input type="text" id="user-email" class="form-control" name="user-email" placeholder="Email Address" required=""/>
-  <input type="password" id="user-password" class="form-control" name="password" placeholder="пароль" required=""/>  
+  <input type="email" id="user-email" class="form-control" name="email" placeholder="Email Address" required />
+  <input type="password" minlength="6" id="user-password" class="form-control" name="password" placeholder="пароль" required />  
 
-<button class="btn" id="autoriztionBtn" type="submit">Регистрация и вход</button>   
+<button class="btn" id="registration_btn" type="submit">Регистрация и вход</button>   
 </form>`;
 
 class Authorization {
@@ -48,29 +48,49 @@ const modalAuthorization = {
     const modalResultWrapper = document.getElementById('modal-result-wrapper');
     modalResultWrapper!.style.display = 'none';
     const wrapper = document.querySelector('.wrapper');
-    const userEmailInput = document.getElementById('user-email') as HTMLInputElement;
-    const userPasswordInput = document.getElementById('user-password') as HTMLInputElement;
-    const userNameInput = document.getElementById('user-name') as HTMLInputElement;
 
     if (authorizationBtn) {
       authorizationBtn.addEventListener('click', (_e: Event) => {
         wrapper!.innerHTML = formLogin;
         modalResultWrapper!.style.display = 'block';
+        const userEmailInput = document.getElementById('user-email') as HTMLInputElement;
+        const userPasswordInput = document.getElementById('user-password') as HTMLInputElement;
+        const userNameInput = document.getElementById('user-name') as HTMLInputElement;
         if (userEmailInput && userPasswordInput) {
           const userEmail = userEmailInput!.value;
           const userPassword = userPasswordInput!.value;
-          authorization.signIn(userPassword, userEmail);
+          const registratiForm = document.getElementById('reg') as HTMLButtonElement;
+          if (registratiForm) {
+            registratiForm.addEventListener('submit', (e: Event) => {
+              e.preventDefault();
+              authorization.signIn(userPassword, userEmail);
+            });
+          }
         }
         const buttonNewUser = document.getElementById('button-new-user') as HTMLButtonElement;
         if (buttonNewUser) {
           buttonNewUser.addEventListener('click', (_e: Event) => {
+            console.log('хуйня до иннера');
             wrapper!.innerHTML = formRegistration;
+            const userEmailInput = document.getElementById('user-email') as HTMLInputElement;
+            const userPasswordInput = document.getElementById('user-password') as HTMLInputElement;
+            const userNameInput = document.getElementById('user-name') as HTMLInputElement;
+            // eslint-disable-next-line no-debugger
+            // debugger;
             if (userNameInput && userEmailInput && userPasswordInput) {
+              console.log('сразу после ифа');
               const userEmail = userEmailInput!.value;
               const userPassword = userPasswordInput!.value;
               const userName = userNameInput!.value;
-              authorization.newUser(userEmail, userPassword, userName);
-              authorization.signIn(userPassword, userEmail);
+              console.log(userName, userEmail, userPassword);
+              const registratiForm = document.getElementById('reg') as HTMLButtonElement;
+              if (registratiForm) {
+                registratiForm.addEventListener('submit', (e: Event) => {
+                  e.preventDefault();
+                  authorization.newUser(userName, userPassword, userEmail);
+                  // authorization.signIn(userPassword, userEmail);
+                });
+              }
             }
           });
         }
