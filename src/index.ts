@@ -17,18 +17,21 @@ import Footer from './components/footer';
 
 import MainPage from './pages/main';
 
-const components:Components = {
+import TextbookPage from './pages/textbook';
+
+const components: Components = {
   header: Header,
   content: Content,
   footer: Footer,
 };
 
-const routes:Routes = {
+const routes: Routes = {
   main: MainPage,
   default: MainPage,
+  textbook: TextbookPage,
 };
 
-const initialObj:InitialObj = {
+const initialObj: InitialObj = {
   container: 'spa',
   routes,
   components,
@@ -36,11 +39,11 @@ const initialObj:InitialObj = {
 
 /* ----- spa init module --- */
 const mySPA = (() => {
-  let view:ModuleView;
-  let model:ModuleModel;
-  let controller:ModuleController;
+  let view: ModuleView;
+  let model: ModuleModel;
+  let controller: ModuleController;
   return {
-    init(obj:InitialObj) {
+    init(obj: InitialObj) {
       this.renderComponents(obj.container, obj.components);
       const containerSPA = document.getElementById(obj.container) as HTMLElement;
       view = new ModuleView();
@@ -52,7 +55,7 @@ const mySPA = (() => {
       controller.init(containerSPA, model);
     },
 
-    renderComponents(container:string, componentsObj: Components) {
+    renderComponents(container: string, componentsObj: Components) {
       const root = document.getElementById(container) as HTMLElement;
       const componentsList = Object.keys(componentsObj);
       /* eslint-disable-next-line */
