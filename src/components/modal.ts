@@ -29,18 +29,6 @@ const formRegistration = ` <form class="form-signin">
 </form>`;
 
 class Authorization {
-//   name: string;
-
-  //   email: string;
-
-  //   password: string;
-
-  // //   constructor() {
-  // //     this.email = email;
-  // //     this.password = this.password;
-  // //     this.name = name;
-  // //   }
-
   newUser(name:string, password:string, email:string): void {
     api.createNewUser(name, email, password);
   }
@@ -60,7 +48,6 @@ const modalAuthorization = {
     const modalResultWrapper = document.getElementById('modal-result-wrapper');
     modalResultWrapper!.style.display = 'none';
     const wrapper = document.querySelector('.wrapper');
-    const formSignIn = document.querySelector('.form-signin');
     const userEmailInput = document.getElementById('user-email') as HTMLInputElement;
     const userPasswordInput = document.getElementById('user-password') as HTMLInputElement;
     const userNameInput = document.getElementById('user-name') as HTMLInputElement;

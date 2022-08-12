@@ -7,6 +7,8 @@ import {
   apiPath, usersEndpoint, wordsEndpoint, signIn,
 } from './api-path';
 import { IUser, IWord, IUserData } from '../types/types';
+import { storage } from '../functional/storage';
+import showUser from '../functional/show-user';
 
 const api = {
 
@@ -21,6 +23,7 @@ const api = {
 
       });
       if (response.ok) {
+        storage.user = await response.json();
         return await response.json();
       }
     } catch (error) {
@@ -51,6 +54,8 @@ const api = {
         body: JSON.stringify({ email, password }),
       });
       if (response.ok) {
+        storage.user = await response.json();
+        showUser();
         return await response.json();
       }
     } catch (error) {
