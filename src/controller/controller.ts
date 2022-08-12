@@ -1,5 +1,6 @@
 /* eslint-disable no-restricted-globals */
 
+import modalAuthorization from '../components/modal';
 import ModuleModel from '../model/model';
 
 class ModuleController {
@@ -13,21 +14,7 @@ class ModuleController {
     /* window.addEventListener('hashchange', () => {
       this.updateState();
     }); */
-    const authorization = document.querySelector('.authorization');
-    const btnCloseModal = document.getElementById('btn-close');
-    const overlay = document.getElementById('overlay');
-    const modalResultWrapper = document.getElementById('modal-result-wrapper');
-    modalResultWrapper!.style.display = 'none';
-    if (authorization) {
-      authorization.addEventListener('click', (e: Event) => {
-        modalResultWrapper!.style.display = 'block';
-      });
-      const closeModal = () => {
-        modalResultWrapper!.style.display = 'none';
-      };
-      overlay!.addEventListener('click', closeModal);
-      btnCloseModal!.addEventListener('click', closeModal);
-    }
+    modalAuthorization.open();
 
     this.updateState();
   }

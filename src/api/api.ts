@@ -18,6 +18,7 @@ const api = {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ name, email, password }),
+
       });
       if (response.ok) {
         return await response.json();
