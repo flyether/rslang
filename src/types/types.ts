@@ -1,3 +1,5 @@
+import TextbookPage from '../pages/textbook';
+
 import Header from '../components/header';
 import Content from '../components/content';
 import Footer from '../components/footer';
@@ -11,7 +13,8 @@ export interface Components {
 }
 export interface Routes {
   main: typeof MainPage,
-  default: typeof MainPage
+  default: typeof MainPage,
+  textbook: typeof TextbookPage
 }
 
 export interface InitialObj {

@@ -4,16 +4,17 @@ import modalAuthorization from '../components/modal';
 import ModuleModel from '../model/model';
 
 class ModuleController {
-  myModuleContainer!:HTMLElement;
+  myModuleContainer!: HTMLElement;
 
   myModuleModel!: ModuleModel;
 
-  init(container:HTMLElement, model: ModuleModel):void {
+  init(container: HTMLElement, model: ModuleModel): void {
     this.myModuleContainer = container;
     this.myModuleModel = model;
-    /* window.addEventListener('hashchange', () => {
+    window.addEventListener('hashchange', () => {
       this.updateState();
-    }); */
+    });
+
     modalAuthorization.open();
 
     this.updateState();

@@ -1,7 +1,11 @@
 const Header = {
+  hashes: {
+    textbook: '#textbook',
+  },
 
-  render: (customClass = ''):string => `
-  <div id="modal-result-wrapper">
+  render(customClass = ''): string {
+    return `
+    <div id="modal-result-wrapper">
     <div id="overlay"></div>
     <div id="modal-window">
       <div class="wrapper">
@@ -10,7 +14,6 @@ const Header = {
       <div id="btn-close">закрыть</div>
     </div>
   </div>
-
       <header class="header ${customClass}" id="header">
         <h1 class="header__logo"><a href="">RSLang</a></h1>
         <div class="header__auth">
@@ -20,7 +23,7 @@ const Header = {
         <nav class="header__menu">
           <ul class="menu__list">
             <li class="menu__item menu__item_active"><a href="">Главная</a></li>
-            <li class="menu__item"><a href="">Учебник</a></li>
+            <li class="menu__item"><a href="${this.hashes.textbook}">Учебник</a></li>
             <li class="menu__item"><a href="">Статистика</a></li>
             <li class="menu__item"><a href="">Аудиовызов</a></li>
             <li class="menu__item"><a href="">Спринт</a></li>
@@ -28,7 +31,8 @@ const Header = {
           </ul>
         </nav>
       </header>
-    `,
+    `;
+  },
 };
 
 export default Header;
