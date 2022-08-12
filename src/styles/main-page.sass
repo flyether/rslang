@@ -64,13 +64,17 @@ ul,li
   border-left: 0.1rem solid $light-grey-color
 .menu__item:hover
   opacity: 0.8
-.menu__item_active
+.menu__item_active 
   color: $orange-color
+.menu__item_disable
+  pointer-events: none
+  cursor: default
+  color: #888
 .title
   font-family: 'Source Sans 3', sans-serif
   text-align: center
 
-.content
+.team-page-conteiner,.sprint-conteiner,.audiocall-conteiner,.statistics-conteiner,.textbook
   flex: 1 0 auto
 .main__page__description
   @extend %gradient-background

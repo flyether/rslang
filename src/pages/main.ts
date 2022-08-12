@@ -1,5 +1,8 @@
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable max-len */
+import Header from '../components/header';
+import Footer from '../components/footer';
+
 import phone from '../assets/phone.svg';
 import dictionary from '../assets/dictionary.svg';
 import play from '../assets/play.svg';
@@ -8,6 +11,7 @@ import acsess from '../assets/acsess.svg';
 const MainPage = {
   id: 'main',
   render: ():string => `
+       ${Header.render()}
        <div class="main__page">
          <div class="main__page__description">
            <h2 class="title">The World is Yours with RSLang!</h2>
@@ -39,6 +43,7 @@ const MainPage = {
            </ul>
          </div>
        </div>
+       ${Footer.render()}
     `,
 };
 
