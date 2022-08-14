@@ -18,6 +18,10 @@ import Footer from './components/footer';
 import MainPage from './pages/main';
 
 import TextbookPage from './pages/textbook';
+import AboutTeamPage from './pages/team';
+import SprintGamePage from './pages/sprint/index';
+import AudiocallGamePage from './pages/audiocall/index';
+import StatisticsPage from './pages/statistics/index';
 
 const components: Components = {
   header: Header,
@@ -29,6 +33,10 @@ const routes: Routes = {
   main: MainPage,
   default: MainPage,
   textbook: TextbookPage,
+  team: AboutTeamPage,
+  sprint: SprintGamePage,
+  audiocall: AudiocallGamePage,
+  statistics: StatisticsPage,
 };
 
 const initialObj: InitialObj = {

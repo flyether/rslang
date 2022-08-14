@@ -35,7 +35,7 @@ const api = {
         return await response.json() as IUser;
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   },
 
