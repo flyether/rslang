@@ -8,17 +8,11 @@ class Storage {
 
   user?: IUserData;
 
-  id?: string;
-
-  name?: string;
-
-  email?: string;
-
   constructor() {
-    this.email = '';
-    this.name = '';
-    this.id = '';
     this.users = [];
+    if (localStorage.getItem('users')) {
+      this.users = JSON.parse(localStorage.getItem('users') as string);
+    }
     this.user = {
       message: '', token: '', refreshToken: '', userId: '', name: '',
     };

@@ -1,3 +1,5 @@
+import showUser from '../functional/show-user';
+
 const Header = {
   hashes: {
     main: '#main',

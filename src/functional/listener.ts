@@ -6,7 +6,6 @@
 
 import { api } from '../api/api';
 import { formLogin, formRegistration } from '../components/modal';
-import showBtnEnter from './show-enter';
 import showUser from './show-user';
 import { storage } from './storage';
 
@@ -56,7 +55,6 @@ class Listener {
                   const userEmail = userEmailInput!.value;
                   const userPassword = userPasswordInput!.value;
                   const userName = userNameInput!.value;
-
                   e.preventDefault();
                   api.createNewUser(userName, userEmail, userPassword)
                     .then(() => {
@@ -89,7 +87,7 @@ class Listener {
         storage.user = {
           message: '', token: '', refreshToken: '', userId: '', name: '',
         };
-        showBtnEnter();
+        showUser();
       }
     });
   }
