@@ -4,7 +4,7 @@
 
 /* eslint-disable @typescript-eslint/no-shadow */
 
-import { api } from 'api/api';
+import { api } from '../api/api';
 import { formLogin, formRegistration } from '../components/modal';
 
 class Listener {
