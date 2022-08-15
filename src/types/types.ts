@@ -1,4 +1,8 @@
 import TextbookPage from '../pages/textbook';
+import AboutTeamPage from '../pages/team';
+import SprintGamePage from '../pages/sprint/index';
+import AudiocallGamePage from '../pages/audiocall/index';
+import StatisticsPage from '../pages/statistics/index';
 
 import Header from '../components/header';
 import Content from '../components/content';
@@ -14,7 +18,11 @@ export interface Components {
 export interface Routes {
   main: typeof MainPage,
   default: typeof MainPage,
-  textbook: typeof TextbookPage
+  textbook: typeof TextbookPage,
+  team: typeof AboutTeamPage,
+  sprint: typeof SprintGamePage,
+  audiocall: typeof AudiocallGamePage,
+  statistics: typeof StatisticsPage
 }
 
 export interface InitialObj {
@@ -27,6 +35,15 @@ export interface CarType {
   name: string,
   color: string,
   id: number
+}
+
+export interface MenuItems {
+  main: HTMLElement,
+  textbook: HTMLElement,
+  statistics: HTMLElement,
+  audiocall: HTMLElement,
+  sprint: HTMLElement,
+  team: HTMLElement,
 }
 
 export interface IWord {

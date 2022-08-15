@@ -1,4 +1,5 @@
 import ModelView from '../view/view';
+import { MenuItems } from '../types/types';
 
 class ModuleModel {
   myModuleView!: ModelView;
@@ -9,6 +10,10 @@ class ModuleModel {
 
   updateState(pageName:string):void {
     this.myModuleView.renderContent(pageName);
+  }
+
+  highlightActiveMenuItem(obj: MenuItems, hashName:string):void {
+    this.myModuleView.highlightActiveMenuItem(obj, hashName);
   }
 }
 
