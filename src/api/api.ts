@@ -58,8 +58,6 @@ const api = {
         body: JSON.stringify({ email, password }),
       });
       if (response.ok) {
-        // storage.user = await response.json();
-        showUser();
         return await response.json();
       }
       return await Promise.reject(new Error(response.statusText));

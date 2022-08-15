@@ -6,6 +6,7 @@
 
 import { api } from '../api/api';
 import { formLogin, formRegistration } from '../components/modal';
+import showUser from './show-user';
 import { storage } from './storage';
 
 class Listener {
@@ -29,12 +30,17 @@ class Listener {
               const userPassword = userPasswordInput!.value;
               e.preventDefault();
               api.userSignIn(userEmail, userPassword)
-                .then(() => {
+                .then((value) => {
+                  storage.user = value;
+                  localStorage.setItem('user', JSON.stringify(value));
+
+                  console.log('storage.user?.name', storage.user?.name);
+                  showUser();
+
                   closeModal();
                 }).catch((err) => {
                   console.log(err);
                 });
-              closeModal();
             });
           }
         }
@@ -57,8 +63,11 @@ class Listener {
                   api.createNewUser(userName, userEmail, userPassword)
                     .then(() => {
                       api.userSignIn(userEmail, userPassword);
+
+                      showUser();
                       closeModal();
-                    }).catch((err) => {
+                    })
+                    .catch((err) => {
                       console.log(err);
                     });
                 });

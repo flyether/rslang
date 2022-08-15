@@ -4,10 +4,10 @@
 import { api } from '../api/api';
 import { storage } from './storage';
 
- const user = storage.name;
-const userShow = `<div class="user-show"> ${user} </div>`;
-
 export default function showUser() {
+  const user = storage.user?.name;
+  const userShow = `<div class="user-show"> ${user} </div>`;
+  console.log(user);
   const heder = document.querySelector('.header__auth') as HTMLElement;
   const buttonEnter = document.querySelector('.authorization') as HTMLElement;
   buttonEnter.remove();
