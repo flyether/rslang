@@ -10,6 +10,15 @@ const Header = {
 
   render(customClass = ''): string {
     return `
+    <div id="modal-result-wrapper">
+    <div id="overlay"></div>
+    <div id="modal-window">
+      <div class="wrapper">
+       
+      </div>
+      <div id="btn-close">закрыть</div>
+    </div>
+  </div>
       <header class="header ${customClass}" id="header">
         <h1 class="header__logo"><a href="">RSLang</a></h1>
         <div class="header__auth">

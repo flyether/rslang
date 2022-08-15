@@ -1,6 +1,12 @@
+/* eslint-disable import/no-named-as-default */
 /* eslint-disable no-restricted-globals */
+
+// import modalAuthorization from '../components/modal';
+
 import { MenuItems } from '../types/types';
+
 import ModuleModel from '../model/model';
+import listener from '../functional/listener';
 
 class ModuleController {
   myModuleContainer!: HTMLElement;
@@ -25,6 +31,9 @@ class ModuleController {
     window.addEventListener('hashchange', () => {
       this.updateState();
     });
+
+    // modalAuthorization.open();
+    listener.open();
     this.updateState();
     // window.location.hash = '#main';
   }
