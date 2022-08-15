@@ -29,15 +29,3 @@ export const formRegistration = ` <form class="form-signin" id="reg">
 
 <button class="btn" id="registration_btn" type="submit">Регистрация и вход</button>   
 </form>`;
-
-class Authorization {
-  newUser(name:string, password:string, email:string): void {
-    api.createNewUser(name, email, password);
-  }
-
-  signIn(password:string, email:string): void {
-    api.userSignIn(email, password);
-  }
-}
-
-export const authorization = new Authorization();

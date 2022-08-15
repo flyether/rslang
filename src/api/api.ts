@@ -54,7 +54,7 @@ const api = {
         body: JSON.stringify({ email, password }),
       });
       if (response.ok) {
-        storage.user = await response.json();
+        // storage.user = await response.json();
         showUser();
         return await response.json();
       }

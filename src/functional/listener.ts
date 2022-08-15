@@ -4,7 +4,8 @@
 
 /* eslint-disable @typescript-eslint/no-shadow */
 
-import { authorization, formLogin, formRegistration } from '../components/modal';
+import { api } from 'api/api';
+import { formLogin, formRegistration } from '../components/modal';
 
 class Listener {
   open(): void {
@@ -31,14 +32,13 @@ class Listener {
               const userEmail = userEmailInput!.value;
               const userPassword = userPasswordInput!.value;
               e.preventDefault();
-              authorization.signIn(userPassword, userEmail);
+              api.userSignIn(userPassword, userEmail);
             });
           }
         }
         const buttonNewUser = document.getElementById('button-new-user') as HTMLButtonElement;
         if (buttonNewUser) {
           buttonNewUser.addEventListener('click', (_e: Event) => {
-            console.log(']thz до иннера');
             wrapper!.innerHTML = formRegistration;
             const userEmailInput = document.getElementById('user-email') as HTMLInputElement;
             const userPasswordInput = document.getElementById('user-password') as HTMLInputElement;
@@ -50,9 +50,10 @@ class Listener {
                   const userEmail = userEmailInput!.value;
                   const userPassword = userPasswordInput!.value;
                   const userName = userNameInput!.value;
-                  console.log(userName, userEmail, userPassword, 'userName, userEmail, userPassword ');
+
                   e.preventDefault();
-                  authorization.newUser(userName, userPassword, userEmail);
+                  api.createNewUser(userName, userPassword, userEmail);
+                  // authorization.signIn(userPassword, userEmail);
                 });
               }
             }
