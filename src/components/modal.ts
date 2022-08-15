@@ -7,23 +7,23 @@
 import { apiPath, signIn } from '../api/api-path';
 import { api } from '../api/api';
 
-const formLogin = ` <form class="form-signin" id="reg">       
+const formLogin = ` <form class="form-signin" id="auth">       
 <h3 class="form-signin-heading">Введите свои данные</h3>
 
   <input type="email" id="user-email" class="form-control" name="email" placeholder="Email Address" required autofocus=""/>
-  <input type="password" minlength="6" id="user-password" class="form-control" name="password" placeholder="пароль" required/>      
+  <input type="password" minlength="8" id="user-password" class="form-control" name="password" placeholder="пароль" required/>      
   
   <button class="btn"  id="button-new-user" type ="button"> Регистрация </button> 
   
 <button class="btn" id="autoriztionBtn" type="submit">Войти</button>   
 </form>`;
 
-const formRegistration = ` <form class="form-signin">       
+const formRegistration = ` <form class="form-signin" id="reg">       
 <h3 class="form-signin-heading">Введите свои данные</h3>
 
   <input type="text" id="user-name" class="form-control" name="user-name" placeholder="Имя пользователя" required="" autofocus=""/>
   <input type="email" id="user-email" class="form-control" name="email" placeholder="Email Address" required />
-  <input type="password" minlength="6" id="user-password" class="form-control" name="password" placeholder="пароль" required />  
+  <input type="password" minlength="8" id="user-password" class="form-control" name="password" placeholder="пароль" required />  
 
 <button class="btn" id="registration_btn" type="submit">Регистрация и вход</button>   
 </form>`;
@@ -57,11 +57,11 @@ const modalAuthorization = {
         const userPasswordInput = document.getElementById('user-password') as HTMLInputElement;
         const userNameInput = document.getElementById('user-name') as HTMLInputElement;
         if (userEmailInput && userPasswordInput) {
-          const userEmail = userEmailInput!.value;
-          const userPassword = userPasswordInput!.value;
-          const registratiForm = document.getElementById('reg') as HTMLButtonElement;
+          const registratiForm = document.getElementById('auth') as HTMLButtonElement;
           if (registratiForm) {
             registratiForm.addEventListener('submit', (e: Event) => {
+              const userEmail = userEmailInput!.value;
+              const userPassword = userPasswordInput!.value;
               e.preventDefault();
               authorization.signIn(userPassword, userEmail);
             });
@@ -78,14 +78,13 @@ const modalAuthorization = {
             // eslint-disable-next-line no-debugger
             // debugger;
             if (userNameInput && userEmailInput && userPasswordInput) {
-              console.log('сразу после ифа');
-              const userEmail = userEmailInput!.value;
-              const userPassword = userPasswordInput!.value;
-              const userName = userNameInput!.value;
-              console.log(userName, userEmail, userPassword);
               const registratiForm = document.getElementById('reg') as HTMLButtonElement;
               if (registratiForm) {
                 registratiForm.addEventListener('submit', (e: Event) => {
+                  const userEmail = userEmailInput!.value;
+                  const userPassword = userPasswordInput!.value;
+                  const userName = userNameInput!.value;
+                  console.log(userName, userEmail, userPassword, 'userName, userEmail, userPassword ');
                   e.preventDefault();
                   authorization.newUser(userName, userPassword, userEmail);
                   // authorization.signIn(userPassword, userEmail);

@@ -17,13 +17,13 @@ const api = {
       const response = await fetch(`${apiPath}${usersEndpoint}`, {
         method: 'POST',
         headers: {
+          Accept: 'application/json',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ name, email, password }),
 
       });
       if (response.ok) {
-        storage.user = await response.json();
         return await response.json();
       }
     } catch (error) {
@@ -39,7 +39,7 @@ const api = {
         return await response.json() as IUser;
       }
     } catch (error) {
-      console.log(error);
+      throw new Error('User not found');
     }
   },
 
