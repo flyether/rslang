@@ -1,4 +1,5 @@
 /* eslint-disable linebreak-style */
+/* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
@@ -70,7 +71,7 @@ const modalAuthorization = {
         const buttonNewUser = document.getElementById('button-new-user') as HTMLButtonElement;
         if (buttonNewUser) {
           buttonNewUser.addEventListener('click', (_e: Event) => {
-            console.log('хуйня до иннера');
+            console.log(']thz до иннера');
             wrapper!.innerHTML = formRegistration;
             const userEmailInput = document.getElementById('user-email') as HTMLInputElement;
             const userPasswordInput = document.getElementById('user-password') as HTMLInputElement;
@@ -84,10 +85,9 @@ const modalAuthorization = {
                   const userEmail = userEmailInput!.value;
                   const userPassword = userPasswordInput!.value;
                   const userName = userNameInput!.value;
-                  console.log(userName, userEmail, userPassword, 'userName, userEmail, userPassword ');
+
                   e.preventDefault();
                   authorization.newUser(userName, userPassword, userEmail);
-                  // authorization.signIn(userPassword, userEmail);
                 });
               }
             }
