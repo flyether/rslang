@@ -1,4 +1,5 @@
 /* eslint-disable linebreak-style */
+/* eslint-disable no-debugger */
 /* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -47,11 +48,11 @@ const modalAuthorization = {
     const btnCloseModal = document.getElementById('btn-close');
     const overlay = document.getElementById('overlay');
     const modalResultWrapper = document.getElementById('modal-result-wrapper');
-    modalResultWrapper!.style.display = 'none';
-    const wrapper = document.querySelector('.wrapper');
+    const wrapper = document.querySelector('.wrapper') as HTMLElement;
 
     if (authorizationBtn) {
       authorizationBtn.addEventListener('click', (_e: Event) => {
+        console.log('вот тут работает модальное окно1');
         wrapper!.innerHTML = formLogin;
         modalResultWrapper!.style.display = 'block';
         const userEmailInput = document.getElementById('user-email') as HTMLInputElement;
@@ -85,7 +86,7 @@ const modalAuthorization = {
                   const userEmail = userEmailInput!.value;
                   const userPassword = userPasswordInput!.value;
                   const userName = userNameInput!.value;
-
+                  console.log(userName, userEmail, userPassword, 'userName, userEmail, userPassword ');
                   e.preventDefault();
                   authorization.newUser(userName, userPassword, userEmail);
                 });
