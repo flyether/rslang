@@ -8,7 +8,13 @@ class Storage {
 
   user?: IUser;
 
+  id?: string;
+
+  name?: string;
+
   constructor() {
+    this.name = 'Будет юзер позже';
+    this.id = '';
     this.users = [];
     this.user = { name: '', email: '', password: '' };
   }

@@ -1,8 +1,11 @@
 /* eslint-disable linebreak-style */
+/* eslint-disable import/no-cycle */
 
+import { api } from '../api/api';
 import { storage } from './storage';
 
-const userShow = `<div class="user-show"> ${storage.user!.name}</div>`;
+ const user = storage.name;
+const userShow = `<div class="user-show"> ${user} </div>`;
 
 export default function showUser() {
   const heder = document.querySelector('.header__auth') as HTMLElement;

@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable linebreak-style */
 /* eslint-disable @typescript-eslint/no-shadow */
@@ -26,6 +27,8 @@ const api = {
       if (response.ok) {
         return await response.json();
       }
+
+      return await Promise.reject(new Error(response.statusText));
     } catch (error) {
       throw new Error('length must be at least 8 characters long');
     }
@@ -38,6 +41,7 @@ const api = {
       if (response.ok) {
         return await response.json() as IUser;
       }
+      return await Promise.reject(new Error(response.statusText));
     } catch (error) {
       throw new Error('User not found');
     }
@@ -58,6 +62,7 @@ const api = {
         showUser();
         return await response.json();
       }
+      return await Promise.reject(new Error(response.statusText));
     } catch (error) {
       throw new Error('Could not find user');
     }
@@ -70,6 +75,7 @@ const api = {
       if (response.ok) {
         return await response.json() as IWord[];
       }
+      return await Promise.reject(new Error(response.statusText));
     } catch (error) {
       throw new Error("Can't get words");
     }

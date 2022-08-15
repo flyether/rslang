@@ -1,30 +1,26 @@
 /* eslint-disable linebreak-style */
+/* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable class-methods-use-this */
-
 /* eslint-disable @typescript-eslint/no-shadow */
 
 import { api } from '../api/api';
 import { formLogin, formRegistration } from '../components/modal';
+import { storage } from './storage';
 
 class Listener {
   open(): void {
     document.addEventListener('click', (e) => {
       if ((e.target as HTMLElement).classList.contains('authorization')) {
-        const authorizationBtn = document.querySelector('.authorization');
         const btnCloseModal = document.getElementById('btn-close');
         const overlay = document.getElementById('overlay');
         const modalResultWrapper = document.getElementById('modal-result-wrapper');
         const wrapper = document.querySelector('.wrapper') as HTMLElement;
 
-        console.log('вот тут работает модальное окно2');
-
-        console.log('вот тут работает модальное окно1');
         wrapper!.innerHTML = formLogin;
         modalResultWrapper!.style.display = 'block';
         const userEmailInput = document.getElementById('user-email') as HTMLInputElement;
         const userPasswordInput = document.getElementById('user-password') as HTMLInputElement;
-        const userNameInput = document.getElementById('user-name') as HTMLInputElement;
         if (userEmailInput && userPasswordInput) {
           const authForm = document.getElementById('auth') as HTMLButtonElement;
           if (authForm) {
@@ -32,7 +28,13 @@ class Listener {
               const userEmail = userEmailInput!.value;
               const userPassword = userPasswordInput!.value;
               e.preventDefault();
-              api.userSignIn(userPassword, userEmail);
+              api.userSignIn(userEmail, userPassword)
+                .then(() => {
+                  closeModal();
+                }).catch((err) => {
+                  console.log(err);
+                });
+              closeModal();
             });
           }
         }
@@ -52,8 +54,13 @@ class Listener {
                   const userName = userNameInput!.value;
 
                   e.preventDefault();
-                  api.createNewUser(userName, userPassword, userEmail);
-                  // authorization.signIn(userPassword, userEmail);
+                  api.createNewUser(userName, userEmail, userPassword)
+                    .then(() => {
+                      api.userSignIn(userEmail, userPassword);
+                      closeModal();
+                    }).catch((err) => {
+                      console.log(err);
+                    });
                 });
               }
             }
