@@ -16,7 +16,7 @@ class Storage {
 
   constructor() {
     this.email = '';
-    this.name = 'Будет юзер позже';
+    this.name = '';
     this.id = '';
     this.users = [];
     this.user = {

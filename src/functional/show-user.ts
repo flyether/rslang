@@ -1,13 +1,10 @@
 /* eslint-disable linebreak-style */
-/* eslint-disable import/no-cycle */
 
-import { api } from '../api/api';
 import { storage } from './storage';
 
 export default function showUser() {
   const user = storage.user?.name;
-  const userShow = `<div class="user-show"> ${user} </div>`;
-  console.log(user);
+  const userShow = `<div class="user-show"> ${user} <button class="exit_btn">Выйти</button> </div>`;
   const heder = document.querySelector('.header__auth') as HTMLElement;
   const buttonEnter = document.querySelector('.authorization') as HTMLElement;
   buttonEnter.remove();

@@ -6,6 +6,7 @@
 
 import { api } from '../api/api';
 import { formLogin, formRegistration } from '../components/modal';
+import showBtnEnter from './show-enter';
 import showUser from './show-user';
 import { storage } from './storage';
 
@@ -33,10 +34,7 @@ class Listener {
                 .then((value) => {
                   storage.user = value;
                   localStorage.setItem('user', JSON.stringify(value));
-
-                  console.log('storage.user?.name', storage.user?.name);
                   showUser();
-
                   closeModal();
                 }).catch((err) => {
                   console.log(err);
@@ -62,10 +60,13 @@ class Listener {
                   e.preventDefault();
                   api.createNewUser(userName, userEmail, userPassword)
                     .then(() => {
-                      api.userSignIn(userEmail, userPassword);
-
-                      showUser();
-                      closeModal();
+                      api.userSignIn(userEmail, userPassword)
+                        .then((value) => {
+                          storage.user = value;
+                          localStorage.setItem('user', JSON.stringify(value));
+                          showUser();
+                          closeModal();
+                        });
                     })
                     .catch((err) => {
                       console.log(err);
@@ -81,6 +82,14 @@ class Listener {
         };
         overlay!.addEventListener('click', closeModal);
         btnCloseModal!.addEventListener('click', closeModal);
+      }
+
+      if ((e.target as HTMLElement).classList.contains('exit_btn')) {
+        localStorage.removeItem('user');
+        storage.user = {
+          message: '', token: '', refreshToken: '', userId: '', name: '',
+        };
+        showBtnEnter();
       }
     });
   }
