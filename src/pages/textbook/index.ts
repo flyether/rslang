@@ -1,28 +1,31 @@
+/* eslint-disable import/no-cycle */
 import './textbook.scss';
+import { api } from '../../api/api';
+import { IWord } from '../../types/types';
 
 const TextbookPage = {
   classname: 'textbook',
-  // render(): string {
-  //   return ` <div class=${this.classname}>
-  //   <div class="textbook-navigation">
-  //     <button class="btn-round"></button>
-  //     <p class="unit-name">Unit 1</p>
-  //   </div>
-  //   <ul class="word-list">
-  //     ${this.renderCards()}
-  //   </ul>
-  //   <div class="textbook-footer">
-  //   <div class="textbook-pagination">
-  //     <button class="pagination-btn">Prev</button>
-  //     <button class="pagination-btn">Next</button>
-  //   </div>
-  //   <div class="textbook-games">
-  //       <a href="">Аудиовызов</a>
-  //       <a href="">Спринт</a>
-  //     </div>
-  //     </div>
-  // </div>`;
-  // },
+  render(): string {
+    return ` <div class=${this.classname}>
+    <div class="textbook-navigation">
+      <button class="btn-round"></button>
+      <p class="unit-name">Unit 1</p>
+    </div>
+    <ul class="word-list">
+      ${this.renderCards()}
+    </ul>
+    <div class="textbook-footer">
+    <div class="textbook-pagination">
+      <button class="pagination-btn">Prev</button>
+      <button class="pagination-btn">Next</button>
+    </div>
+    <div class="textbook-games">
+        <a href="">Аудиовызов</a>
+        <a href="">Спринт</a>
+      </div>
+      </div>
+  </div>`;
+  },
   // render(): string {
   //   return `<div class="textbook-units">
   //   <div class="textbook-unit" data-unit="1">Раздел 1</div>
@@ -34,11 +37,11 @@ const TextbookPage = {
   //   <div class="textbook-unit" data-unit="7">Раздел "Сложные слова"</div>
   //   </div>`;
   // },
-  render(): string {
-    return `<ul class="unit-pages">
-${this.renderPages()}
-</ul>`;
-  },
+  //   render(): string {
+  //     return `<ul class="unit-pages">
+  // ${this.renderPages()}
+  // </ul>`;
+  //   },
 
   renderPages(): string {
     let pages = '';
@@ -50,6 +53,11 @@ ${this.renderPages()}
   },
   renderCards(): string {
     let cards = '';
+    const words = [];
+    api.getWords(3, 5)
+      .then((res) => {
+        console.log((res as IWord[]).length);
+      });
     const cardsCount = 10;
     for (let i = 0; i < cardsCount; i += 1) {
       cards += `<li class="word-item">
