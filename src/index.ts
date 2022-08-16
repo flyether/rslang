@@ -22,6 +22,7 @@ import AboutTeamPage from './pages/team';
 import SprintGamePage from './pages/sprint/index';
 import AudiocallGamePage from './pages/audiocall/index';
 import StatisticsPage from './pages/statistics/index';
+import AudiocallGame from './pages/audiocall/main';
 
 const components: Components = {
   header: Header,
@@ -36,6 +37,7 @@ const routes: Routes = {
   team: AboutTeamPage,
   sprint: SprintGamePage,
   audiocall: AudiocallGamePage,
+  audiocallAction: AudiocallGame,
   statistics: StatisticsPage,
 };
 
