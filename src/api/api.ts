@@ -3,6 +3,7 @@
 /* eslint-disable linebreak-style */
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable consistent-return */
+/* eslint-disable import/no-cycle */
 
 import {
   apiPath, usersEndpoint, wordsEndpoint, signIn,
@@ -68,7 +69,7 @@ const api = {
     }
   },
 
-  async getWords(group: number, page:number): Promise<IWord[] | void> {
+  async getWords(group: number, page: number): Promise<IWord[] | void> {
     try {
       const response = await fetch(`${apiPath}${wordsEndpoint}?group=${group}&page=${page}`,
         { method: 'GET' });
