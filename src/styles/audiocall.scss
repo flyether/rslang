@@ -1,0 +1,40 @@
+
+
+.audio-container {
+  flex: 0 0 auto;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+//   background: #679fe5 ;
+  background: url('../pages/audiocall/img/ocean.jpg') 0 0 no-repeat;
+}
+
+.audio-call {
+   width: 60%;
+   height: 60%;
+   display: flex;
+   font-size: large;
+   line-height: 35px;
+   font-weight: 700;
+   justify-content: space-between;
+   align-items: center;
+   flex-wrap: wrap;
+   background: #fe8954;
+   margin: 5% auto;
+   padding: 20px;
+   border-radius: 5px;
+}
+.btn-level {
+  color: #224a9a;
+  width: 80px;
+  height: 50px;
+  background-color:#679fe5 ;
+  text-align: center;
+  line-height: 35px;
+  border-radius: 5px;
+  cursor: pointer 
+}
+
+// #224a9a;

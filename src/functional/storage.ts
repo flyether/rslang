@@ -4,19 +4,16 @@
 import { IUser, IUserData } from 'types/types';
 
 class Storage {
-  users?: Array<IUserData>;
-
-  user?: IUser;
-
-  id?: string;
-
-  name?: string;
+  user?: IUserData;
 
   constructor() {
-    this.name = 'Будет юзер позже';
-    this.id = '';
-    this.users = [];
-    this.user = { name: '', email: '', password: '' };
+    if (localStorage.getItem('user')) {
+      this.user = JSON.parse(localStorage.getItem('user') as string);
+    } else {
+      this.user = {
+        message: '', token: '', refreshToken: '', userId: '', name: '',
+      };
+    }
   }
 }
 

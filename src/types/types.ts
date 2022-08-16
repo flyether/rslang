@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import TextbookPage from '../pages/textbook';
 import AboutTeamPage from '../pages/team';
 import SprintGamePage from '../pages/sprint/index';
@@ -22,7 +23,7 @@ export interface Routes {
   team: typeof AboutTeamPage,
   sprint: typeof SprintGamePage,
   audiocall: typeof AudiocallGamePage,
-  statistics: typeof StatisticsPage
+  statistics: typeof StatisticsPage,
 }
 
 export interface InitialObj {
