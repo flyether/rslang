@@ -9,7 +9,7 @@ import Footer from '../../components/footer';
 const TextbookPage = {
   classname: 'textbook',
   render(): string {
-    return ` <div class=${this.classname}>
+    const view = ` <div class=${this.classname}>
     <div class="textbook-navigation">
       <button class="btn-round"></button>
       <p class="unit-name">Unit 1</p>
@@ -28,6 +28,7 @@ const TextbookPage = {
       </div>
       </div>
   </div>`;
+    return `${Header.render()}${view}${Footer.render()}`;
   },
   // render(): string {
   //   return `<div class="textbook-units">
@@ -77,8 +78,12 @@ const TextbookPage = {
   <p class="word-example">The <strong>apple</strong> trees yielded an abundant harvest.</p>
 </div>
 <div class="word-difficult">
-<p>Is it a difficult word for you?</p>
+<p>Difficult word</p>
 <button class="btn-round btn-difficult">+</button>
+</div>
+<div class="word-learned">
+<p>Learned word</p>
+<button class="btn-round btn-learned">+</button>
 </div>
 </li>`;
     }
