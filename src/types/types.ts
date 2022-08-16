@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import TextbookPage from '../pages/textbook';
 import AboutTeamPage from '../pages/team';
 import SprintGamePage from '../pages/sprint/index';
@@ -9,6 +10,7 @@ import Content from '../components/content';
 import Footer from '../components/footer';
 
 import MainPage from '../pages/main';
+import AudiocallGame from '../pages/audiocall/main';
 
 export interface Components {
   header: typeof Header,
@@ -22,7 +24,8 @@ export interface Routes {
   team: typeof AboutTeamPage,
   sprint: typeof SprintGamePage,
   audiocall: typeof AudiocallGamePage,
-  statistics: typeof StatisticsPage
+  statistics: typeof StatisticsPage,
+  audiocallAction: typeof AudiocallGame
 }
 
 export interface InitialObj {
