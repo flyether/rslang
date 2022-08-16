@@ -69,7 +69,7 @@ const api = {
     }
   },
 
-  async getWords(group: number, page:number): Promise<IWord[] | void> {
+  async getWords(group: number, page: number): Promise<IWord[] | void> {
     try {
       const response = await fetch(`${apiPath}${wordsEndpoint}?group=${group}&page=${page}`,
         { method: 'GET' });
