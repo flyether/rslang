@@ -10,7 +10,6 @@ import Content from '../components/content';
 import Footer from '../components/footer';
 
 import MainPage from '../pages/main';
-import AudiocallGame from '../pages/audiocall/main';
 
 export interface Components {
   header: typeof Header,
@@ -25,7 +24,6 @@ export interface Routes {
   sprint: typeof SprintGamePage,
   audiocall: typeof AudiocallGamePage,
   statistics: typeof StatisticsPage,
-  audiocallAction: typeof AudiocallGame
 }
 
 export interface InitialObj {
