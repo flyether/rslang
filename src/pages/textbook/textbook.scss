@@ -46,13 +46,18 @@
     gap: 25px;
     width: 95%;
     background-color: antiquewhite;
-    padding: 5px;
+    padding: 20px;
 
+    .translation {
+      font-size: smaller;
+    }
 
     .word-image {
-      width: 200px;
-      height: 200px;
-
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: 50% 50%;
+      min-width: 330px;
+      min-height: 250px;
     }
 
     .word-description {
@@ -141,19 +146,21 @@
   }
 }
 
+.word-noted {
+  display: flex;
+  flex-direction: column;
+  margin: 30px 30px 0 auto;
+  justify-self: end;
+  align-self: flex-start;
+  gap: 30px;
+}
+
 .word-difficult,
 .word-learned {
   display: flex;
   align-items: center;
   flex-direction: column;
-  margin: 30px 30px 0 auto;
-  justify-self: end;
-  align-self: flex-start;
   gap: 15px;
-}
-
-.word-learned {
-  margin-left: 30px;
 }
 
 .btn-difficult,

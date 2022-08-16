@@ -8,14 +8,15 @@ import Footer from '../../components/footer';
 
 const TextbookPage = {
   classname: 'textbook',
+  wordlist: 'word-list',
   render(): string {
     const view = ` <div class=${this.classname}>
     <div class="textbook-navigation">
       <button class="btn-round"></button>
       <p class="unit-name">Unit 1</p>
     </div>
-    <ul class="word-list">
-      ${this.renderCards()}
+    <ul class=${this.wordlist}>
+     ${this.getCards()}
     </ul>
     <div class="textbook-footer">
     <div class="textbook-pagination">
@@ -55,39 +56,51 @@ const TextbookPage = {
     }
     return pages;
   },
-  renderCards(): string {
-    let cards = '';
-    const words = [];
-    api.getWords(3, 5)
-      .then((res) => {
-        console.log((res as IWord[]).length);
-      });
-    const cardsCount = 10;
-    for (let i = 0; i < cardsCount; i += 1) {
-      cards += `<li class="word-item">
-<img class="word-image"
-  src="https://illustoon.com/photo/thum/7156.png"
-  alt="apple">
-<div class="word-description">
-  <div class="word-pronounce word-audio">
-  <p>apple</p>
-    <div class="audio"><audio></audio></div>
+  getCards(): void {
+    const { wordlist } = this;
+    function renderCards(words: IWord[]) {
+      const wordContainer = document.querySelector(`.${wordlist}`);
+      if (wordContainer) {
+        wordContainer.innerHTML = '';
+      }
+      for (let i = 0; i < words.length; i += 1) {
+        const card = document.createElement('li');
+        card.classList.add('word-item');
+        card.innerHTML = `
+  <div class="word-image" 
+  style="background-image: url(https://rslang-learning-english-words.herokuapp.com/${words[i].image})">
   </div>
-  <p class="word-pronounce">|ˈæp(ə)l| noun</p>
-  <p class="word-example">An <strong>apple</strong> fell from the tree.</p>
-  <p class="word-example">The <strong>apple</strong> trees yielded an abundant harvest.</p>
-</div>
-<div class="word-difficult">
-<p>Difficult word</p>
-<button class="btn-round btn-difficult">+</button>
-</div>
-<div class="word-learned">
-<p>Learned word</p>
-<button class="btn-round btn-learned">+</button>
-</div>
-</li>`;
+  <div class="word-description">
+    <div class="word-pronounce word-audio">
+    <p>${words[i].word} ${words[i].transcription}</p>
+      <div class="audio"><audio></audio></div>
+    </div>
+   
+    <p class="word-pronounce translation">${words[i].wordTranslate}</p>
+    <p class="word-example">${words[i].textMeaning}</p>
+    <p class="word-example translation">${words[i].textMeaningTranslate}</p>
+    <p class="word-example">${words[i].textExample}</p>
+    <p class="word-example translation">${words[i].textExampleTranslate}</p>
+  </div>
+  <div class="word-noted">
+  <div class="word-difficult">
+  <p>Difficult word</p>
+  <button class="btn-round btn-difficult">+</button>
+  </div>
+  <div class="word-learned">
+  <p>Learned word</p>
+  <button class="btn-round btn-learned">+</button>
+  </div>
+  </div>`;
+        wordContainer?.append(card);
+      }
     }
-    return cards;
+    (async () => {
+      await api.getWords(3, 5)
+        .then((res) => {
+          renderCards(res as IWord[]);
+        });
+    })();
   },
 };
 
