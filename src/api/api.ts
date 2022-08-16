@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable linebreak-style */
 /* eslint-disable @typescript-eslint/no-shadow */
@@ -8,6 +9,8 @@ import {
   apiPath, usersEndpoint, wordsEndpoint, signIn,
 } from './api-path';
 import { IUser, IWord, IUserData } from '../types/types';
+import { storage } from '../functional/storage';
+import showUser from '../functional/show-user';
 
 const api = {
 
@@ -16,13 +19,17 @@ const api = {
       const response = await fetch(`${apiPath}${usersEndpoint}`, {
         method: 'POST',
         headers: {
+          Accept: 'application/json',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ name, email, password }),
+
       });
       if (response.ok) {
         return await response.json();
       }
+
+      return await Promise.reject(new Error(response.statusText));
     } catch (error) {
       throw new Error('length must be at least 8 characters long');
     }
@@ -35,8 +42,9 @@ const api = {
       if (response.ok) {
         return await response.json() as IUser;
       }
+      return await Promise.reject(new Error(response.statusText));
     } catch (error) {
-      console.log(error);
+      throw new Error('User not found');
     }
   },
 
@@ -51,8 +59,11 @@ const api = {
         body: JSON.stringify({ email, password }),
       });
       if (response.ok) {
+        // storage.user = await response.json();
+        showUser();
         return await response.json();
       }
+      return await Promise.reject(new Error(response.statusText));
     } catch (error) {
       throw new Error('Could not find user');
     }
@@ -65,6 +76,7 @@ const api = {
       if (response.ok) {
         return await response.json() as IWord[];
       }
+      return await Promise.reject(new Error(response.statusText));
     } catch (error) {
       throw new Error("Can't get words");
     }

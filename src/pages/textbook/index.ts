@@ -3,6 +3,9 @@ import './textbook.scss';
 import { api } from '../../api/api';
 import { IWord } from '../../types/types';
 
+import Header from '../../components/header';
+import Footer from '../../components/footer';
+
 const TextbookPage = {
   classname: 'textbook',
   render(): string {
