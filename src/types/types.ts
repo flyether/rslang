@@ -1,6 +1,8 @@
+/* eslint-disable import/no-cycle */
 import TextbookPage from '../pages/textbook';
 import AboutTeamPage from '../pages/team';
 import SprintGamePage from '../pages/sprint/index';
+import AboutSprintGamePage from '../pages/aboutsprint';
 import AudiocallGamePage from '../pages/audiocall/index';
 import StatisticsPage from '../pages/statistics/index';
 
@@ -21,6 +23,7 @@ export interface Routes {
   textbook: typeof TextbookPage,
   team: typeof AboutTeamPage,
   sprint: typeof SprintGamePage,
+  aboutsprint: typeof AboutSprintGamePage,
   audiocall: typeof AudiocallGamePage,
   statistics: typeof StatisticsPage
 }
@@ -43,6 +46,7 @@ export interface MenuItems {
   statistics: HTMLElement,
   audiocall: HTMLElement,
   sprint: HTMLElement,
+  aboutsprint: HTMLElement,
   team: HTMLElement,
 }
 

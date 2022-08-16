@@ -20,6 +20,7 @@ import MainPage from './pages/main';
 import TextbookPage from './pages/textbook';
 import AboutTeamPage from './pages/team';
 import SprintGamePage from './pages/sprint/index';
+import AboutSprintGamePage from './pages/aboutsprint';
 import AudiocallGamePage from './pages/audiocall/index';
 import StatisticsPage from './pages/statistics/index';
 
@@ -35,6 +36,7 @@ const routes: Routes = {
   textbook: TextbookPage,
   team: AboutTeamPage,
   sprint: SprintGamePage,
+  aboutsprint: AboutSprintGamePage,
   audiocall: AudiocallGamePage,
   statistics: StatisticsPage,
 };

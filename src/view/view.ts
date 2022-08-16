@@ -1,4 +1,5 @@
 import { Routes, MenuItems } from '../types/types';
+import SprintGamePage from '../pages/sprint/index';
 
 class ModuleView {
   myModuleContainer!:HTMLElement;
@@ -17,6 +18,7 @@ class ModuleView {
     routeName = (hashPageName.length) ? hashPageName : routeName;
     const route = this.routesObj[routeName as keyof Routes];
     this.myModuleContainer.innerHTML = route.render();
+    if (hashPageName === 'sprint') { SprintGamePage.initMVC(); }
   }
 
   highlightActiveMenuItem = (obj:MenuItems, hashName:string):void => {

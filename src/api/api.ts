@@ -2,6 +2,7 @@
 /* eslint-disable linebreak-style */
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable consistent-return */
+/* eslint-disable import/no-cycle */
 
 import {
   apiPath, usersEndpoint, wordsEndpoint, signIn,
