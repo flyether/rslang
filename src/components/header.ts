@@ -24,7 +24,7 @@ const Header = {
       <header class="header ${customClass}" id="header">
         <h1 class="header__logo"><a href="">RSLang</a></h1>
         <div class="header__auth">
-          <button class="authorization">Войти</button>
+          ${showUser(true)}
           <div class="modal__auth"></div>
         </div>
         <nav class="header__menu">

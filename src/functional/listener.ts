@@ -26,6 +26,8 @@ class Listener {
           const authForm = document.getElementById('auth') as HTMLButtonElement;
           if (authForm) {
             authForm.addEventListener('submit', (e: Event) => {
+              const errForm = document.querySelector('.form-signin-error') as HTMLElement;
+              errForm.innerHTML = '';
               const userEmail = userEmailInput!.value;
               const userPassword = userPasswordInput!.value;
               e.preventDefault();
@@ -33,9 +35,10 @@ class Listener {
                 .then((value) => {
                   storage.user = value;
                   localStorage.setItem('user', JSON.stringify(value));
-                  showUser();
+                  showUser(false);
                   closeModal();
                 }).catch((err) => {
+                  errForm.innerHTML = 'Пользователь не найден, проверьте свои данные или зарегистрируйтесь';
                   console.log(err);
                 });
             });
@@ -52,6 +55,8 @@ class Listener {
               const registrationForm = document.getElementById('reg') as HTMLButtonElement;
               if (registrationForm) {
                 registrationForm.addEventListener('submit', (e: Event) => {
+                  const errForm = document.querySelector('.form-reg-error') as HTMLElement;
+                  errForm.innerHTML = '';
                   const userEmail = userEmailInput!.value;
                   const userPassword = userPasswordInput!.value;
                   const userName = userNameInput!.value;
@@ -62,11 +67,12 @@ class Listener {
                         .then((value) => {
                           storage.user = value;
                           localStorage.setItem('user', JSON.stringify(value));
-                          showUser();
+                          showUser(false);
                           closeModal();
                         });
                     })
                     .catch((err) => {
+                      errForm.innerHTML = 'Возможно этот e-mail уже занят, попробуйте другой';
                       console.log(err);
                     });
                 });
@@ -87,7 +93,7 @@ class Listener {
         storage.user = {
           message: '', token: '', refreshToken: '', userId: '', name: '',
         };
-        showUser();
+        showUser(false);
       }
     });
   }
