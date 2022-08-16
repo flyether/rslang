@@ -15,12 +15,12 @@ const AboutSprintGamePage = {
         Чтобы дать ответ, кликай по нему мышкой или нажимай клавиши-стрелки.</p>
         <p>Выбери уровень сложности</p>
         <select class="sprint__level">
-          <option value="level1">Уровень 1</option>
-          <option value="level2">Уровень 2</option>
-          <option value="level3">Уровень 3</option>
-          <option value="level4">Уровень 4</option>
-          <option value="level5">Уровень 5</option>
-          <option value="level6">Уровень 6</option>
+          <option value="level0">Уровень 1</option>
+          <option value="level1">Уровень 2</option>
+          <option value="level2">Уровень 3</option>
+          <option value="level3">Уровень 4</option>
+          <option value="level4">Уровень 5</option>
+          <option value="level5">Уровень 6</option>
         </select>
         ${Buttons.create('Начать', 'button__start__sprint', false)}
       </div>

@@ -9,7 +9,7 @@ import arrowRight from '../../assets/arrow-right.png';
 
 const SprintGamePage = {
   classname: 'sprint',
-  level: '',
+  level: 0,
   render(): string {
     return `
     ${Header.render()}
@@ -19,11 +19,14 @@ const SprintGamePage = {
       <div class="sprint__field">
         <div class="field__title">
           <div class="title__count"></div>
-          <div class="title__text">+</div>
+          <div class="title__text">+ 10 очков за слово</div>
         </div>
         <div class="field__content">
           <div class="content__img"><img src='${parrots}' alt="parrots"></div>
-          <div class="content__question">Questions</div>
+          <div class="content__question">
+            <div class="question__word"></div>
+            <div class="question__translation"></div>
+          </div>
         </div>
         <div class="field__buttons">${Buttons.create('Неверно', 'button__sprint__false', false)}${Buttons.create('Верно', 'button__sprint__true', false)}</div>
       </div>
@@ -37,8 +40,7 @@ const SprintGamePage = {
     initSprintMVC();
   },
   saveLevel(level:string) {
-    this.level = level;
-    console.log(this.level);
+    this.level = +level[level.length - 1];
   },
 
 };

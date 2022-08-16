@@ -4,11 +4,7 @@
 // import modalAuthorization from '../components/modal';
 
 import { MenuItems } from '../types/types';
-<<<<<<< HEAD
 import SprintGamePage from '../pages/sprint/index';
-=======
-
->>>>>>> develop
 import ModuleModel from '../model/model';
 import listener from '../functional/listener';
 

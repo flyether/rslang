@@ -4,7 +4,7 @@
 import { api } from '../api/api';
 import { storage } from './storage';
 
- const user = storage.name;
+const user = storage.name;
 const userShow = `<div class="user-show"> ${user} </div>`;
 
 export default function showUser() {
