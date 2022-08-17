@@ -24,7 +24,6 @@ import AudiocallGamePage from './pages/audiocall/index';
 import StatisticsPage from './pages/statistics/index';
 import AudiocallGame from './pages/audiocall/main';
 
-
 const components: Components = {
   header: Header,
   content: Content,

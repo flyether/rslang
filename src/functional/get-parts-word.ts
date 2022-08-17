@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable linebreak-style */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable import/no-cycle */
@@ -16,19 +17,26 @@ const apiGetWord = api.getWord(id)
     console.log(err);
   });
 
-function getSound() {
+function getSound(): string {
   apiGetWord;
   return storage.word!.audio;
 }
-function getImg() {
+function getImg(): string {
   apiGetWord;
   return storage.word!.image;
 }
 
-function soundClick() {
+function getWordThis(): string {
+  apiGetWord;
+  return storage.word!.word;
+}
+
+function soundClick(): void {
   const audio = new Audio();
   audio.src = `${apiPath + getSound()}`;
   audio.autoplay = true;
 }
 
-export { getSound, getImg, soundClick };
+export {
+  getSound, getImg, soundClick, getWordThis,
+};

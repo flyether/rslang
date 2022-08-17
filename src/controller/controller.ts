@@ -7,6 +7,7 @@ import { MenuItems } from '../types/types';
 
 import ModuleModel from '../model/model';
 import listener from '../functional/listener';
+import listenerAudioCall from '../pages/audiocall/utils/listener-audiocall';
 
 class ModuleController {
   myModuleContainer!: HTMLElement;
@@ -36,6 +37,7 @@ class ModuleController {
 
     // modalAuthorization.open();
     listener.open();
+    listenerAudioCall.open();
     this.updateState();
     // window.location.hash = '#main';
   }
