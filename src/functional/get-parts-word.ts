@@ -1,6 +1,8 @@
 /* eslint-disable linebreak-style */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
+/* eslint-disable import/no-cycle */
 
+import { apiPath } from '../api/api-path';
 import { api } from '../api/api';
 import { storage } from './storage';
 
@@ -24,3 +26,9 @@ function getImg() {
 }
 
 export { getSound, getImg };
+
+function soundClick() {
+  const audio = new Audio();
+  audio.src = `${apiPath + getSound()}`;
+  audio.autoplay = true;
+}
