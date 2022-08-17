@@ -37,7 +37,7 @@ const routes: Routes = {
   team: AboutTeamPage,
   sprint: SprintGamePage,
   audiocall: AudiocallGamePage,
-  audiocallAction: AudiocallGame,
+  audiocallgame: AudiocallGame,
   statistics: StatisticsPage,
 };
 

@@ -25,7 +25,7 @@ class ModuleController {
 
   menuTeam !: HTMLElement;
 
-  audiocallAction !: HTMLElement;
+  audiocallgame !: HTMLElement;
 
   init(container: HTMLElement, model: ModuleModel): void {
     this.myModuleContainer = container;
@@ -61,14 +61,9 @@ class ModuleController {
       sprint: this.menuSprint,
       team: this.menuTeam,
     };
-    this.myModuleModel.highlightActiveMenuItem(obj, hashName);
-  }
-
-  addButtonsAboutAudiocallGameListeners() {
-    this.audiocallAction = document.getElementById('level1') as HTMLButtonElement;
-    this.audiocallAction.addEventListener('click', () => {
-      location.hash = '#audiocallGame';
-    });
+    if (this.menuMain) {
+      this.myModuleModel.highlightActiveMenuItem(obj, hashName);
+    }
   }
 }
 

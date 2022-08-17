@@ -26,7 +26,7 @@ export interface Routes {
   sprint: typeof SprintGamePage,
   audiocall: typeof AudiocallGamePage,
   statistics: typeof StatisticsPage,
-  audiocallAction: typeof AudiocallGame
+  audiocallgame: typeof AudiocallGame
 }
 
 export interface InitialObj {
@@ -65,6 +65,15 @@ export interface IWord {
   wordTranslate: string;
   textMeaningTranslate: string;
   textExampleTranslate: string;
+  translate?: string;
+}
+
+export interface IWordGame {
+  translate: string;
+  id: string;
+  word: string;
+  image: string;
+  audio: string;
 }
 
 export interface IUser {

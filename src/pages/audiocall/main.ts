@@ -3,7 +3,7 @@ const AudiocallGame = {
   render(): string {
     return `
       
-       <div class = 'audio-container '> </div>;
+       <div class = 'audio-container '> Тут будет игра </div>;
        
       `;
   },
