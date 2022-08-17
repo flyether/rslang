@@ -13,21 +13,17 @@ const TextbookPage = {
     const view = ` <div class=${this.classname}>
     <div class="textbook-navigation">
       <button class="btn-round"></button>
-      <p class="unit-name">Unit 1</p>
+      <p class="unit-name">Unit 1 <span class="unit-page">page 1</span></p>
     </div>
     <ul class=${this.wordlist}>
      ${this.getCards()}
     </ul>
     <div class="textbook-footer">
-    <div class="textbook-pagination">
-      <button class="pagination-btn">Prev</button>
-      <button class="pagination-btn">Next</button>
+      <div class="textbook-pagination">
+        <button class="pagination-btn btn-orange">Prev</button>
+        <button class="pagination-btn btn-orange">Next</button>
+      </div>
     </div>
-    <div class="textbook-games">
-        <a href="">Аудиовызов</a>
-        <a href="">Спринт</a>
-      </div>
-      </div>
   </div>`;
     return `${Header.render()}${view}${Footer.render()}`;
   },
@@ -75,7 +71,6 @@ const TextbookPage = {
     <p>${words[i].word} ${words[i].transcription}</p>
       <div class="audio"><audio></audio></div>
     </div>
-   
     <p class="word-pronounce translation">${words[i].wordTranslate}</p>
     <p class="word-example">${words[i].textMeaning}</p>
     <p class="word-example translation">${words[i].textMeaningTranslate}</p>
@@ -83,14 +78,8 @@ const TextbookPage = {
     <p class="word-example translation">${words[i].textExampleTranslate}</p>
   </div>
   <div class="word-noted">
-  <div class="word-difficult">
-  <p>Difficult word</p>
-  <button class="btn-round btn-difficult">+</button>
-  </div>
-  <div class="word-learned">
-  <p>Learned word</p>
-  <button class="btn-round btn-learned">+</button>
-  </div>
+      <button class="btn-orange btn-difficult">Difficult?</button>
+      <button class="btn-orange btn-learned">Learned?</button>
   </div>`;
         wordContainer?.append(card);
       }
