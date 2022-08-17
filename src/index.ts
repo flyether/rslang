@@ -23,6 +23,7 @@ import SprintGamePage from './pages/sprint/index';
 import AudiocallGamePage from './pages/audiocall/index';
 import StatisticsPage from './pages/statistics/index';
 
+
 const components: Components = {
   header: Header,
   content: Content,
