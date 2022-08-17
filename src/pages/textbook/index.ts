@@ -9,40 +9,41 @@ import Footer from '../../components/footer';
 const TextbookPage = {
   classname: 'textbook',
   wordlist: 'word-list',
+  // render(): string {
+  //   const view = ` <div class=${this.classname}>
+  //   <div class="textbook-navigation">
+  //     <button class="btn-round"></button>
+  //     <p class="unit-name">Unit 1 <span class="unit-page">page 1</span></p>
+  //   </div>
+  //   <ul class=${this.wordlist}>
+  //    ${this.getCards()}
+  //   </ul>
+  //   <div class="textbook-footer">
+  //     <div class="textbook-pagination">
+  //       <button class="pagination-btn btn-orange">Prev</button>
+  //       <button class="pagination-btn btn-orange">Next</button>
+  //     </div>
+  //   </div>
+  // </div>`;
+  //   return `${Header.render()}${view}${Footer.render()}`;
+  // },
   render(): string {
-    const view = ` <div class=${this.classname}>
-    <div class="textbook-navigation">
-      <button class="btn-round"></button>
-      <p class="unit-name">Unit 1 <span class="unit-page">page 1</span></p>
-    </div>
-    <ul class=${this.wordlist}>
-     ${this.getCards()}
-    </ul>
-    <div class="textbook-footer">
-      <div class="textbook-pagination">
-        <button class="pagination-btn btn-orange">Prev</button>
-        <button class="pagination-btn btn-orange">Next</button>
-      </div>
-    </div>
-  </div>`;
+    const view = `<div class="textbook-units">
+    <div class="textbook-unit" data-unit="1">Раздел 1</div>
+    <div class="textbook-unit" data-unit="2">Раздел 2</div>
+    <div class="textbook-unit" data-unit="3">Раздел 3</div>
+    <div class="textbook-unit" data-unit="4">Раздел 4</div>
+    <div class="textbook-unit" data-unit="5">Раздел 5</div>
+    <div class="textbook-unit" data-unit="6">Раздел 6</div>
+    <div class="textbook-unit" data-unit="7">Раздел "Сложные слова"</div>
+    </div>`;
     return `${Header.render()}${view}${Footer.render()}`;
   },
   // render(): string {
-  //   return `<div class="textbook-units">
-  //   <div class="textbook-unit" data-unit="1">Раздел 1</div>
-  //   <div class="textbook-unit" data-unit="2">Раздел 2</div>
-  //   <div class="textbook-unit" data-unit="3">Раздел 3</div>
-  //   <div class="textbook-unit" data-unit="4">Раздел 4</div>
-  //   <div class="textbook-unit" data-unit="5">Раздел 5</div>
-  //   <div class="textbook-unit" data-unit="6">Раздел 6</div>
-  //   <div class="textbook-unit" data-unit="7">Раздел "Сложные слова"</div>
-  //   </div>`;
-  // },
-  //   render(): string {
-  //     return `<ul class="unit-pages">
+  //   return `<ul class="unit-pages">
   // ${this.renderPages()}
   // </ul>`;
-  //   },
+  // },
 
   renderPages(): string {
     let pages = '';
