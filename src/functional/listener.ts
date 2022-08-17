@@ -6,6 +6,7 @@
 
 import { api } from '../api/api';
 import { formLogin, formRegistration } from '../components/modal';
+import showUser from './show-user';
 import { storage } from './storage';
 
 class Listener {
@@ -25,16 +26,21 @@ class Listener {
           const authForm = document.getElementById('auth') as HTMLButtonElement;
           if (authForm) {
             authForm.addEventListener('submit', (e: Event) => {
+              const errForm = document.querySelector('.form-signin-error') as HTMLElement;
+              errForm.innerHTML = '';
               const userEmail = userEmailInput!.value;
               const userPassword = userPasswordInput!.value;
               e.preventDefault();
               api.userSignIn(userEmail, userPassword)
-                .then(() => {
+                .then((value) => {
+                  storage.user = value;
+                  localStorage.setItem('user', JSON.stringify(value));
+                  showUser(false);
                   closeModal();
                 }).catch((err) => {
+                  errForm.innerHTML = 'Пользователь не найден, проверьте свои данные или зарегистрируйтесь';
                   console.log(err);
                 });
-              closeModal();
             });
           }
         }
@@ -49,16 +55,24 @@ class Listener {
               const registrationForm = document.getElementById('reg') as HTMLButtonElement;
               if (registrationForm) {
                 registrationForm.addEventListener('submit', (e: Event) => {
+                  const errForm = document.querySelector('.form-reg-error') as HTMLElement;
+                  errForm.innerHTML = '';
                   const userEmail = userEmailInput!.value;
                   const userPassword = userPasswordInput!.value;
                   const userName = userNameInput!.value;
-
                   e.preventDefault();
                   api.createNewUser(userName, userEmail, userPassword)
                     .then(() => {
-                      api.userSignIn(userEmail, userPassword);
-                      closeModal();
-                    }).catch((err) => {
+                      api.userSignIn(userEmail, userPassword)
+                        .then((value) => {
+                          storage.user = value;
+                          localStorage.setItem('user', JSON.stringify(value));
+                          showUser(false);
+                          closeModal();
+                        });
+                    })
+                    .catch((err) => {
+                      errForm.innerHTML = 'Возможно этот e-mail уже занят, попробуйте другой';
                       console.log(err);
                     });
                 });
@@ -72,6 +86,14 @@ class Listener {
         };
         overlay!.addEventListener('click', closeModal);
         btnCloseModal!.addEventListener('click', closeModal);
+      }
+
+      if ((e.target as HTMLElement).classList.contains('exit_btn')) {
+        localStorage.removeItem('user');
+        storage.user = {
+          message: '', token: '', refreshToken: '', userId: '', name: '',
+        };
+        showUser(false);
       }
     });
   }
