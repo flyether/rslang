@@ -5,7 +5,7 @@
 /* eslint-disable @typescript-eslint/indent */
 
 import { apiPath } from '../../../api/api-path';
-import { getSound } from '../../../functional/get-parts-word';
+import { getSound, getWordsMap } from '../../../functional/get-parts-word';
 
 //   const randomId = String(Math.floor(Math.random() * (200 - 1)) + 1);
 
@@ -16,6 +16,6 @@ const soundWrapper = `<div class="sound-wrapper">
 export const gameArea = ` 
  <div class="audio-container-game"> 
     <div class="btn-sound"> ${soundWrapper}</div>
-    <div class="button-container"> Тут будут кнопки </div>
+    <div class="button-container"> ${getWordsMap()}</div>
   </div>
  `;

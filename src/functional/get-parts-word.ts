@@ -40,7 +40,7 @@ function soundClick(): void {
 const group = 1;
 const page = 1;
 
-const apiGetWords = api.getWords(group, page)
+const apiGetWords = api.getWords(3, 2)
   .then((value) => {
     storage.words = value;
     localStorage.setItem('word', JSON.stringify(value));
@@ -48,7 +48,13 @@ const apiGetWords = api.getWords(group, page)
     console.log(err);
   });
 
+function getWordsMap(): string {
+  apiGetWords;
+  const words = storage.words!.map((item) => `<div class="word-item">${item.word}</div>`).join('');
+  console.log(words);
+  return words;
+}
 
 export {
-  getSound, getImg, soundClick, getWordThis,
+  getSound, getImg, soundClick, getWordThis, apiGetWords, getWordsMap,
 };
