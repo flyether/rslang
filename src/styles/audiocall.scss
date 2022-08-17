@@ -49,6 +49,8 @@
 
 .btn-translation {
   color: #224a9a;
+  font-size: large;
+  font-weight: 700;
   width: 150px;
   height: 70px;
   background-color:#bdf5ff ;
@@ -58,6 +60,9 @@
   border: #224a9a solid 1px;
   cursor: pointer 
 }
+.btn-translation:hover  {
+  background-color:#bdccff ;
+}
 
 .btn-sound {
   margin-top: 10%;
@@ -66,5 +71,9 @@
   height: 80px;
   background: url('../pages/audiocall/img/sound.svg') 0 0 no-repeat;
   cursor: pointer 
+}
+.btn-sound:hover {
+  width: 90px;
+  height: 90px;
 }
 // #224a9a;

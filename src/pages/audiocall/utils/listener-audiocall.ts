@@ -1,18 +1,13 @@
 /* eslint-disable linebreak-style */
-/* eslint-disable @typescript-eslint/no-use-before-define */
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable class-methods-use-this */
-/* eslint-disable @typescript-eslint/no-shadow */
 
-import { api } from '../../../api/api';
-
-import { soundClick } from '../../../functional/get-parts-word';
+import { soundClickAudio } from './supporting-func';
 
 class ListenerAudioCall {
   open(): void {
     document.addEventListener('click', (e) => {
       if ((e.target as HTMLElement).classList.contains('btn-sound')) {
-        soundClick();
+        soundClickAudio();
       }
     });
   }

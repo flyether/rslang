@@ -5,17 +5,12 @@
 /* eslint-disable @typescript-eslint/indent */
 
 import { apiPath } from '../../../api/api-path';
-import { getSound, getWordsMap } from '../../../functional/get-parts-word';
-
-//   const randomId = String(Math.floor(Math.random() * (200 - 1)) + 1);
-
-const soundWrapper = `<div class="sound-wrapper"> 
-     `
-   + `<audio class="audio" src="${apiPath + getSound()}" autoplay></audio> </div>`;
+import { audio, printBtnString } from './supporting-func';
 
 export const gameArea = ` 
  <div class="audio-container-game"> 
-    <div class="btn-sound"> ${soundWrapper}</div>
-    <div class="button-container"> ${getWordsMap()}</div>
+    <div class="btn-sound"> <div class="sound-wrapper"> 
+    <audio class="audio" src="${apiPath + audio}" autoplay></audio> </div></div>
+    <div class="button-container">${printBtnString()}</div>
   </div>
  `;

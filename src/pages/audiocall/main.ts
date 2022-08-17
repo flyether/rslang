@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 /* eslint-disable linebreak-style */
 /* eslint-disable max-len */
 import { gameArea } from './utils/game-render';
