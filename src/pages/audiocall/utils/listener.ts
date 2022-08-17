@@ -6,11 +6,13 @@
 
 import { api } from '../../../api/api';
 
+import { soundClick } from '../../../functional/get-parts-word';
+
 class ListenerAudioCall {
   open(): void {
     document.addEventListener('click', (e) => {
       if ((e.target as HTMLElement).classList.contains('btn-sound')) {
-
+        soundClick();
       }
     });
   }

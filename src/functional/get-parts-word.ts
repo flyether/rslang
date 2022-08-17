@@ -25,10 +25,10 @@ function getImg() {
   return storage.word!.image;
 }
 
-export { getSound, getImg };
-
 function soundClick() {
   const audio = new Audio();
   audio.src = `${apiPath + getSound()}`;
   audio.autoplay = true;
 }
+
+export { getSound, getImg, soundClick };
