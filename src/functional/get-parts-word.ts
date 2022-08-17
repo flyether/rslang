@@ -37,6 +37,18 @@ function soundClick(): void {
   audio.autoplay = true;
 }
 
+const group = 1;
+const page = 1;
+
+const apiGetWords = api.getWords(group, page)
+  .then((value) => {
+    storage.words = value;
+    localStorage.setItem('word', JSON.stringify(value));
+  }).catch((err) => {
+    console.log(err);
+  });
+
+
 export {
   getSound, getImg, soundClick, getWordThis,
 };
