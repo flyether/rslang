@@ -34,8 +34,13 @@ export class ModuleController {
     });
 
     document.addEventListener('keydown', (event) => {
-      if (event.code === 'ArrowLeft') { this.myModuleModel.checkAnswer(false); }
-      if (event.code === 'ArrowRight') { this.myModuleModel.checkAnswer(true); }
+      if (event.code === 'ArrowLeft') {
+        this.myModuleModel.checkAnswer(false);
+      }
+      if (event.code === 'ArrowRight') {
+        this.myModuleModel.checkAnswer(true);
+      }
+      this.myModuleModel.prepearNextWord();
     });
   }
 
