@@ -73,7 +73,7 @@ class ModuleController {
     this.myModuleModel.highlightActiveMenuItem(obj, hashName);
   }
 
-  addButtonsAboutSprintGameListeners() {
+  addButtonsAboutSprintGameListeners():void {
     this.buttonStartSprint = document.querySelector('.button__start__sprint') as HTMLButtonElement;
     this.sprintLevel = document.querySelector('.sprint__level') as HTMLInputElement;
     this.buttonStartSprint.addEventListener('click', () => {

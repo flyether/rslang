@@ -1,4 +1,5 @@
 /* eslint-disable import/no-cycle */
+/* eslint-disable class-methods-use-this */
 import { Routes } from '../types/types';
 
 export class ModuleView {
@@ -8,7 +9,7 @@ export class ModuleView {
 
   routesObj!:Routes;
 
-  sprintTimer!: HTMLElement;
+  sprintTimer: HTMLElement = document.querySelector('.sprint__timer') as HTMLElement;
 
   sprintScore !: HTMLElement;
 
@@ -21,13 +22,14 @@ export class ModuleView {
     // this.routesObj = routes;
   }
 
-  renderWord(word: string, translation: string) {
+  renderWord(word: string, translation: string):void {
     this.questionWord.textContent = word;
     this.questionTranslation.textContent = translation;
   }
 
-  // this.sprintTimer = this.myModuleContainer.querySelector('.sprint__timer') as HTMLElement;
-  // this.sprintScore = this.myModuleContainer.querySelector('.sprint__score') as HTMLElement;
+  renderTimer(timer:number, timerElem:HTMLElement):void {
+    timerElem.textContent = String(timer);
+  }
 }
 
 // export default ModuleView;

@@ -2,6 +2,7 @@
 import Header from '../../components/header';
 import { initSprintMVC } from './initSprintMVC';
 import { Buttons } from '../../components/smallComponents/buttons';
+import { Audio } from '../../components/smallComponents/audio';
 
 import parrots from '../../assets/parrots.jpg';
 import arrowLeft from '../../assets/arrow-left.png';
@@ -34,12 +35,15 @@ const SprintGamePage = {
         <img src='${arrowLeft}' alt="arrow">
         <img src='${arrowRight}' alt="arrow">
       </div>
+      <!--${Audio.create('audio__right', '../../audio/right-answer')}
+      ${Audio.create('audio__wrong', '../../audio/wrong-answer')}
+      ${Audio.create('audio__timeover', '../../audio/time-over')}-->
     </div>`;
   },
-  initMVC() {
+  initMVC():void {
     initSprintMVC();
   },
-  saveLevel(level:string) {
+  saveLevel(level:string):void {
     this.level = +level[level.length - 1];
   },
 

@@ -11,21 +11,26 @@ export class ModuleController {
 
   buttonTrue!: HTMLButtonElement;
 
+  sprintTimer!: HTMLElement;
+
   init(container: HTMLElement, model: ModuleModel): void {
     this.myModuleContainer = container;
     this.myModuleModel = model;
     this.setEventListeners();
+    this.setTimer();
   }
 
-  setEventListeners() {
+  setEventListeners():void {
     this.buttonFalse = this.myModuleContainer.querySelector('.button__sprint__false') as HTMLButtonElement;
     this.buttonFalse.addEventListener('click', () => {
       this.myModuleModel.checkAnswer(false);
+      this.myModuleModel.prepearNextWord();
     });
 
     this.buttonTrue = this.myModuleContainer.querySelector('.button__sprint__true') as HTMLButtonElement;
     this.buttonTrue.addEventListener('click', () => {
       this.myModuleModel.checkAnswer(true);
+      this.myModuleModel.prepearNextWord();
     });
 
     document.addEventListener('keydown', (event) => {
@@ -34,11 +39,16 @@ export class ModuleController {
     });
   }
 
-  selectTrue() {
+  setTimer() {
+    this.sprintTimer = this.myModuleContainer.querySelector('.sprint__timer') as HTMLElement;
+    this.myModuleModel.setTimer(this.sprintTimer);
+  }
+
+  selectTrue():void {
     this.myModuleModel.checkAnswer(true);
   }
 
-  selectFalse() {
+  selectFalse():void {
     this.myModuleModel.checkAnswer(false);
   }
 }
