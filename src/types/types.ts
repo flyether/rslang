@@ -25,7 +25,7 @@ export interface Routes {
   sprint: typeof SprintGamePage,
   aboutsprint: typeof AboutSprintGamePage,
   audiocall: typeof AudiocallGamePage,
-  statistics: typeof StatisticsPage
+  statistics: typeof StatisticsPage,
 }
 
 export interface InitialObj {

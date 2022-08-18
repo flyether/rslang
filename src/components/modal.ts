@@ -1,13 +1,5 @@
 /* eslint-disable linebreak-style */
-/* eslint-disable no-debugger */
 /* eslint-disable max-len */
-/* eslint-disable @typescript-eslint/no-shadow */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
-/* eslint-disable class-methods-use-this */
-
-import { apiPath, signIn } from '../api/api-path';
-import { api } from '../api/api';
 
 export const formLogin = ` <form class="form-signin" id="auth">       
 <h3 class="form-signin-heading">Введите свои данные</h3>
@@ -17,7 +9,8 @@ export const formLogin = ` <form class="form-signin" id="auth">
   
   <button class="btn"  id="button-new-user" type ="button"> Регистрация </button> 
   
-<button class="btn" id="autoriztionBtn" type="submit">Войти</button>   
+<button class="btn" id="autoriztionBtn" type="submit">Войти</button>  
+<h4 class="form-signin-error"></h4> 
 </form>`;
 
 export const formRegistration = ` <form class="form-signin" id="reg">       
@@ -27,5 +20,6 @@ export const formRegistration = ` <form class="form-signin" id="reg">
   <input type="email" id="user-email" class="form-control" name="email" placeholder="Email Address" required />
   <input type="password" minlength="8" id="user-password" class="form-control" name="password" placeholder="пароль" required />  
 
-<button class="btn" id="registration_btn" type="submit">Регистрация и вход</button>   
+<button class="btn" id="registration_btn" type="submit">Регистрация и вход</button>  
+<h4 class="form-reg-error"></h4>  
 </form>`;
