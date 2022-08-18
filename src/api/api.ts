@@ -1,3 +1,4 @@
+/* eslint-disable no-else-return */
 /* eslint-disable import/no-cycle */
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable linebreak-style */
@@ -21,8 +22,9 @@ const api = {
       });
       if (response.ok) {
         return await response.json();
+      } else {
+        return await Promise.reject(new Error(response.statusText));
       }
-      return await Promise.reject(new Error(response.statusText));
     } catch (error) {
       throw new Error('length must be at least 8 characters long');
     }
@@ -34,8 +36,9 @@ const api = {
         { method: 'GET' });
       if (response.ok) {
         return await response.json() as IUser;
+      } else {
+        return await Promise.reject(new Error(response.statusText));
       }
-      return await Promise.reject(new Error(response.statusText));
     } catch (error) {
       throw new Error('User not found');
     }
@@ -53,23 +56,38 @@ const api = {
       });
       if (response.ok) {
         return await response.json();
+      } else {
+        return await Promise.reject(new Error(response.statusText));
       }
-      return await Promise.reject(new Error(response.statusText));
     } catch (error) {
       throw new Error('Could not find user');
     }
   },
 
-  async getWords(group: number, page: number): Promise<IWord[] | void> {
+  async getWords(group: number, page: number): Promise<IWord[] | undefined> {
     try {
       const response = await fetch(`${apiPath}${wordsEndpoint}?group=${group}&page=${page}`,
         { method: 'GET' });
       if (response.ok) {
         return await response.json() as IWord[];
+      } else {
+        return await Promise.reject(new Error(response.statusText));
       }
-      return await Promise.reject(new Error(response.statusText));
     } catch (error) {
       throw new Error("Can't get words");
+    }
+  },
+  async getWord(id: string): Promise<IWord | undefined> {
+    try {
+      const response = await fetch(`${apiPath}${wordsEndpoint}/${id}`,
+        { method: 'GET' });
+      if (response.ok) {
+        return await response.json() as IWord;
+      } else {
+        return await Promise.reject(new Error(response.statusText));
+      }
+    } catch (error) {
+      throw new Error("Can't get word");
     }
   },
 };

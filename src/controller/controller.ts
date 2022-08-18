@@ -7,6 +7,7 @@ import { MenuItems } from '../types/types';
 import SprintGamePage from '../pages/sprint/index';
 import ModuleModel from '../model/model';
 import listener from '../functional/listener';
+import listenerAudioCall from '../pages/audiocall/utils/listener-audiocall';
 
 class ModuleController {
   myModuleContainer!: HTMLElement;
@@ -25,9 +26,13 @@ class ModuleController {
 
   menuTeam !: HTMLElement;
 
+<<<<<<< HEAD
   buttonStartSprint!: HTMLButtonElement;
 
   sprintLevel !: HTMLInputElement;
+=======
+  audiocallgame !: HTMLElement;
+>>>>>>> develop
 
   init(container: HTMLElement, model: ModuleModel): void {
     this.myModuleContainer = container;
@@ -38,6 +43,7 @@ class ModuleController {
 
     // modalAuthorization.open();
     listener.open();
+    listenerAudioCall.open();
     this.updateState();
     // window.location.hash = '#main';
   }
@@ -70,7 +76,9 @@ class ModuleController {
       aboutsprint: this.menuSprint,
       team: this.menuTeam,
     };
-    this.myModuleModel.highlightActiveMenuItem(obj, hashName);
+    if (this.menuMain) {
+      this.myModuleModel.highlightActiveMenuItem(obj, hashName);
+    }
   }
 
   addButtonsAboutSprintGameListeners():void {
