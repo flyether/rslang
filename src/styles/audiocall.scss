@@ -36,6 +36,7 @@
    padding: 20px;
    border-radius: 5px;
 }
+
 .btn-level {
   color: #224a9a;
   width: 80px;
@@ -51,15 +52,17 @@
   color: #224a9a;
   font-size: large;
   font-weight: 700;
-  width: 150px;
+  width: 170px;
   height: 70px;
   background-color:#bdf5ff ;
   text-align: center;
   line-height: 35px;
-  border-radius: 3px;
+  border-radius: 5px;
   border: #224a9a solid 1px;
+  margin: 0 5px 20px 5px;
   cursor: pointer 
 }
+
 .btn-translation:hover  {
   background-color:#bdccff ;
 }
@@ -72,6 +75,7 @@
   background: url('../pages/audiocall/img/sound.svg') 0 0 no-repeat;
   cursor: pointer 
 }
+
 .btn-sound:hover {
   width: 90px;
   height: 90px;

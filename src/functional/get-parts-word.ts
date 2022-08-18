@@ -7,7 +7,7 @@ import { apiPath } from '../api/api-path';
 import { api } from '../api/api';
 import { storage } from './storage';
 
-const id = '5e9f5ee35eb9e72bc21af4ad';
+// const id = '5e9f5ee35eb9e72bc21af4ad';
 
 // const apiGetWord = api.getWord(id)
 //   .then((value) => {
@@ -53,5 +53,5 @@ function getWordsMap(): string[] {
 
 export {
   // getSound, getImg, getWordThis,
-   apiGetWords, getWordsMap,
+  apiGetWords, getWordsMap,
 };
