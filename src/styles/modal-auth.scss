@@ -97,10 +97,16 @@
 		border: 1px solid $light-grey-color;
 		border-radius: 5px;
 		outline: none;
+	}
+}
 
+@media all and (max-width: 768px) {
+	.form-signin-buttons {
+		flex-direction: column;
+		gap: 10px;
 	}
 
-	input[type="text"] {}
-
-	input[type="password"] {}
+	.btn-orange {
+		font-size: 20px;
+	}
 }
