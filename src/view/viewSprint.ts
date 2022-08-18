@@ -1,6 +1,9 @@
 /* eslint-disable import/no-cycle */
 /* eslint-disable class-methods-use-this */
+/* eslint-disable max-len */
+
 import { Routes } from '../types/types';
+import SprintResult from '../components/sprintresults';
 import trueImg from '../assets/true.png';
 
 export class ModuleView {
@@ -22,6 +25,8 @@ export class ModuleView {
 
   questionTranslation:HTMLElement = document.querySelector('.question__translation') as HTMLElement;
 
+  sprintConteiner:HTMLElement = document.querySelector('.sprint-conteiner') as HTMLElement;
+
   init(container: HTMLElement):void {
     this.myModuleContainer = container;
     // this.routesObj = routes;
@@ -36,7 +41,7 @@ export class ModuleView {
     timerElem.textContent = String(timer);
   }
 
-  renderScore(score:string, maxScore?:boolean) {
+  renderScore(score:string, maxScore?:boolean):void {
     this.sprintScore.textContent = score;
     if (maxScore) {
       this.sprintCount.innerHTML = `<img src="${trueImg}" alt="img">`;
@@ -45,16 +50,21 @@ export class ModuleView {
     }
   }
 
-  clearSprintCount() {
+  clearSprintCount():void {
     this.sprintCount.innerHTML = '';
   }
 
-  returnToOneSprintCount() {
+  returnToOneSprintCount():void {
     this.sprintCount.innerHTML = `<img src="${trueImg}" alt="img">`;
   }
 
-  renderCountText(n:number) {
+  renderCountText(n:number):void {
     this.sprintCountText.innerHTML = `+ ${n} очков за слово`;
+  }
+
+  renderResults(questions:string[], answers:boolean[], rightAnswers:number, wrongAnswers:number, score:number):void {
+    this.sprintConteiner.innerHTML = '';
+    this.sprintConteiner.innerHTML = `${SprintResult.render(questions, answers, rightAnswers, wrongAnswers, score)}`;
   }
 }
 

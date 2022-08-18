@@ -13,6 +13,8 @@ export class ModuleController {
 
   sprintTimer!: HTMLElement;
 
+  buttonSayWord!:HTMLElement;
+
   init(container: HTMLElement, model: ModuleModel): void {
     this.myModuleContainer = container;
     this.myModuleModel = model;
@@ -36,11 +38,18 @@ export class ModuleController {
     document.addEventListener('keydown', (event) => {
       if (event.code === 'ArrowLeft') {
         this.myModuleModel.checkAnswer(false);
+        this.myModuleModel.prepearNextWord();
       }
       if (event.code === 'ArrowRight') {
         this.myModuleModel.checkAnswer(true);
+        this.myModuleModel.prepearNextWord();
       }
-      this.myModuleModel.prepearNextWord();
+    });
+
+    this.buttonSayWord = this.myModuleContainer.querySelector('.word__sound') as HTMLElement;
+    this.buttonSayWord.addEventListener('click', () => {
+      const audio = document.querySelector('#sprint__say__word') as HTMLAudioElement;
+      this.myModuleModel.sayWord(audio);
     });
   }
 

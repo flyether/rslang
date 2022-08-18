@@ -1,4 +1,5 @@
 /* eslint-disable import/no-cycle */
+/* eslint-disable max-len */
 import Header from '../../components/header';
 import { initSprintMVC } from './initSprintMVC';
 import { Buttons } from '../../components/smallComponents/buttons';
@@ -25,8 +26,12 @@ const SprintGamePage = {
         <div class="field__content">
           <div class="content__img"><img src='${parrots}' alt="parrots"></div>
           <div class="content__question">
+          <div class="content__word">
             <div class="question__word"></div>
-            <div class="question__translation"></div>
+            <div class="word__sound"></div>
+            <audio id="sprint__say__word" src=""></audio>
+          </div>
+          <div class="question__translation"></div>
           </div>
         </div>
         <div class="field__buttons">${Buttons.create('Неверно', 'button__sprint__false', false)}${Buttons.create('Верно', 'button__sprint__true', false)}</div>

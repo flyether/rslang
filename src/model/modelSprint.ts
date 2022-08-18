@@ -1,8 +1,10 @@
 /* eslint-disable import/no-cycle */
 /* eslint-disable class-methods-use-this */
+/* eslint-disable max-len */
 
 import { ModuleView } from '../view/viewSprint';
 import { api } from '../api/api';
+import { apiPath } from '../api/api-path';
 import { IWord } from '../types/types';
 import SprintGamePage from '../pages/sprint/index';
 import { randomInteger } from '../utils/func';
@@ -44,6 +46,11 @@ export class ModuleModel {
     this.getWordsFromApi();
   }
 
+  sayWord(audio:HTMLAudioElement):void {
+    audio.src = `${apiPath + this.active20Words[this.activeWordNumber].audio}`;
+    audio.play();
+  }
+
   fillAndSortPages():void {
     this.pages = [];
     for (let i = 0; i < 30; i++) {
@@ -52,28 +59,28 @@ export class ModuleModel {
     this.pages.sort(() => 0.5 - Math.random());
   }
 
-  async getWordsFromApi() {
+  async getWordsFromApi(): Promise<IWord[] | void> {
     const res = await api.getWords(this.level, this.pages[this.activePageNumber]) as IWord[];
     this.active20Words = Array.from(res);
     console.log(this.active20Words);
     if (this.activePageNumber === 0) { this.prepearFirstWord(); }
   }
 
-  prepearFirstWord() {
+  prepearFirstWord():void {
     const translation = this.generateTranslation();
     const { word } = this.active20Words[this.activeWordNumber];
     this.myModuleView.renderWord(word, translation);
   }
 
-  prepearNextWord() {
+  prepearNextWord():void {
     this.checkWordsNumbers();
     const translation = this.generateTranslation();
     const { word } = this.active20Words[this.activeWordNumber];
     this.myModuleView.renderWord(word, translation);
+    this.arrayOfQuestion.push(word);
   }
 
   checkWordsNumbers():void {
-    console.log(this.activeWordNumber, this.activePageNumber);
     if (this.activeWordNumber === 19) {
       this.activePageNumber += 1;
       this.activeWordNumber = 0;
@@ -84,8 +91,8 @@ export class ModuleModel {
   }
 
   generateTranslation():string {
-    const min = (this.activeWordNumber >= 5) ? this.activeWordNumber - 5 : 0;
-    const max = (this.activeWordNumber + 5 <= 19) ? this.activeWordNumber + 5 : 19;
+    const min = (this.activeWordNumber >= 2) ? this.activeWordNumber - 2 : 0;
+    const max = (this.activeWordNumber + 2 <= 19) ? this.activeWordNumber + 2 : 19;
     this.randomTranslationNumber = randomInteger(min, max);
     return this.active20Words[this.randomTranslationNumber].wordTranslate;
   }
@@ -94,19 +101,16 @@ export class ModuleModel {
     const translate:string = this.active20Words[this.activeWordNumber].wordTranslate;
     const rightTranslate:string = this.active20Words[this.randomTranslationNumber].wordTranslate;
     if ((translate === rightTranslate) === answer) {
-      console.log(true);
       this.arrayOfAnswers.push(true);
       this.analyzeTrueAnswer();
       // this.audioRight = document.querySelector('#audio__right') as HTMLAudioElement;
     } else {
-      console.log(false);
       this.arrayOfAnswers.push(false);
       this.analyzeFalseAnswer();
     }
-    console.log(this.arrayOfAnswers);
   }
 
-  setTimer = (timerElem: HTMLElement) => {
+  setTimer = (timerElem: HTMLElement):void => {
     this.timer = Number(timerElem.textContent);
 
     const tick = () => {
@@ -120,7 +124,7 @@ export class ModuleModel {
     this.timerId = setInterval(tick, 1000);
   };
 
-  countScore() {
+  countScore():void {
     this.score += this.scoreForRightAnswer;
     if (this.scoreForRightAnswer === 80) {
       this.myModuleView.renderScore(String(this.score), true);
@@ -129,15 +133,14 @@ export class ModuleModel {
     }
   }
 
-  analyzeFalseAnswer() {
+  analyzeFalseAnswer():void {
     this.amountOfRightAnswers = 0;
     this.myModuleView.clearSprintCount();
     this.scoreForRightAnswer = 10;
     this.myModuleView.renderCountText(this.scoreForRightAnswer);
   }
 
-  analyzeTrueAnswer() {
-    console.log(this.amountOfRightAnswers);
+  analyzeTrueAnswer():void {
     this.amountOfRightAnswers += 1;
     this.countScore();
     if (this.amountOfRightAnswers === 3 && this.scoreForRightAnswer !== 80) {
@@ -149,13 +152,22 @@ export class ModuleModel {
     }
   }
 
-  getBiggerScore() {
+  getBiggerScore():void {
     this.scoreForRightAnswer = (this.scoreForRightAnswer === 80) ? this.scoreForRightAnswer : this.scoreForRightAnswer *= 2;
     this.myModuleView.renderCountText(this.scoreForRightAnswer);
   }
 
-  stopGame() {
-    console.log('stop');
+  stopGame():void {
+    let rightAnswers = 0;
+    let wrongAnswers = 0;
+    this.arrayOfAnswers.forEach((item) => {
+      if (item) {
+        rightAnswers += 1;
+      } else {
+        wrongAnswers += 1;
+      }
+    });
+    this.myModuleView.renderResults(this.arrayOfQuestion, this.arrayOfAnswers, rightAnswers, wrongAnswers, this.score);
   }
 }
 

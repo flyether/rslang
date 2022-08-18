@@ -1,3 +1,5 @@
+$blue-color: #224a9a
+
 .sprint-conteiner
   position: relative
   padding: 2rem
@@ -56,3 +58,55 @@
 .title__count
   box-sizing: border-box
   padding-top: 0.5rem
+.result-conteiner
+  text-align: center
+.sprint__result__score
+  font-size: 2rem
+  font-weight: 600
+.sprint__table__result
+  border: 0.05rem solid
+  border-collapse: collapse
+  margin: 1rem auto
+.sprint__table__result td
+  border: 0.05rem solid
+  padding: 0.25rem
+
+.sprint__close__result
+  display: inline-block
+  width: 10rem
+  height: 1.5rem
+  box-sizing: border-box
+  border-radius: 0.3rem
+  border:  0.05rem solid $blue-color
+  background-color: $blue-color
+  color: white
+  box-shadow: 1px 1px 2px grey
+  cursor: pointer
+  transition: 0.3s
+  font-family: inherit
+.sprint__close__result:hover
+  opacity: 0.8
+.sprint__close__result:active
+  transform: scale(0.95)
+
+.table-conteiner
+  height: 20rem
+  width: 15rem
+  overflow-y: scroll
+  padding: 0.3rem
+  margin: 2rem auto
+  border:  0.35rem solid $blue-color
+  border-radius: 0.5rem
+  text-align: center
+.content__word
+  position: relative
+  display: flex
+  align-items: center
+  justify-content: center
+.question__word
+  margin-right: 1.5rem
+.word__sound
+  width: 40px
+  height: 40px
+  background: url('../assets/sound.png') 0 0 no-repeat
+  cursor: pointer
