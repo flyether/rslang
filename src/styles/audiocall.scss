@@ -80,6 +80,20 @@
   margin: 0 5px 20px 5px;
   cursor: pointer 
 }
+.restart {
+  color: #224a9a;
+  font-size: large;
+  font-weight: 700;
+  width: 170px;
+  height: 70px;
+  background-color:#fe8954 ;
+  text-align: center;
+  line-height: 35px;
+  border-radius: 5px;
+  border: #224a9a solid 1px;
+  margin: 0 5px 20px 5px;
+  cursor: pointer 
+}
 
 .btn-translation-wrong{
   color:#679fe5;
@@ -110,3 +124,16 @@
   height: 90px;
 }
 // #224a9a;
+
+.game-over{
+  background-color:#fe8954;
+  font-size: large;
+  font-weight: 700;
+  width: 300px;
+  height: 300px;
+  text-align: center;
+  line-height: 35px;
+  border-radius: 5px;
+  border: #224a9a solid 1px;
+  margin: 0, 0, 20px, 0;
+}

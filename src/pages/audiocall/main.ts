@@ -12,7 +12,11 @@ const AudiocallGame = {
 
   render(): string {
     return `
-       <div class = 'container'> <button  type="button"  class="go-main"><a href="${this.hashes.main}" ></a>Вернуться на главную</a></button> ${gameArea}</div>
+       <div class = 'container'> 
+       <div class = 'game'> ${gameArea} </div>
+         <button  type="button"  class="go-main"><a href="${this.hashes.main}" ></a>Вернуться на главную</a></button> 
+         
+         </div>
       `;
   },
 };

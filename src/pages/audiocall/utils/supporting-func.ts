@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable linebreak-style */
 /* eslint-disable import/no-mutable-exports */
 /* eslint-disable prefer-destructuring */
@@ -66,11 +67,29 @@ function soundAudio(path: string): void {
 function printBtnString(): string {
   let a = '';
   let containerBtn = ' ';
-  for (let i = 0; i < arraySixWords.length; i++) {
-    a = arraySixWords[i];
-    containerBtn += `<button  type="button" id="${a}" class="btn-translation">${a}</button> `;
+  if (Number(localStorage.getItem('round')) < 21) {
+    for (let i = 0; i < arraySixWords.length; i++) {
+      a = arraySixWords[i];
+      containerBtn += `<button  type="button" id="${a}" class="btn-translation">${a}</button> `;
+    }
+  } else {
+    let a = '';
+    if (JSON.parse(localStorage.getItem('arrayWrongWords')!).length > 0) {
+      a = ` <p class="game-text">Рекомендуем выучить:&nbsp${JSON.parse(localStorage.getItem('arrayWrongWords')!)}</p> `;
+    } else {
+      a = ' <p class="game-text">Вы ниразу не ошиблись!</p> ';
+    }
+    containerBtn += `
+  <div class="game-over">
+    <p class="game-text">Вы прошли игру!</p>
+    <p class="game-text">Ваш результат: &nbsp ${localStorage.getItem('score')}</p>
+    ${a}
+    <button type="button" class="restart">Начать заново</button>
+  </div> `;
+    localStorage.removeItem('arrayWrongWords');
+    localStorage.removeItem('round');
+    localStorage.removeItem('score');
   }
-
   return containerBtn;
 }
 
