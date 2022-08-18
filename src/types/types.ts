@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 /* eslint-disable import/no-cycle */
 import TextbookPage from '../pages/textbook';
 import AboutTeamPage from '../pages/team';
@@ -10,6 +11,7 @@ import Content from '../components/content';
 import Footer from '../components/footer';
 
 import MainPage from '../pages/main';
+import AudiocallGame from '../pages/audiocall/main';
 
 export interface Components {
   header: typeof Header,
@@ -24,6 +26,8 @@ export interface Routes {
   sprint: typeof SprintGamePage,
   audiocall: typeof AudiocallGamePage,
   statistics: typeof StatisticsPage,
+  audiocallgame: typeof AudiocallGame
+
 }
 
 export interface InitialObj {
@@ -62,6 +66,15 @@ export interface IWord {
   wordTranslate: string;
   textMeaningTranslate: string;
   textExampleTranslate: string;
+  translate?: string;
+}
+
+export interface IWordGame {
+  translate: string;
+  id: string;
+  word: string;
+  image: string;
+  audio: string;
 }
 
 export interface IUser {

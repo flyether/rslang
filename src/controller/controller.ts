@@ -7,6 +7,7 @@ import { MenuItems } from '../types/types';
 
 import ModuleModel from '../model/model';
 import listener from '../functional/listener';
+import listenerAudioCall from '../pages/audiocall/utils/listener-audiocall';
 
 class ModuleController {
   myModuleContainer!: HTMLElement;
@@ -25,6 +26,8 @@ class ModuleController {
 
   menuTeam !: HTMLElement;
 
+  audiocallgame !: HTMLElement;
+
   init(container: HTMLElement, model: ModuleModel): void {
     this.myModuleContainer = container;
     this.myModuleModel = model;
@@ -34,6 +37,7 @@ class ModuleController {
 
     // modalAuthorization.open();
     listener.open();
+    listenerAudioCall.open();
     this.updateState();
     // window.location.hash = '#main';
   }
@@ -59,7 +63,9 @@ class ModuleController {
       sprint: this.menuSprint,
       team: this.menuTeam,
     };
-    this.myModuleModel.highlightActiveMenuItem(obj, hashName);
+    if (this.menuMain) {
+      this.myModuleModel.highlightActiveMenuItem(obj, hashName);
+    }
   }
 }
 
