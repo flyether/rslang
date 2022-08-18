@@ -13,37 +13,42 @@ const TextbookPage = {
   //   const view = ` <div class=${this.classname}>
   //   <div class="textbook-navigation">
   //     <button class="btn-round"></button>
-  //     <p class="unit-name">Unit 1 <span class="unit-page">page 1</span></p>
+  //     <p class="unit-name">Раздел 1 <span class="unit-page">страница 1</span></p>
   //   </div>
   //   <ul class=${this.wordlist}>
   //    ${this.getCards()}
   //   </ul>
   //   <div class="textbook-footer">
   //     <div class="textbook-pagination">
-  //       <button class="pagination-btn btn-orange">Prev</button>
-  //       <button class="pagination-btn btn-orange">Next</button>
+  //       <button class="pagination-btn btn-orange">Предыдущая</button>
+  //       <button class="pagination-btn btn-orange">Следующая</button>
   //     </div>
   //   </div>
   // </div>`;
   //   return `${Header.render()}${view}${Footer.render()}`;
   // },
+  // render(): string {
+  //   const view = `<div class="textbook-units">
+  //   <div class="textbook-unit" data-unit="1">Раздел 1</div>
+  //   <div class="textbook-unit" data-unit="2">Раздел 2</div>
+  //   <div class="textbook-unit" data-unit="3">Раздел 3</div>
+  //   <div class="textbook-unit" data-unit="4">Раздел 4</div>
+  //   <div class="textbook-unit" data-unit="5">Раздел 5</div>
+  //   <div class="textbook-unit" data-unit="6">Раздел 6</div>
+  //   <div class="textbook-unit" data-unit="7">Раздел "Сложные слова"</div>
+  //   </div>`;
+  //   return `${Header.render()}${view}${Footer.render()}`;
+  // },
   render(): string {
-    const view = `<div class="textbook-units">
-    <div class="textbook-unit" data-unit="1">Раздел 1</div>
-    <div class="textbook-unit" data-unit="2">Раздел 2</div>
-    <div class="textbook-unit" data-unit="3">Раздел 3</div>
-    <div class="textbook-unit" data-unit="4">Раздел 4</div>
-    <div class="textbook-unit" data-unit="5">Раздел 5</div>
-    <div class="textbook-unit" data-unit="6">Раздел 6</div>
-    <div class="textbook-unit" data-unit="7">Раздел "Сложные слова"</div>
-    </div>`;
+    const view = ` <div class="textbook-navigation unit-navigation">
+         <button class="btn-round"></button>
+         <p class="unit-name">Раздел 1</p>
+       </div>
+    <ul class="unit-pages">
+  ${this.renderPages()}
+  </ul>`;
     return `${Header.render()}${view}${Footer.render()}`;
   },
-  // render(): string {
-  //   return `<ul class="unit-pages">
-  // ${this.renderPages()}
-  // </ul>`;
-  // },
 
   renderPages(): string {
     let pages = '';
@@ -69,7 +74,7 @@ const TextbookPage = {
   </div>
   <div class="word-description">
     <div class="word-pronounce word-audio">
-    <p>${words[i].word} ${words[i].transcription}</p>
+    <p class="word-name">${words[i].word} ${words[i].transcription}</p>
       <div class="audio"><audio></audio></div>
     </div>
     <p class="word-pronounce translation">${words[i].wordTranslate}</p>
@@ -79,8 +84,8 @@ const TextbookPage = {
     <p class="word-example translation">${words[i].textExampleTranslate}</p>
   </div>
   <div class="word-noted">
-      <button class="btn-orange btn-difficult">Difficult?</button>
-      <button class="btn-orange btn-learned">Learned?</button>
+      <button class="btn-orange btn-difficult">Сложно?</button>
+      <button class="btn-orange btn-learned">Изучено?</button>
   </div>`;
         wordContainer?.append(card);
       }

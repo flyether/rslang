@@ -20,13 +20,13 @@
 
   .unit-name {
     font-size: 30px;
-    font-family: $quick-sand-regular-font;
+    font-family: $mplus-font;
     font-weight: 700;
   }
 
   .unit-page {
     font-size: 20px;
-    font-family: $quick-sand-regular-font;
+    font-family: $mplus-font;
     color: $light-blue-color;
   }
 }
@@ -58,7 +58,7 @@
     border-radius: 16px;
 
     .translation {
-      font-size: smaller;
+      font-size: 13px;
     }
 
     .word-image {
@@ -120,7 +120,7 @@
   color: $white-color;
   border-radius: 3px;
   border: 1px solid transparent;
-  font-family: $quick-sand-regular-font;
+  font-family: $mplus-font;
 }
 
 .textbook-footer {
@@ -142,7 +142,7 @@
   padding: 5px 15px;
   outline: none;
   border-radius: 3px;
-  width: 10%;
+  width: 15%;
   margin: 0;
   background-color: $blue-color;
 }
@@ -155,6 +155,8 @@
   flex-direction: column;
 }
 
+.unit-pages {}
+
 .textbook-unit {
   width: 100%;
   height: 100px;
@@ -162,7 +164,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: $quick-sand-regular-font;
+  font-family: $mplus-font;
   color: $orange-color;
   font-weight: 700;
   font-size: 25px;
@@ -171,9 +173,10 @@
 }
 
 .unit-pages {
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: 30px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  width: 90%;
+  margin: 0 auto;
   justify-content: space-around;
   align-items: center;
   gap: 20px;
@@ -183,5 +186,75 @@
     padding: 10px 20px;
     border-radius: 5px;
 
+  }
+}
+
+@media all and (max-width: 1024px) {
+  .word-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .word-name {
+    font-size: 20px;
+  }
+
+  .pagination-btn {
+    width: 60%;
+  }
+}
+
+@media all and (max-width: 768px) {
+  .word-list {
+    grid-template-columns: repeat(1, 1fr);
+
+    .word-description .translation {
+      font-size: 18px;
+    }
+  }
+
+  .unit-navigation {
+    width: 90%;
+    margin: 0 auto 30px
+  }
+
+  .unit-pages {
+    margin-bottom: 20px;
+  }
+
+  .btn-orange {
+    margin: 0
+  }
+
+  .word-name {
+    font-size: 25px;
+  }
+
+  .textbook-unit {
+    font-size: 19px;
+  }
+
+  .word-pronounce,
+  .word-example {
+    font-size: 20px;
+  }
+
+  .unit-name {
+    font-size: 25px;
+  }
+}
+
+@media all and (max-width: 353px) {
+  .textbook-navigation span {
+    margin-left: 30px;
+  }
+
+  .textbook-pagination {
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+  }
+
+  .pagination-btn {
+    width: 80%;
   }
 }
