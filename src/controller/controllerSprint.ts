@@ -19,7 +19,9 @@ export class ModuleController {
     this.myModuleContainer = container;
     this.myModuleModel = model;
     this.setEventListeners();
+    this.findAudioElements();
     this.setTimer();
+    window.addEventListener('hashchange', this.myModuleModel.clearInterval);
   }
 
   setEventListeners():void {
@@ -53,7 +55,14 @@ export class ModuleController {
     });
   }
 
-  setTimer() {
+  findAudioElements():void {
+    const rightAnswerAudio = this.myModuleContainer.querySelector('#audio__right') as HTMLAudioElement;
+    const wrongAnswerAudio = this.myModuleContainer.querySelector('#audio__wrong') as HTMLAudioElement;
+    const timeoverAudio = this.myModuleContainer.querySelector('#audio__timeover') as HTMLAudioElement;
+    this.myModuleModel.getAudio(rightAnswerAudio, wrongAnswerAudio, timeoverAudio);
+  }
+
+  setTimer():void {
     this.sprintTimer = this.myModuleContainer.querySelector('.sprint__timer') as HTMLElement;
     this.myModuleModel.setTimer(this.sprintTimer);
   }

@@ -3,11 +3,14 @@
 import Header from '../../components/header';
 import { initSprintMVC } from './initSprintMVC';
 import { Buttons } from '../../components/smallComponents/buttons';
-import { Audio } from '../../components/smallComponents/audio';
 
 import parrots from '../../assets/parrots.jpg';
 import arrowLeft from '../../assets/arrow-left.png';
 import arrowRight from '../../assets/arrow-right.png';
+
+import rightAnswerAudio from '../../assets/audio/right-answer.mp3';
+import wrongAnswerAudio from '../../assets/audio/wrong-answer.mp3';
+import timeoverAudio from '../../assets/audio/time-over.mp3';
 
 const SprintGamePage = {
   classname: 'sprint',
@@ -40,9 +43,9 @@ const SprintGamePage = {
         <img src='${arrowLeft}' alt="arrow">
         <img src='${arrowRight}' alt="arrow">
       </div>
-      <!--${Audio.create('audio__right', '../../audio/right-answer')}
-      ${Audio.create('audio__wrong', '../../audio/wrong-answer')}
-      ${Audio.create('audio__timeover', '../../audio/time-over')}-->
+      <audio id="audio__right" src="${rightAnswerAudio}"></audio>
+      <audio id="audio__wrong" src="${wrongAnswerAudio}"></audio>
+      <audio id="audio__timeover" src="${timeoverAudio}"></audio>
     </div>`;
   },
   initMVC():void {

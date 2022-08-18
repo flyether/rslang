@@ -34,11 +34,21 @@ export class ModuleModel {
 
   scoreForRightAnswer = 10;
 
+  maxScoreForRightAnswer = 80;
+
+  amountOfRightAnswersForBiggerScore = 3;
+
   arrayOfQuestion: string[] = [];
 
   arrayOfAnswers: boolean[] = [];
 
   amountOfRightAnswers = 0;
+
+  rightAnswerAudio !: HTMLAudioElement;
+
+  wrongAnswerAudio!: HTMLAudioElement;
+
+  timeoverAudio!:HTMLAudioElement;
 
   init(view: ModuleView):void {
     this.myModuleView = view;
@@ -62,7 +72,7 @@ export class ModuleModel {
   async getWordsFromApi(): Promise<IWord[] | void> {
     const res = await api.getWords(this.level, this.pages[this.activePageNumber]) as IWord[];
     this.active20Words = Array.from(res);
-    console.log(this.active20Words);
+    // console.log(this.active20Words);
     if (this.activePageNumber === 0) { this.prepearFirstWord(); }
   }
 
@@ -101,10 +111,11 @@ export class ModuleModel {
     const translate:string = this.active20Words[this.activeWordNumber].wordTranslate;
     const rightTranslate:string = this.active20Words[this.randomTranslationNumber].wordTranslate;
     if ((translate === rightTranslate) === answer) {
+      this.rightAnswerAudio.play();
       this.arrayOfAnswers.push(true);
       this.analyzeTrueAnswer();
-      // this.audioRight = document.querySelector('#audio__right') as HTMLAudioElement;
     } else {
+      this.wrongAnswerAudio.play();
       this.arrayOfAnswers.push(false);
       this.analyzeFalseAnswer();
     }
@@ -119,14 +130,22 @@ export class ModuleModel {
       if (this.timer === 0) {
         clearInterval(this.timerId);
         this.stopGame();
+      } else if (this.timer === 5) {
+        this.timeoverAudio.play();
       }
     };
     this.timerId = setInterval(tick, 1000);
   };
 
+  clearInterval = ():void => {
+    if (this.timerId) {
+      clearInterval(this.timerId);
+    }
+  };
+
   countScore():void {
     this.score += this.scoreForRightAnswer;
-    if (this.scoreForRightAnswer === 80) {
+    if (this.scoreForRightAnswer === this.maxScoreForRightAnswer) {
       this.myModuleView.renderScore(String(this.score), true);
     } else {
       this.myModuleView.renderScore(String(this.score));
@@ -143,17 +162,17 @@ export class ModuleModel {
   analyzeTrueAnswer():void {
     this.amountOfRightAnswers += 1;
     this.countScore();
-    if (this.amountOfRightAnswers === 3 && this.scoreForRightAnswer !== 80) {
+    if (this.amountOfRightAnswers === this.amountOfRightAnswersForBiggerScore && this.scoreForRightAnswer !== this.maxScoreForRightAnswer) {
       this.getBiggerScore();
     }
-    if (this.amountOfRightAnswers === 4 && this.scoreForRightAnswer !== 80) {
+    if (this.amountOfRightAnswers === (this.amountOfRightAnswersForBiggerScore + 1) && this.scoreForRightAnswer !== this.maxScoreForRightAnswer) {
       this.myModuleView.returnToOneSprintCount();
       this.amountOfRightAnswers = 1;
     }
   }
 
   getBiggerScore():void {
-    this.scoreForRightAnswer = (this.scoreForRightAnswer === 80) ? this.scoreForRightAnswer : this.scoreForRightAnswer *= 2;
+    this.scoreForRightAnswer = (this.scoreForRightAnswer === this.maxScoreForRightAnswer) ? this.scoreForRightAnswer : this.scoreForRightAnswer *= 2;
     this.myModuleView.renderCountText(this.scoreForRightAnswer);
   }
 
@@ -168,6 +187,12 @@ export class ModuleModel {
       }
     });
     this.myModuleView.renderResults(this.arrayOfQuestion, this.arrayOfAnswers, rightAnswers, wrongAnswers, this.score);
+  }
+
+  getAudio(rightAnswer:HTMLAudioElement, wrongAnswer:HTMLAudioElement, timeover:HTMLAudioElement):void {
+    this.rightAnswerAudio = rightAnswer;
+    this.wrongAnswerAudio = wrongAnswer;
+    this.timeoverAudio = timeover;
   }
 }
 

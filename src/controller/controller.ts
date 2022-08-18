@@ -26,13 +26,11 @@ class ModuleController {
 
   menuTeam !: HTMLElement;
 
-<<<<<<< HEAD
   buttonStartSprint!: HTMLButtonElement;
 
   sprintLevel !: HTMLInputElement;
-=======
+
   audiocallgame !: HTMLElement;
->>>>>>> develop
 
   init(container: HTMLElement, model: ModuleModel): void {
     this.myModuleContainer = container;
