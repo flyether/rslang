@@ -20,13 +20,13 @@
 
   .unit-name {
     font-size: 30px;
-    font-family: $quick-sand-regular-font;
+    font-family: $mplus-font;
     font-weight: 700;
   }
 
   .unit-page {
     font-size: 20px;
-    font-family: $quick-sand-regular-font;
+    font-family: $mplus-font;
     color: $light-blue-color;
   }
 }
@@ -120,7 +120,7 @@
   color: $white-color;
   border-radius: 3px;
   border: 1px solid transparent;
-  font-family: $quick-sand-regular-font;
+  font-family: $mplus-font;
 }
 
 .textbook-footer {
@@ -142,7 +142,7 @@
   padding: 5px 15px;
   outline: none;
   border-radius: 3px;
-  width: 10%;
+  width: 15%;
   margin: 0;
   background-color: $blue-color;
 }
@@ -162,7 +162,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: $quick-sand-regular-font;
+  font-family: $mplus-font;
   color: $orange-color;
   font-weight: 700;
   font-size: 25px;

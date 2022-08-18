@@ -18,7 +18,7 @@ const Header = {
       <div class="wrapper">
        
       </div>
-      <div id="btn-close">закрыть</div>
+      <div id="btn-close"></div>
     </div>
   </div>
       <header class="header ${customClass}" id="header">
