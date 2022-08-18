@@ -5,13 +5,17 @@
 /* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable import/no-cycle */
-
+/* eslint-disable prefer-const */
 /* eslint-disable @typescript-eslint/no-shadow */
 
 import { storage } from '../../../functional/storage';
 import { IWord } from '../../../types/types';
 import { apiPath } from '../../../api/api-path';
 import { api } from '../../../api/api';
+
+let round = 0;
+localStorage.setItem('raund', round.toString());
+
 // констана которая получает с сервера массив слов
 const apiGetWords = api.getWords(0, 0)
   .then((value) => {
@@ -34,12 +38,14 @@ function shuffle(array:string[]) {
   array.sort(() => Math.random() - 0.5);
 }
 shuffle(wordsString);
-
+// создаем масси в котром будет тоько 6 слов для игры
 let arraySixWords:string [] = [];
 arraySixWords = wordsString.slice(0, 6);
+
+// выбираем случайное слово из 6, которое будем угадывать
 const wordRight = arraySixWords[Math.floor(Math.random() * arraySixWords.length)];
 
-console.log(wordsString, 'wordsString');
+// получаем делаем объект в который сохраним выбранное слово со всеми данными
 let wordObj : IWord = {
   id: '', group: 0, page: 0, word: '', image: '', audio: '', audioMeaning: '', audioExample: '', textMeaning: '', textExample: '', transcription: '', wordTranslate: '', textMeaningTranslate: '', textExampleTranslate: '',
 };
@@ -49,13 +55,14 @@ for (let i = 0; i < storage.words!.length; i++) {
     wordObj = storage.words![i];
   }
 }
-
-function soundClickAudio(): void {
+// функция проигрывания аудио с путем из нашего обекта-слово
+function soundAudio(path: string): void {
   const audiod = new Audio();
-  audiod.src = `${apiPath + wordObj.audio}`;
+  audiod.src = `${path}`;
   audiod.autoplay = true;
 }
 
+// рисуем кнопки с переводами
 function printBtnString(): string {
   let a = '';
   let containerBtn = ' ';
@@ -68,6 +75,6 @@ function printBtnString(): string {
 }
 
 export {
-   soundClickAudio,
+  soundAudio,
   printBtnString, wordObj,
 };
