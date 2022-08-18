@@ -4,9 +4,10 @@
 // import modalAuthorization from '../components/modal';
 
 import { MenuItems } from '../types/types';
-
+import SprintGamePage from '../pages/sprint/index';
 import ModuleModel from '../model/model';
 import listener from '../functional/listener';
+import listenerAudioCall from '../pages/audiocall/utils/listener-audiocall';
 
 class ModuleController {
   myModuleContainer!: HTMLElement;
@@ -25,6 +26,12 @@ class ModuleController {
 
   menuTeam !: HTMLElement;
 
+  buttonStartSprint!: HTMLButtonElement;
+
+  sprintLevel !: HTMLInputElement;
+
+  audiocallgame !: HTMLElement;
+
   init(container: HTMLElement, model: ModuleModel): void {
     this.myModuleContainer = container;
     this.myModuleModel = model;
@@ -34,6 +41,7 @@ class ModuleController {
 
     // modalAuthorization.open();
     listener.open();
+    listenerAudioCall.open();
     this.updateState();
     // window.location.hash = '#main';
   }
@@ -42,6 +50,12 @@ class ModuleController {
     const hashPageName = window.location.hash.slice(1).toLowerCase();
     this.myModuleModel.updateState(hashPageName);
     this.findMenuElements(hashPageName);
+    switch (hashPageName) {
+      case 'aboutsprint':
+        this.addButtonsAboutSprintGameListeners();
+        break;
+      default:
+    }
   }
 
   findMenuElements(hashName:string):void {
@@ -57,9 +71,21 @@ class ModuleController {
       statistics: this.menuStatictics,
       audiocall: this.menuAudiocall,
       sprint: this.menuSprint,
+      aboutsprint: this.menuSprint,
       team: this.menuTeam,
     };
-    this.myModuleModel.highlightActiveMenuItem(obj, hashName);
+    if (this.menuMain) {
+      this.myModuleModel.highlightActiveMenuItem(obj, hashName);
+    }
+  }
+
+  addButtonsAboutSprintGameListeners():void {
+    this.buttonStartSprint = document.querySelector('.button__start__sprint') as HTMLButtonElement;
+    this.sprintLevel = document.querySelector('.sprint__level') as HTMLInputElement;
+    this.buttonStartSprint.addEventListener('click', () => {
+      location.hash = '#sprint';
+      SprintGamePage.saveLevel(this.sprintLevel.value);
+    });
   }
 }
 

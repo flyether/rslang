@@ -29,8 +29,26 @@ ul,li
   flex-direction: column
   height: 100%
   color: $blue-color
+
 .burger
   display: none
+
+.button
+  display: inline-block
+  width: 5rem
+  height: 1.5rem
+  box-sizing: border-box
+  border-radius: 0.3rem
+  border: 0.05rem solid $blue-color
+  box-shadow: 1px 1px 2px grey
+  cursor: pointer
+  transition: 0.3s
+  font-family: inherit
+.button:hover
+  opacity: 0.8
+.button:active
+  transform: scale(0.95)
+
 .header
   flex: 0 0 auto
   padding: 0.5rem 1rem
@@ -85,7 +103,7 @@ ul,li
   font-family: 'Source Sans 3', sans-serif
   text-align: center
 
-.team-page-conteiner,.sprint-conteiner,.audiocall-conteiner,.statistics-conteiner,.textbook
+.team-page-conteiner,.sprint-conteiner,.audiocall-conteiner,.statistics-conteiner,.textbook,.aboutsprint-conteiner
   flex: 1 0 auto
 .main__page__description
   @extend %gradient-background

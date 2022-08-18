@@ -20,8 +20,10 @@ import MainPage from './pages/main';
 import TextbookPage from './pages/textbook';
 import AboutTeamPage from './pages/team';
 import SprintGamePage from './pages/sprint/index';
+import AboutSprintGamePage from './pages/aboutsprint';
 import AudiocallGamePage from './pages/audiocall/index';
 import StatisticsPage from './pages/statistics/index';
+import AudiocallGame from './pages/audiocall/main';
 
 const components: Components = {
   header: Header,
@@ -35,7 +37,9 @@ const routes: Routes = {
   textbook: TextbookPage,
   team: AboutTeamPage,
   sprint: SprintGamePage,
+  aboutsprint: AboutSprintGamePage,
   audiocall: AudiocallGamePage,
+  audiocallgame: AudiocallGame,
   statistics: StatisticsPage,
 };
 

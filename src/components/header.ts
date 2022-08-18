@@ -6,6 +6,7 @@ const Header = {
     textbook: '#textbook',
     statistics: '#statistics',
     audiocall: '#audiocall',
+    aboutsprint: '#aboutsprint',
     sprint: '#sprint',
     team: '#team',
   },
@@ -35,7 +36,7 @@ const Header = {
               <a href="${this.hashes.statistics}" class="menu__statictics menu__item_disable">Статистика</a>
             </li>
             <li class="menu__item"><a href="${this.hashes.audiocall}" class="menu__audiocall">Аудиовызов</a></li>
-            <li class="menu__item"><a href="${this.hashes.sprint}" class="menu__sprint">Спринт</a></li>
+            <li class="menu__item"><a href="${this.hashes.aboutsprint}" class="menu__sprint">Спринт</a></li>
             <li class="menu__item"><a href="${this.hashes.team}" class="menu__team">О команде</a></li>
           </ul>
         </nav>
