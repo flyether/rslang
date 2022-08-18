@@ -68,6 +68,6 @@ function printBtnString(): string {
 }
 
 export {
-   soundClickAudio,
+  soundClickAudio,
   printBtnString, wordObj,
 };
