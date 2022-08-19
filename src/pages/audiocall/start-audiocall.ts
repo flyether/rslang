@@ -21,7 +21,7 @@ export const startScrinAudioCall = {
   Выбери уровень сложности:</p>
   <button id="level1" type="button"  class="btn-level"><a class="menu__main menu__item_active" href="${this.hashes.audiocallGame}" >Уровень 1</a></button>
  
-  <button id="level2" type="button"  class="btn-level"><a class="menu__main menu__item_active" href="${this.hashes.audiocallGame}" >Уровень 2</a></button>
+  <button id="level2" type="button"  class="btn-level"><a class=" link menu__main menu__item_active" href="${this.hashes.audiocallGame}" >Уровень 2</a></button>
 
   <button id="level3" type="button"  class="btn-level"><a class="menu__main menu__item_active" href="${this.hashes.audiocallGame}" >Уровень 3</a></button>
 

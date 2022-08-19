@@ -94,6 +94,10 @@
   margin: 0 5px 20px 5px;
   cursor: pointer 
 }
+.link {
+  width: 170px;
+  height: 70px;
+}
 
 .btn-translation-wrong{
   color:#679fe5;
@@ -111,7 +115,7 @@
 }
 
 .btn-sound {
-  margin-top: 10%;
+  margin-top: 5%;
   color: #224a9a;
   width: 80px;
   height: 80px;
@@ -136,4 +140,22 @@
   border-radius: 5px;
   border: #224a9a solid 1px;
   margin: 0, 0, 20px, 0;
+}
+
+.answer{
+  background-color:#fe8954;
+  font-size: large;
+  font-weight: 700;
+  width: 400px;
+  height: 300px;
+  text-align: center;
+  line-height: 35px;
+  border-radius: 5px;
+  border: #224a9a solid 1px;
+  margin: 0, 0, 20px, 0;
+  padding: 5px;
+}
+
+.answer-img{
+  border-radius: 5px;
 }

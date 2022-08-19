@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-restricted-globals */
 /* eslint-disable import/no-cycle */
 /* eslint-disable import/no-mutable-exports */
@@ -33,6 +34,7 @@ class ListenerAudioCall {
       }
 
       if ((e.target as HTMLElement).classList.contains('btn-translation')) {
+        const rightAnswer = document.querySelector('.right-answer') as HTMLElement;
         round = Number(localStorage.getItem('round')) + 1;
         localStorage.setItem('round', round.toString());
         if ((e.target as HTMLElement).id === wordObj.wordTranslate) {
@@ -40,22 +42,21 @@ class ListenerAudioCall {
           localStorage.setItem('score', score.toString());
           soundAudio((audioPathRight));
           (e.target as HTMLElement).classList.add('btn-translation-right');
-
           setTimeout(() => {
             window.location.reload();
           },
-          1000);
+          1200);
         } else {
           (e.target as HTMLElement).classList.add('btn-translation-wrong');
           arrayWrongWords = JSON.parse(localStorage.getItem('arrayWrongWords')!);
-
+          rightAnswer.innerHTML = `<div class="answer"><img class="answer-img" src="${apiPath + wordObj.image}" alt="правильный ответ"><br>${wordObj.word} — ${wordObj.wordTranslate} </div>`;
           arrayWrongWords.push(wordObj.word);
           localStorage.setItem('arrayWrongWords', JSON.stringify(arrayWrongWords));
           soundAudio((audioPathWrong));
           setTimeout(() => {
             window.location.reload();
           },
-          1000);
+          2200);
         }
       }
 
@@ -69,6 +70,7 @@ class ListenerAudioCall {
         }
         if ((e.target as HTMLElement).id === 'level2') {
           storage.level = 2;
+          localStorage.setItem('level', '2');
           console.log(storage.level);
         }
         if ((e.target as HTMLElement).id === 'level3') {

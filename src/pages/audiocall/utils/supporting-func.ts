@@ -17,17 +17,18 @@ import { api } from '../../../api/api';
 // выбор уровня для игры и страницы
 let group = 0;
 let page = 0;
+let arraylevel: number[] = [];
 function levelGame(): void {
-  if (storage.level) {
-    group = storage.level - 1;
+  if (localStorage.getItem('level')) {
+    group = Number(localStorage.getItem('level')) - 1;
     page = Math.floor(Math.random() * (30 - 0 + 1)) + 0;
+    arraylevel = [group, page];
   }
 }
 levelGame();
-console.log(group, page);
 
 // констана которая получает с сервера массив слов
-const apiGetWords = api.getWords(0, 0)
+const apiGetWords = api.getWords(group, page)
   .then((value) => {
     storage.words = value;
     localStorage.setItem('words', JSON.stringify(value));
@@ -93,15 +94,16 @@ function soundAudio(path: string): void {
 function printBtnString(): string {
   let a = '';
   let containerBtn = ' ';
-  if (Number(localStorage.getItem('round')) < 21) {
+  if (Number(localStorage.getItem('round')) < 20) {
     for (let i = 0; i < arraySixWords.length; i++) {
       a = arraySixWords[i];
       containerBtn += `<button  type="button" id="${a}" class="btn-translation">${a}</button> `;
     }
   } else {
+    wordObj.audio = '';
     let a = '';
     if (JSON.parse(localStorage.getItem('arrayWrongWords')!).length > 0) {
-      a = ` <p class="game-text">Рекомендуем выучить:&nbsp${JSON.parse(localStorage.getItem('arrayWrongWords')!)}</p> `;
+      a = ` <p class="game-text">Рекомендуем выучить:&nbsp${(JSON.parse(localStorage.getItem('arrayWrongWords')!) as string[]).join(',\n')}</p> `;
     } else {
       a = ' <p class="game-text">Вы ниразу не ошиблись!</p> ';
     }
