@@ -33,7 +33,7 @@ const AboutTeamPage = {
           </div>
           <ul class="development__list">
             <li class="development__item">Электронный учебник</li>
-            <li class="development__item">...</li>
+            <li class="development__item">Дизайн</li>
             <li class="development__item">...</li>
             <li class="development__item">...</li>
           </ul>
