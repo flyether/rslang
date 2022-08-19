@@ -93,3 +93,8 @@ export interface IUserData {
   userId: string;
   name: string;
 }
+
+export interface IGroupPageObj {
+  group: number;
+  page: number;
+}

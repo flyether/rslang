@@ -14,8 +14,17 @@ import { IWord } from '../../../types/types';
 import { apiPath } from '../../../api/api-path';
 import { api } from '../../../api/api';
 
-let round = 0;
-localStorage.setItem('raund', round.toString());
+// выбор уровня для игры и страницы
+let group = 0;
+let page = 0;
+function levelGame(): void {
+  if (storage.level) {
+    group = storage.level - 1;
+    page = Math.floor(Math.random() * (30 - 0 + 1)) + 0;
+  }
+}
+levelGame();
+console.log(group, page);
 
 // констана которая получает с сервера массив слов
 const apiGetWords = api.getWords(0, 0)
@@ -32,8 +41,14 @@ function getWordsMap(): string[] {
   return words;
 }
 
-const wordsString = getWordsMap();
+let wordsString = getWordsMap();
 
+// фильтруем избавляясь от дублей
+if (localStorage.getItem('noRepeat')) {
+  if ((JSON.parse(localStorage.getItem('noRepeat')!) as string[]).length > 0) {
+    wordsString = wordsString.filter((item) => !(JSON.parse(localStorage.getItem('noRepeat')!) as string[]).includes(item));
+  }
+}
 // перемешиваем массив преводов
 function shuffle(array:string[]) {
   array.sort(() => Math.random() - 0.5);
@@ -56,6 +71,17 @@ for (let i = 0; i < storage.words!.length; i++) {
     wordObj = storage.words![i];
   }
 }
+
+// избавляемся от дублей в массиве преводов проолжение
+
+let noRepeat: string[] = [];
+noRepeat.push(wordObj.wordTranslate);
+if (localStorage.getItem('noRepeat')) {
+  noRepeat = JSON.parse(localStorage.getItem('noRepeat')!);
+  noRepeat.push(wordObj.wordTranslate);
+  localStorage.setItem('noRepeat', JSON.stringify(noRepeat));
+}
+
 // функция проигрывания аудио с путем из нашего обекта-слово
 function soundAudio(path: string): void {
   const audiod = new Audio();

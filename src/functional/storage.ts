@@ -11,6 +11,8 @@ class Storage {
 
   words?: IWord[];
 
+  level?: number;
+
   constructor() {
     if (localStorage.getItem('user')) {
       this.user = JSON.parse(localStorage.getItem('user') as string);
