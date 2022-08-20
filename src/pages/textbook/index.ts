@@ -35,7 +35,7 @@ const TextbookPage = {
     } else if (!page && unit <= maxUnit && unit >= minUnit && typeof unit === 'number') {
       view = `
          <div class="textbook-navigation unit-navigation">
-            <button class="btn-round"></button>
+            <button class="btn-round" id="go-back"></button>
             <p class="unit-name">Раздел ${unit}</p>
          </div>
          <ul class="unit-pages">
@@ -44,7 +44,7 @@ const TextbookPage = {
     } else {
       view = `<div class=${this.classname}>
       <div class="textbook-navigation">
-        <button class="btn-round"></button>
+        <button class="btn-round" id="go-back"></button>
         <p class="unit-name">Раздел ${unit} <span class="unit-page-name">страница ${page}</span></p>
       </div>
       <ul class=${this.wordlist}>

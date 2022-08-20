@@ -23,6 +23,12 @@ export class TextbookController {
         if ((e.target as HTMLElement).classList.contains(this.pageSelector)) {
           window.location.hash = `${hashes.textbook}/${unit}/${(e.target as HTMLElement).dataset.page}`;
         }
+        if ((e.target as HTMLElement).id === 'go-back') {
+          console.log(window.location.hash);
+          if (+window.location.hash.split('/')[2]) {
+            window.location.hash = `${hashes.textbook}/${unit}`;
+          } else { window.location.hash = `${hashes.textbook}`; }
+        }
       }
     });
   }
