@@ -10,11 +10,11 @@ export class TextbookController {
     this.pageSelector = pageSelector;
   }
 
-  init(unit: number, page: number): void {
-    this.setEventListeners(unit, page);
+  init(unit: number): void {
+    this.setEventListeners(unit);
   }
 
-  setEventListeners(unit: number, page: number): void {
+  setEventListeners(unit: number): void {
     document.addEventListener('click', (e: MouseEvent) => {
       if (e.target) {
         if ((e.target as HTMLElement).classList.contains(this.unitSelector)) {
@@ -24,7 +24,6 @@ export class TextbookController {
           window.location.hash = `${hashes.textbook}/${unit}/${(e.target as HTMLElement).dataset.page}`;
         }
         if ((e.target as HTMLElement).id === 'go-back') {
-          console.log(window.location.hash);
           if (+window.location.hash.split('/')[2]) {
             window.location.hash = `${hashes.textbook}/${unit}`;
           } else { window.location.hash = `${hashes.textbook}`; }

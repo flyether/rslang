@@ -60,7 +60,7 @@ const TextbookPage = {
       </div>
     </div>`;
     }
-    controllerTextbook.init(unit, page);
+    controllerTextbook.init(unit);
     return `${Header.render()}${view}${Footer.render()}`;
   },
   renderPages(): string {
