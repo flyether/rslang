@@ -4,7 +4,7 @@ import { ModuleController } from '../../controller/controllerSprint';
 import { ModuleModel } from '../../model/modelSprint';
 import { ModuleView } from '../../view/viewSprint';
 
-export function initSprintMVC():void {
+export function initSprintMVC(): void {
   const view = new ModuleView();
   const model = new ModuleModel();
   const controller = new ModuleController();

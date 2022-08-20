@@ -12,6 +12,11 @@
 	background-color: $transparent-blue-color;
 }
 
+#modal-result-wrapper {
+	display: none;
+	height: 0;
+}
+
 #modal-window {
 	width: 400px;
 	height: 400px;
