@@ -40,6 +40,7 @@
   height: 50px;
   border-radius: 50%;
   border: none;
+  cursor: pointer;
 }
 
 .word-list {
@@ -105,6 +106,7 @@
         background-position: center;
         background-color: $orange-color;
         background-size: 40%;
+        cursor: pointer;
       }
     }
   }
@@ -121,6 +123,7 @@
   border-radius: 3px;
   border: 1px solid transparent;
   font-family: $mplus-font;
+  cursor: pointer;
 }
 
 .textbook-footer {
@@ -136,6 +139,11 @@
   width: 100%;
   gap: 60px;
   justify-content: center;
+  align-items: center;
+}
+
+.textbook-game {
+  cursor: pointer;
 }
 
 .pagination-btn {
@@ -154,8 +162,6 @@
   gap: 30px;
   flex-direction: column;
 }
-
-.unit-pages {}
 
 .textbook-unit {
   width: 100%;
@@ -240,6 +246,12 @@
 
   .unit-name {
     font-size: 25px;
+  }
+
+  .textbook-pagination {
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
   }
 }
 

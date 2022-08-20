@@ -9,24 +9,26 @@ import Footer from '../../components/footer';
 const TextbookPage = {
   classname: 'textbook',
   wordlist: 'word-list',
-  // render(): string {
-  //   const view = ` <div class=${this.classname}>
-  //   <div class="textbook-navigation">
-  //     <button class="btn-round"></button>
-  //     <p class="unit-name">Раздел 1 <span class="unit-page">страница 1</span></p>
-  //   </div>
-  //   <ul class=${this.wordlist}>
-  //    ${this.getCards()}
-  //   </ul>
-  //   <div class="textbook-footer">
-  //     <div class="textbook-pagination">
-  //       <button class="pagination-btn btn-orange">Предыдущая</button>
-  //       <button class="pagination-btn btn-orange">Следующая</button>
-  //     </div>
-  //   </div>
-  // </div>`;
-  //   return `${Header.render()}${view}${Footer.render()}`;
-  // },
+  render(): string {
+    const view = ` <div class=${this.classname}>
+    <div class="textbook-navigation">
+      <button class="btn-round"></button>
+      <p class="unit-name">Раздел 1 <span class="unit-page">страница 1</span></p>
+    </div>
+    <ul class=${this.wordlist}>
+     ${this.getCards()}
+    </ul>
+    <div class="textbook-footer">
+      <div class="textbook-pagination">
+        <button class="pagination-btn btn-orange">Предыдущая</button>
+        <a class="textbook-game">Аудиовызов</a>
+        <a class="textbook-game">Спринт</a>
+        <button class="pagination-btn btn-orange">Следующая</button>
+      </div>
+    </div>
+  </div>`;
+    return `${Header.render()}${view}${Footer.render()}`;
+  },
   // render(): string {
   //   const view = `<div class="textbook-units">
   //   <div class="textbook-unit" data-unit="1">Раздел 1</div>
@@ -39,16 +41,16 @@ const TextbookPage = {
   //   </div>`;
   //   return `${Header.render()}${view}${Footer.render()}`;
   // },
-  render(): string {
-    const view = ` <div class="textbook-navigation unit-navigation">
-         <button class="btn-round"></button>
-         <p class="unit-name">Раздел 1</p>
-       </div>
-    <ul class="unit-pages">
-  ${this.renderPages()}
-  </ul>`;
-    return `${Header.render()}${view}${Footer.render()}`;
-  },
+  // render(): string {
+  //   const view = ` <div class="textbook-navigation unit-navigation">
+  //        <button class="btn-round"></button>
+  //        <p class="unit-name">Раздел 1</p>
+  //      </div>
+  //   <ul class="unit-pages">
+  // ${this.renderPages()}
+  // </ul>`;
+  //   return `${Header.render()}${view}${Footer.render()}`;
+  // },
 
   renderPages(): string {
     let pages = '';
