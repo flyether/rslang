@@ -11,7 +11,7 @@
 
 .audio-container-game{
   width: 1200px;
-  height: 600px;
+  height: 800px;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
@@ -43,43 +43,45 @@
   height: 50px;
   background-color:#679fe5 ;
   text-align: center;
-  line-height: 35px;
   border-radius: 3px;
   cursor: pointer 
 }
 
 .btn-translation {
   color: #224a9a;
-  font-size: large;
+  font-size: medium;
   font-weight: 700;
   width: 170px;
   height: 70px;
   background-color:#fe8954 ;
   text-align: center;
-  line-height: 35px;
+  line-height: 20px;
   border-radius: 5px;
   border: #224a9a solid 1px;
   margin: 0 5px 20px 5px;
+  line-height: 15px;
   cursor: pointer 
 }
 
 .btn-translation:hover  {
   background-color:#bdccff ;
 }
+
 .btn-translation-right{
   color:#fe8954;
-  font-size: large;
+  font-size: medium;
   font-weight: 700;
   width: 170px;
   height: 70px;
   background-color:#8d0bf7 ;
   text-align: center;
-  line-height: 35px;
   border-radius: 5px;
+  line-height: 20px;
   border: #580488 solid 1px;
   margin: 0 5px 20px 5px;
   cursor: pointer 
 }
+
 .restart {
   color: #fe8954;
   font-size: large;
@@ -88,11 +90,11 @@
   height: 70px;
   background-color:#679fe5;
   text-align: center;
-  line-height: 35px;
   border-radius: 5px;
   border: #224a9a solid 1px;
   margin: 0 5px 20px 5px;
   cursor: pointer 
+  
 }
 .link {
   width: 170px;
@@ -101,13 +103,13 @@
 
 .btn-translation-wrong{
   color:#679fe5;
-  font-size: large;
+  font-size: medium;
   font-weight: 700;
   width: 170px;
   height: 70px;
   background-color:#d11554 ;
   text-align: center;
-  line-height: 35px;
+  line-height: 20px;
   border-radius: 5px;
   border: #5f0713 solid 1px;
   margin: 0 5px 20px 5px;

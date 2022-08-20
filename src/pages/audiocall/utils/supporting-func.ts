@@ -94,7 +94,7 @@ function soundAudio(path: string): void {
 function printBtnString(): string {
   let a = '';
   let containerBtn = ' ';
-  if (Number(localStorage.getItem('round')) < 20) {
+  if (Number(localStorage.getItem('round')) < 21) {
     for (let i = 0; i < arraySixWords.length; i++) {
       a = arraySixWords[i];
       containerBtn += `<button  type="button" id="${a}" class="btn-translation">${a}</button> `;
