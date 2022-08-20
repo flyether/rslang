@@ -1,5 +1,6 @@
 /* eslint-disable import/no-cycle */
 import './textbook.scss';
+import { hashes } from '../../components/hashes';
 import { api } from '../../api/api';
 import { IWord } from '../../types/types';
 
@@ -21,8 +22,8 @@ const TextbookPage = {
     <div class="textbook-footer">
       <div class="textbook-pagination">
         <button class="pagination-btn btn-orange">Предыдущая</button>
-        <a class="textbook-game">Аудиовызов</a>
-        <a class="textbook-game">Спринт</a>
+        <a class="textbook-game" href="${hashes.audiocall}">Аудиовызов</a>
+        <a class="textbook-game" href="${hashes.aboutsprint}">Спринт</a>
         <button class="pagination-btn btn-orange">Следующая</button>
       </div>
     </div>
