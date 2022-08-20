@@ -1,6 +1,6 @@
 /* eslint-disable import/no-cycle */
 
-import { ModuleController } from '../../controller/';
+import { ModuleController } from '../../controller/controllerSprint';
 import { ModuleModel } from '../../model/modelSprint';
 import { ModuleView } from '../../view/viewSprint';
 

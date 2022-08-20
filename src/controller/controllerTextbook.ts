@@ -1,31 +1,29 @@
 import { hashes } from '../components/hashes';
 
 export class TextbookController {
-  unitsBlockSelector: string;
+  pageSelector: string;
 
-  unitBlockSelector: string;
+  unitSelector: string;
 
-  constructor(unitsBlockSelector: string, unitBlockSelector: string) {
-    this.unitsBlockSelector = unitsBlockSelector;
-    this.unitBlockSelector = unitBlockSelector;
+  constructor(unitSelector: string, pageSelector: string) {
+    this.unitSelector = unitSelector;
+    this.pageSelector = pageSelector;
   }
 
-  init(view: string): HTMLElement {
-    return this.setEventListeners(view);
+  init(unit: number, page: number): void {
+    this.setEventListeners(unit, page);
   }
 
-  setEventListeners(view: string): HTMLElement {
-    const unitsBlock = document.createElement('div');
-    unitsBlock.classList.add(this.unitsBlockSelector);
-    unitsBlock.addEventListener('click', (e: MouseEvent) => {
+  setEventListeners(unit: number, page: number): void {
+    document.addEventListener('click', (e: MouseEvent) => {
       if (e.target) {
-        if ((e.target as HTMLElement).classList.contains(this.unitBlockSelector)) {
+        if ((e.target as HTMLElement).classList.contains(this.unitSelector)) {
           window.location.hash = `${hashes.textbook}/${(e.target as HTMLElement).dataset.unit}`;
+        }
+        if ((e.target as HTMLElement).classList.contains(this.pageSelector)) {
+          window.location.hash = `${hashes.textbook}/${unit}/${(e.target as HTMLElement).dataset.page}`;
         }
       }
     });
-    unitsBlock.innerHTML = view;
-    console.log(unitsBlock.outerHTML);
-    return unitsBlock;
   }
 }

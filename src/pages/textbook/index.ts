@@ -18,11 +18,11 @@ const TextbookPage = {
     let view = '';
     const minUnit = 1;
     const maxUnit = 7;
-    const unitsBlockSelector = 'textbook-units';
-    const unitBlockSelector = 'textbook-unit';
-    const controllerTextbook = new TextbookController(unitsBlockSelector, unitBlockSelector);
+    const unitSelector = 'textbook-unit';
+    const pageSelector = 'unit-page';
+    const controllerTextbook = new TextbookController(unitSelector, pageSelector);
     if (!unit) {
-      view = `
+      view = `<div class="textbook-units">
       <div class="textbook-unit" data-unit="1">Раздел 1</div>
       <div class="textbook-unit" data-unit="2">Раздел 2</div>
       <div class="textbook-unit" data-unit="3">Раздел 3</div>
@@ -30,12 +30,13 @@ const TextbookPage = {
       <div class="textbook-unit" data-unit="5">Раздел 5</div>
       <div class="textbook-unit" data-unit="6">Раздел 6</div>
       <div class="textbook-unit" data-unit="7">Раздел "Сложные слова"</div>
+      </div>
       `;
     } else if (!page && unit <= maxUnit && unit >= minUnit && typeof unit === 'number') {
       view = `
          <div class="textbook-navigation unit-navigation">
             <button class="btn-round"></button>
-            <p class="unit-name">Раздел 1</p>
+            <p class="unit-name">Раздел ${unit}</p>
          </div>
          <ul class="unit-pages">
             ${this.renderPages()}
@@ -44,7 +45,7 @@ const TextbookPage = {
       view = `<div class=${this.classname}>
       <div class="textbook-navigation">
         <button class="btn-round"></button>
-        <p class="unit-name">Раздел 1 <span class="unit-page">страница 1</span></p>
+        <p class="unit-name">Раздел ${unit} <span class="unit-page-name">страница ${page}</span></p>
       </div>
       <ul class=${this.wordlist}>
        ${this.getCards(+unit, +page)}
@@ -59,14 +60,14 @@ const TextbookPage = {
       </div>
     </div>`;
     }
-    view = controllerTextbook.init(view).outerHTML;
+    controllerTextbook.init(unit, page);
     return `${Header.render()}${view}${Footer.render()}`;
   },
   renderPages(): string {
     let pages = '';
     const pagesCount = 30;
     for (let i = 1; i <= pagesCount; i += 1) {
-      pages += `<li class="unit-page">Page ${i}</li>`;
+      pages += `<li class="unit-page" data-page="${i}">Page ${i}</li>`;
     }
     return pages;
   },
@@ -103,7 +104,7 @@ const TextbookPage = {
       }
     }
     (async () => {
-      await api.getWords(unit, page)
+      await api.getWords(unit - 1, page - 1)
         .then((res) => {
           renderCards(res as IWord[]);
         });
