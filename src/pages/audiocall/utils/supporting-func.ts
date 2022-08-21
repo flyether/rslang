@@ -57,7 +57,7 @@ function shuffle(array:string[]) {
 shuffle(wordsString);
 // создаем масси в котром будет тоько 6 слов для игры
 let arraySixWords:string [] = [];
-arraySixWords = wordsString.slice(0, 6);
+arraySixWords = wordsString.slice(0, 5);
 
 // выбираем случайное слово из 6, которое будем угадывать
 const wordRight = arraySixWords[Math.floor(Math.random() * arraySixWords.length)];
@@ -94,10 +94,10 @@ function soundAudio(path: string): void {
 function printBtnString(): string {
   let a = '';
   let containerBtn = ' ';
-  if (Number(localStorage.getItem('round')) < 21) {
+  if (Number(localStorage.getItem('round')) < 16) {
     for (let i = 0; i < arraySixWords.length; i++) {
       a = arraySixWords[i];
-      containerBtn += `<button  type="button" id="${a}" class="btn-translation">${a}</button> `;
+      containerBtn += `<button data-num="${i + 1}" type="button" id="${a}" class="btn-translation">${a}</button> `;
     }
   } else {
     wordObj.audio = '';

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable max-len */
 /* eslint-disable no-restricted-globals */
 /* eslint-disable import/no-cycle */
@@ -10,7 +11,6 @@ import { apiPath } from '../../../api/api-path';
 import { soundAudio, wordObj } from './supporting-func';
 import audioPathWrong from '../../../assets/audio/wrong-answer.mp3';
 import audioPathRight from '../../../assets/audio/right-answer.mp3';
-import { IGroupPageObj } from '../../../types/types';
 import { storage } from '../../../functional/storage';
 
 let round = 0;
@@ -27,36 +27,33 @@ if (localStorage.getItem('round') === null) {
 }
 
 class ListenerAudioCall {
-  open(): void {
+  keyboard(): void {
+    document.addEventListener('keydown', (e) => {
+      if (e.key === ' ') {
+        soundAudio((apiPath + wordObj.audio));
+      }
+      const dataN = Number(e.key);
+      if (e.key === `Numpad ${dataN}` || e.key === `${dataN}`) {
+        (document.querySelectorAll(`.btn-translation[data-num="${dataN}"]`)).forEach((elem) => {
+          (elem as HTMLButtonElement).click();
+        });
+      }
+    });
+  }
+
+  clik(): void {
     document.addEventListener('click', (e) => {
       if ((e.target as HTMLElement).classList.contains('btn-sound')) {
         soundAudio((apiPath + wordObj.audio));
       }
 
       if ((e.target as HTMLElement).classList.contains('btn-translation')) {
-        const rightAnswer = document.querySelector('.right-answer') as HTMLElement;
         round = Number(localStorage.getItem('round')) + 1;
         localStorage.setItem('round', round.toString());
         if ((e.target as HTMLElement).id === wordObj.wordTranslate) {
-          score = Number(localStorage.getItem('score')) + 1;
-          localStorage.setItem('score', score.toString());
-          soundAudio((audioPathRight));
-          (e.target as HTMLElement).classList.add('btn-translation-right');
-          setTimeout(() => {
-            window.location.reload();
-          },
-          1200);
+          rightAnswerFunc((e.target as HTMLElement)!);
         } else {
-          (e.target as HTMLElement).classList.add('btn-translation-wrong');
-          arrayWrongWords = JSON.parse(localStorage.getItem('arrayWrongWords')!);
-          rightAnswer.innerHTML = `<div class="answer"><img class="answer-img" src="${apiPath + wordObj.image}" alt="правильный ответ"><br>${wordObj.word} — ${wordObj.wordTranslate} </div>`;
-          arrayWrongWords.push(wordObj.word);
-          localStorage.setItem('arrayWrongWords', JSON.stringify(arrayWrongWords));
-          soundAudio((audioPathWrong));
-          setTimeout(() => {
-            window.location.reload();
-          },
-          2200);
+          wrongAnswerFunc((e.target as HTMLElement));
         }
       }
 
@@ -87,6 +84,32 @@ class ListenerAudioCall {
         }
       }
     });
+  }
+}
+function rightAnswerFunc(el: HTMLElement) {
+  score = Number(localStorage.getItem('score')) + 1;
+  localStorage.setItem('score', score.toString());
+  soundAudio((audioPathRight));
+  el.classList.add('btn-translation-right');
+  setTimeout(() => {
+    window.location.reload();
+  },
+  1200);
+}
+
+function wrongAnswerFunc(el: HTMLElement) {
+  el.classList.add('btn-translation-wrong');
+  const rightAnswer = document.querySelector('.right-answer') as HTMLElement;
+  arrayWrongWords = JSON.parse(localStorage.getItem('arrayWrongWords')!);
+  if (rightAnswer) {
+    rightAnswer.innerHTML = `<div class="answer"><img class="answer-img" src="${apiPath + wordObj.image}" alt="правильный ответ"><br>${wordObj.word} — ${wordObj.wordTranslate} </div>`;
+    arrayWrongWords.push(wordObj.word);
+    localStorage.setItem('arrayWrongWords', JSON.stringify(arrayWrongWords));
+    soundAudio((audioPathWrong));
+    setTimeout(() => {
+      window.location.reload();
+    },
+    2200);
   }
 }
 

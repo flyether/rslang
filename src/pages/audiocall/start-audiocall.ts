@@ -14,10 +14,9 @@ export const startScrinAudioCall = {
   <p class="audio-call__text">В игре аудиовызов вамнужно выбрать правильный перевод слова. <br>
 
   Чтобы играть с помощью клавиатуры, используй клавиши
-  1, 2, 3, 4, 5 - чтобы дать ответ,
-  space - для воспроизведения звука,
-  enter - чтобы пропустить вопрос,
-  стрелка-вправо - чтобы перейти к следующему вопросу.<br> <br>
+  1, 2, 3, 4, 5  чтобы дать ответ,
+  space - для воспроизведения звука.
+  <br> <br>
   Выбери уровень сложности:</p>
   <button id="level1" type="button"  class="btn-level"><a class="menu__main menu__item_active" href="${this.hashes.audiocallGame}" >Уровень 1</a></button>
  
