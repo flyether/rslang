@@ -1,3 +1,4 @@
+/* eslint-disable import/no-named-as-default */
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-cycle */
 import TextbookPage from '../pages/textbook';
@@ -12,7 +13,7 @@ import Content from '../components/content';
 import Footer from '../components/footer';
 
 import MainPage from '../pages/main';
-import AudiocallGame from '../pages/audiocall/main';
+import { AudiocallGame } from '../pages/audiocall/main';
 
 export interface Components {
   header: typeof Header,

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable linebreak-style */
 /* eslint-disable import/no-mutable-exports */
@@ -112,16 +113,26 @@ function printBtnString(): string {
     <p class="game-text">Вы прошли игру!</p>
     <p class="game-text">Ваш результат: &nbsp ${localStorage.getItem('score')}</p>
     ${a}
-    <button type="button" class="restart">Начать заново</button>
-  </div> `;
-    localStorage.removeItem('arrayWrongWords');
-    localStorage.removeItem('round');
-    localStorage.removeItem('score');
+    <div class="btn-game-over-container">
+      <button type="button" class="restart">Начать заново</button>
+      <a  class="link" href="#audiocall" >Выбрать уровень2</a>
+    </div>
+  </div>
+  
+  `;
+    clearLocalStorage();
   }
   return containerBtn;
+}
+function clearLocalStorage(): void {
+  localStorage.removeItem('noRepeat');
+  localStorage.removeItem('arrayWrongWords');
+  localStorage.removeItem('round');
+  localStorage.removeItem('score');
 }
 
 export {
   soundAudio,
   printBtnString, wordObj,
+  clearLocalStorage,
 };

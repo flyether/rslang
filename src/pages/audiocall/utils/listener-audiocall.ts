@@ -8,7 +8,7 @@
 /* eslint-disable class-methods-use-this */
 
 import { apiPath } from '../../../api/api-path';
-import { soundAudio, wordObj } from './supporting-func';
+import { clearLocalStorage, soundAudio, wordObj } from './supporting-func';
 import audioPathWrong from '../../../assets/audio/wrong-answer.mp3';
 import audioPathRight from '../../../assets/audio/right-answer.mp3';
 import { storage } from '../../../functional/storage';
@@ -60,32 +60,18 @@ class ListenerAudioCall {
       if ((e.target as HTMLElement).classList.contains('restart')) {
         window.location.reload();
       }
-
       if ((e.target as HTMLElement).classList.contains('btn-level')) {
-        if ((e.target as HTMLElement).id === 'level1') {
-          storage.level = 1;
-        }
-        if ((e.target as HTMLElement).id === 'level2') {
-          storage.level = 2;
-          localStorage.setItem('level', '2');
-          console.log(storage.level);
-        }
-        if ((e.target as HTMLElement).id === 'level3') {
-          storage.level = 3;
-        }
-        if ((e.target as HTMLElement).id === 'level4') {
-          storage.level = 4;
-        }
-        if ((e.target as HTMLElement).id === 'level5') {
-          storage.level = 5;
-        }
-        if ((e.target as HTMLElement).id === 'level6') {
-          storage.level = 6;
+        const dataN = Number((e.target as HTMLElement).id.replace(/[^0-9]/g, ''));
+        if ((e.target as HTMLElement).id === (`level${dataN}`)) {
+          storage.level = dataN;
+          localStorage.setItem('level', `${dataN}`);
+          clearLocalStorage();
         }
       }
     });
   }
 }
+
 function rightAnswerFunc(el: HTMLElement) {
   score = Number(localStorage.getItem('score')) + 1;
   localStorage.setItem('score', score.toString());

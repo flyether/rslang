@@ -18,18 +18,17 @@ export const startScrinAudioCall = {
   space - для воспроизведения звука.
   <br> <br>
   Выбери уровень сложности:</p>
-  <button id="level1" type="button"  class="btn-level"><a class="menu__main menu__item_active" href="${this.hashes.audiocallGame}" >Уровень 1</a></button>
+ <a id="level1" class="btn-level link" href="${this.hashes.audiocallGame}" >Уровень 1</a>
  
-  <button id="level2" type="button"  class="btn-level"><a class=" link menu__main menu__item_active" href="${this.hashes.audiocallGame}" >Уровень 2</a></button>
+ <a id="level2" class="btn-level link" href="${this.hashes.audiocallGame}" >Уровень 2</a>
 
-  <button id="level3" type="button"  class="btn-level"><a class="menu__main menu__item_active" href="${this.hashes.audiocallGame}" >Уровень 3</a></button>
+ <a id="level3" class="btn-level link" href="${this.hashes.audiocallGame}" >Уровень 3</a>
 
-  <button id="level4" type="button"  class="btn-level"><a class=" levelmenu__main menu__item_active" href="${this.hashes.audiocallGame}" >Уровень 4</a></button>
+ <a id="level4" class="btn-level link" href="${this.hashes.audiocallGame}" >Уровень 4</a>
 
-  <button id="level5" type="button"  class="btn-level"><a class="menu__main menu__item_active" href="${this.hashes.audiocallGame}" >Уровень 5</a></button>
+ <a id="level5" class="btn-level link" href="${this.hashes.audiocallGame}" >Уровень 5</a>
 
-  <button id="level6" type="button"  class="btn-level"><a class="menu__main menu__item_active" href="${this.hashes.audiocallGame}" >Уровень 6</a></button>
-</div>
+ <a id="level6" class="btn-level link" href="${this.hashes.audiocallGame}" >Уровень 6</a>
 `;
   },
 };
