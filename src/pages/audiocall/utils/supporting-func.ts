@@ -19,6 +19,7 @@ import { api } from '../../../api/api';
 let group = 0;
 let page = 0;
 let arraylevel: number[] = [];
+
 function levelGame(): void {
   if (localStorage.getItem('level')) {
     group = Number(localStorage.getItem('level')) - 1;
