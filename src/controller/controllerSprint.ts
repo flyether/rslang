@@ -18,42 +18,43 @@ export class ModuleController {
   init(container: HTMLElement, model: ModuleModel): void {
     this.myModuleContainer = container;
     this.myModuleModel = model;
-    this.setEventListeners();
     this.findAudioElements();
     this.setTimer();
-    window.addEventListener('hashchange', this.myModuleModel.clearInterval);
+    window.addEventListener('hashchange', this.hashchangeEventRemove);
+    document.addEventListener('keyup', this.setButtonEventListeners);
+    document.addEventListener('click', this.setEventListeners);
   }
 
-  setEventListeners():void {
-    this.buttonFalse = this.myModuleContainer.querySelector('.button__sprint__false') as HTMLButtonElement;
-    this.buttonFalse.addEventListener('click', () => {
-      this.myModuleModel.checkAnswer(false);
+  hashchangeEventRemove = (): void => {
+    this.myModuleModel.clearInterval();
+    document.removeEventListener('keyup', this.setButtonEventListeners);
+    document.removeEventListener('click', this.setEventListeners);
+  };
+
+  setButtonEventListeners = (event: KeyboardEvent): void => {
+    if (event.key === 'ArrowLeft') {
+      this.selectFalse();
       this.myModuleModel.prepearNextWord();
-    });
-
-    this.buttonTrue = this.myModuleContainer.querySelector('.button__sprint__true') as HTMLButtonElement;
-    this.buttonTrue.addEventListener('click', () => {
-      this.myModuleModel.checkAnswer(true);
+    }
+    if (event.code === 'ArrowRight') {
+      this.selectTrue();
       this.myModuleModel.prepearNextWord();
-    });
+    }
+  };
 
-    document.addEventListener('keydown', (event) => {
-      if (event.code === 'ArrowLeft') {
-        this.myModuleModel.checkAnswer(false);
-        this.myModuleModel.prepearNextWord();
-      }
-      if (event.code === 'ArrowRight') {
-        this.myModuleModel.checkAnswer(true);
-        this.myModuleModel.prepearNextWord();
-      }
-    });
-
-    this.buttonSayWord = this.myModuleContainer.querySelector('.word__sound') as HTMLElement;
-    this.buttonSayWord.addEventListener('click', () => {
+  setEventListeners = (event:Event):void => {
+    const elem = event.target as HTMLElement;
+    if (elem.closest('.button__sprint__false')) {
+      this.selectFalse();
+      this.myModuleModel.prepearNextWord();
+    } else if (elem.closest('.button__sprint__true')) {
+      this.selectTrue();
+      this.myModuleModel.prepearNextWord();
+    } else if (elem.closest('.word__sound')) {
       const audio = document.querySelector('#sprint__say__word') as HTMLAudioElement;
       this.myModuleModel.sayWord(audio);
-    });
-  }
+    }
+  };
 
   findAudioElements():void {
     const rightAnswerAudio = this.myModuleContainer.querySelector('#audio__right') as HTMLAudioElement;
