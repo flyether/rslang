@@ -1,27 +1,29 @@
 import { Routes, MenuItems } from '../types/types';
+import SprintGamePage from '../pages/sprint/index';
 
 class ModuleView {
-  myModuleContainer!:HTMLElement;
+  myModuleContainer!: HTMLElement;
 
-  contentContainer!:HTMLElement;
+  contentContainer!: HTMLElement;
 
-  routesObj!:Routes;
+  routesObj!: Routes;
 
-  init(container: HTMLElement, routes: Routes):void {
+  init(container: HTMLElement, routes: Routes): void {
     this.myModuleContainer = container;
     this.routesObj = routes;
   }
 
-  renderContent(hashPageName:string):void {
+  renderContent(hashPageName: string): void {
     let routeName = 'default';
-    routeName = (hashPageName.length) ? hashPageName : routeName;
+    routeName = (hashPageName.length) ? hashPageName.split('/')[0] : routeName;
     const route = this.routesObj[routeName as keyof Routes];
     this.myModuleContainer.innerHTML = route.render();
+    if (hashPageName === 'sprint') { SprintGamePage.initMVC(); }
   }
 
-  highlightActiveMenuItem = (obj:MenuItems, hashName:string):void => {
+  highlightActiveMenuItem = (obj: MenuItems, hashName: string): void => {
     /* eslint-disable-next-line */
-    for(let key in obj){
+    for (let key in obj) {
       if (obj[key as keyof MenuItems].classList.contains('menu__item_active')) {
         obj[key as keyof MenuItems].classList.remove('menu__item_active');
       }

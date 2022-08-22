@@ -3,11 +3,12 @@ $light-blue-color: #679fe5
   background: rgb(107,164,232)
   background: linear-gradient(90deg, rgba(107,164,232,1) 0%, rgba(72,117,199,1) 100%)
   color: white
-  
+
 .footer
   display: flex
   justify-content: space-between
   align-items: center
+  margin-top: auto
   @extend %gradient-background
 
 .rs-link
@@ -32,3 +33,14 @@ $light-blue-color: #679fe5
   left: -1rem
   background: url('../assets/github.png') 0 0 no-repeat
   background-size: contain
+
+@media all and (max-width: 768px)
+  .footer
+    flex-direction: column
+    gap: 20px
+  .github-links
+    flex-direction: row
+    gap: 15px
+    margin-top: 20px
+  .rs-link
+    margin-bottom: 20px

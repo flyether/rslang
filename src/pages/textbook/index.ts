@@ -1,62 +1,77 @@
 /* eslint-disable import/no-cycle */
 import './textbook.scss';
+import { hashes } from '../../components/hashes';
 import { api } from '../../api/api';
 import { IWord } from '../../types/types';
 
 import Header from '../../components/header';
 import Footer from '../../components/footer';
+import { TextbookController } from '../../controller/controllerTextbook';
 
 const TextbookPage = {
   classname: 'textbook',
   wordlist: 'word-list',
   render(): string {
-    const view = ` <div class=${this.classname}>
-    <div class="textbook-navigation">
-      <button class="btn-round"></button>
-      <p class="unit-name">Unit 1</p>
-    </div>
-    <ul class=${this.wordlist}>
-     ${this.getCards()}
-    </ul>
-    <div class="textbook-footer">
-    <div class="textbook-pagination">
-      <button class="pagination-btn">Prev</button>
-      <button class="pagination-btn">Next</button>
-    </div>
-    <div class="textbook-games">
-        <a href="">Аудиовызов</a>
-        <a href="">Спринт</a>
+    const locationHash = window.location.hash.split('/');
+    const unit = +locationHash[1];
+    const page = +locationHash[2];
+    let view = '';
+    const minUnit = 1;
+    const maxUnit = 7;
+    const unitSelector = 'textbook-unit';
+    const pageSelector = 'unit-page';
+    const controllerTextbook = new TextbookController(unitSelector, pageSelector);
+    if (!unit) {
+      view = `<div class="textbook-units">
+      <div class="textbook-unit" data-unit="1">Раздел 1</div>
+      <div class="textbook-unit" data-unit="2">Раздел 2</div>
+      <div class="textbook-unit" data-unit="3">Раздел 3</div>
+      <div class="textbook-unit" data-unit="4">Раздел 4</div>
+      <div class="textbook-unit" data-unit="5">Раздел 5</div>
+      <div class="textbook-unit" data-unit="6">Раздел 6</div>
+      <div class="textbook-unit" data-unit="7">Раздел "Сложные слова"</div>
       </div>
+      `;
+    } else if (!page && unit <= maxUnit && unit >= minUnit && typeof unit === 'number') {
+      view = `
+         <div class="textbook-navigation unit-navigation">
+            <button class="btn-round" id="go-back"></button>
+            <p class="unit-name">Раздел ${unit}</p>
+         </div>
+         <ul class="unit-pages">
+            ${this.renderPages()}
+         </ul>`;
+    } else {
+      view = `<div class=${this.classname}>
+      <div class="textbook-navigation">
+        <button class="btn-round" id="go-back"></button>
+        <p class="unit-name">Раздел ${unit} <span class="unit-page-name">страница ${page}</span></p>
       </div>
-  </div>`;
+      <ul class=${this.wordlist}>
+       ${this.getCards(+unit, +page)}
+      </ul>
+      <div class="textbook-footer">
+        <div class="textbook-pagination">
+          <button class="pagination-btn btn-orange">Предыдущая</button>
+          <a class="textbook-game" href="${hashes.audiocall}">Аудиовызов</a>
+          <a class="textbook-game" href="${hashes.aboutsprint}">Спринт</a>
+          <button class="pagination-btn btn-orange">Следующая</button>
+        </div>
+      </div>
+    </div>`;
+    }
+    controllerTextbook.init(unit);
     return `${Header.render()}${view}${Footer.render()}`;
   },
-  // render(): string {
-  //   return `<div class="textbook-units">
-  //   <div class="textbook-unit" data-unit="1">Раздел 1</div>
-  //   <div class="textbook-unit" data-unit="2">Раздел 2</div>
-  //   <div class="textbook-unit" data-unit="3">Раздел 3</div>
-  //   <div class="textbook-unit" data-unit="4">Раздел 4</div>
-  //   <div class="textbook-unit" data-unit="5">Раздел 5</div>
-  //   <div class="textbook-unit" data-unit="6">Раздел 6</div>
-  //   <div class="textbook-unit" data-unit="7">Раздел "Сложные слова"</div>
-  //   </div>`;
-  // },
-  //   render(): string {
-  //     return `<ul class="unit-pages">
-  // ${this.renderPages()}
-  // </ul>`;
-  //   },
-
   renderPages(): string {
     let pages = '';
     const pagesCount = 30;
     for (let i = 1; i <= pagesCount; i += 1) {
-      pages += `<li class="unit-page">Page ${i}</li>`;
+      pages += `<li class="unit-page" data-page="${i}">Page ${i}</li>`;
     }
     return pages;
   },
-  getCards(): void {
+  getCards(unit: number, page: number): void {
     const { wordlist } = this;
     function renderCards(words: IWord[]) {
       const wordContainer = document.querySelector(`.${wordlist}`);
@@ -72,10 +87,9 @@ const TextbookPage = {
   </div>
   <div class="word-description">
     <div class="word-pronounce word-audio">
-    <p>${words[i].word} ${words[i].transcription}</p>
+    <p class="word-name">${words[i].word} ${words[i].transcription}</p>
       <div class="audio"><audio></audio></div>
     </div>
-   
     <p class="word-pronounce translation">${words[i].wordTranslate}</p>
     <p class="word-example">${words[i].textMeaning}</p>
     <p class="word-example translation">${words[i].textMeaningTranslate}</p>
@@ -83,20 +97,14 @@ const TextbookPage = {
     <p class="word-example translation">${words[i].textExampleTranslate}</p>
   </div>
   <div class="word-noted">
-  <div class="word-difficult">
-  <p>Difficult word</p>
-  <button class="btn-round btn-difficult">+</button>
-  </div>
-  <div class="word-learned">
-  <p>Learned word</p>
-  <button class="btn-round btn-learned">+</button>
-  </div>
+      <button class="btn-orange btn-difficult">Сложно?</button>
+      <button class="btn-orange btn-learned">Изучено?</button>
   </div>`;
         wordContainer?.append(card);
       }
     }
     (async () => {
-      await api.getWords(3, 5)
+      await api.getWords(unit - 1, page - 1)
         .then((res) => {
           renderCards(res as IWord[]);
         });
