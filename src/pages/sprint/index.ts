@@ -14,7 +14,6 @@ import timeoverAudio from '../../assets/audio/time-over.mp3';
 
 const SprintGamePage = {
   classname: 'sprint',
-  level: 0,
   render(): string {
     return `
     ${Header.render()}
@@ -24,7 +23,7 @@ const SprintGamePage = {
       <div class="sprint__field">
         <div class="field__title">
           <div class="title__count"></div>
-          <div class="title__text">+ 10 очков за слово</div>
+          <div class="title__text">+ 10 очков за следующее слово</div>
         </div>
         <div class="field__content">
           <div class="content__img"><img src='${parrots}' alt="parrots"></div>
@@ -51,10 +50,6 @@ const SprintGamePage = {
   initMVC():void {
     initSprintMVC();
   },
-  saveLevel(level:string):void {
-    this.level = +level[level.length - 1];
-  },
-
 };
 
 export default SprintGamePage;

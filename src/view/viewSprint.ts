@@ -59,7 +59,7 @@ export class ModuleView {
   }
 
   renderCountText(n:number):void {
-    this.sprintCountText.innerHTML = `+ ${n} очков за слово`;
+    this.sprintCountText.innerHTML = `+ ${n} очков за следующее слово`;
   }
 
   renderResults(questions:string[], answers:boolean[], rightAnswers:number, wrongAnswers:number, score:number):void {

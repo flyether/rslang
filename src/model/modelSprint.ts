@@ -1,18 +1,19 @@
 /* eslint-disable import/no-cycle */
 /* eslint-disable class-methods-use-this */
 /* eslint-disable max-len */
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 
 import { ModuleView } from '../view/viewSprint';
 import { api } from '../api/api';
 import { apiPath } from '../api/api-path';
 import { IWord } from '../types/types';
-import SprintGamePage from '../pages/sprint/index';
 import { randomInteger } from '../utils/func';
+import { sprintSettings } from '../pages/sprint/sprintSettings';
 
 export class ModuleModel {
   myModuleView!: ModuleView;
 
-  level: number = SprintGamePage.level;
+  level: number = sprintSettings.sprintLevel;
 
   pages!: number[];
 
@@ -20,7 +21,7 @@ export class ModuleModel {
 
   activeWordNumber = 0;
 
-  activePageNumber = 0;
+  activePageNumber = sprintSettings.sprintPage;
 
   randomTranslationNumber !: number;
 
@@ -66,14 +67,15 @@ export class ModuleModel {
     for (let i = 0; i < 30; i++) {
       this.pages.push(i);
     }
-    this.pages.sort(() => 0.5 - Math.random());
+    if (!sprintSettings.sprintFromTextbook) { this.pages.sort(() => 0.5 - Math.random()); }
+    // console.log(this.pages);
   }
 
   async getWordsFromApi(): Promise<IWord[] | void> {
     const res = await api.getWords(this.level, this.pages[this.activePageNumber]) as IWord[];
     this.active20Words = Array.from(res);
     // console.log(this.active20Words);
-    if (this.activePageNumber === 0) { this.prepearFirstWord(); }
+    if (this.activeWordNumber === 0) { this.prepearFirstWord(); }
   }
 
   prepearFirstWord():void {
@@ -83,7 +85,7 @@ export class ModuleModel {
   }
 
   prepearNextWord():void {
-    this.checkWordsNumbers();
+    (sprintSettings.sprintFromTextbook) ? this.checkWordsNumbersFromTextbook() : this.checkWordsNumbers();
     const translation = this.generateTranslation();
     const { word } = this.active20Words[this.activeWordNumber];
     this.myModuleView.renderWord(word, translation);
@@ -93,6 +95,20 @@ export class ModuleModel {
   checkWordsNumbers():void {
     if (this.activeWordNumber === 19) {
       this.activePageNumber += 1;
+      this.activeWordNumber = 0;
+      this.getWordsFromApi();
+    } else {
+      this.activeWordNumber += 1;
+    }
+  }
+
+  checkWordsNumbersFromTextbook(): void {
+    if (this.activeWordNumber === 19) {
+      this.activePageNumber -= 1;
+      if (this.activePageNumber === -1) {
+        this.stopGame();
+        return;
+      }
       this.activeWordNumber = 0;
       this.getWordsFromApi();
     } else {
@@ -128,7 +144,6 @@ export class ModuleModel {
       this.timer -= 1;
       this.myModuleView.renderTimer(this.timer, timerElem);
       if (this.timer === 0) {
-        clearInterval(this.timerId);
         this.stopGame();
       } else if (this.timer === 5) {
         this.timeoverAudio.play();
@@ -177,6 +192,7 @@ export class ModuleModel {
   }
 
   stopGame():void {
+    clearInterval(this.timerId);
     let rightAnswers = 0;
     let wrongAnswers = 0;
     this.arrayOfAnswers.forEach((item) => {
