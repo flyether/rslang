@@ -75,7 +75,7 @@ export class ModuleModel {
     const res = await api.getWords(this.level, this.pages[this.activePageNumber]) as IWord[];
     this.active20Words = Array.from(res);
     // console.log(this.active20Words);
-    if (this.activeWordNumber === 0) { this.prepearFirstWord(); }
+    if (this.activePageNumber === 0 || sprintSettings.sprintFromTextbook) { this.prepearFirstWord(); }
   }
 
   prepearFirstWord():void {
