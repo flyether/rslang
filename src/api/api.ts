@@ -1,14 +1,140 @@
+/* eslint-disable linebreak-style */
+/* eslint-disable max-len */
 /* eslint-disable no-else-return */
 /* eslint-disable import/no-cycle */
 /* eslint-disable import/prefer-default-export */
-/* eslint-disable linebreak-style */
 
 import {
-  apiPath, usersEndpoint, wordsEndpoint, signIn,
+  apiPath, usersEndpoint, wordsEndpoint, signIn, apiCategory,
 } from './api-path';
-import { IUser, IWord, IUserData } from '../types/types';
+import {
+  IUser, IWord, IUserData, IUserWords, ISettings,
+} from '../types/types';
+import { storage } from '../functional/storage';
 
 const api = {
+
+  async UpsertsNewSettings(userId: string): Promise<ISettings | undefined> {
+    try {
+      const response = await fetch(`${apiPath}${usersEndpoint}/${userId}/settings`, {
+        method: 'PUT',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(storage.settings),
+      });
+      if (response.ok) {
+        return await response.json() as ISettings;
+      } else {
+        return undefined;
+      }
+    } catch (error) {
+      throw new Error('error puting new settings');
+    }
+  },
+
+  async GetSettings(userId: string): Promise<ISettings | undefined> {
+    try {
+      const response = await fetch(`${apiPath}${usersEndpoint}/${userId}/settings`, { method: 'GET' });
+      if (response.ok) {
+        return await response.json() as ISettings;
+      } else {
+        return await Promise.reject(new Error(response.statusText));
+      }
+    } catch (error) {
+      throw new Error('Error getting settings');
+    }
+  },
+
+  async getAllUserWords(userId: string): Promise<IUserWords[] | undefined > {
+    try {
+      const response = await fetch(`${apiPath}${usersEndpoint}/${userId}${wordsEndpoint}`,
+        { method: 'GET' });
+      if (response.ok) {
+        return await response.json() as IUserWords[];
+      } else {
+        return await Promise.reject(new Error(response.statusText));
+      }
+    } catch (error) {
+      throw new Error('Error getting words');
+    }
+  },
+
+  async CreateUserWord(userId: string, wordID:string): Promise<IUserWords | undefined > {
+    try {
+      const response = await fetch(`${apiPath}${usersEndpoint}/${userId}/${wordsEndpoint}/${wordID}`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(storage.userWord),
+      });
+      if (response.ok) {
+        return await response.json() as IUserWords;
+      } else {
+        return await Promise.reject(new Error(response.statusText));
+      }
+    } catch (error) {
+      throw new Error('Error creating user word');
+    }
+  },
+
+  async UpdateUserWord(userId: string, wordID:string): Promise<IUserWords | undefined > {
+    try {
+      const response = await fetch(`${apiPath}${usersEndpoint}/${userId}/${wordsEndpoint}/${wordID}`, {
+        method: 'PUT',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(storage.userWord),
+      });
+      if (response.ok) {
+        return await response.json() as IUserWords;
+      } else {
+        return await Promise.reject(new Error(response.statusText));
+      }
+    } catch (error) {
+      throw new Error('Error updating user word');
+    }
+  },
+
+  async DeleteUserWord(userId: string, wordID:string): Promise<void> {
+    try {
+      await fetch(`${apiPath}${usersEndpoint}/${userId}/${wordsEndpoint}/${wordID}`, { method: 'DELETE' });
+    } catch (error) {
+      throw new Error('Error deleting user word');
+    }
+  },
+
+  // async GetAllUserAggregatedWords(userId: string, page:string, wordsPerPage: string, filter: string ): Promise<IWord[] | undefined > {
+  //   try {
+  //     const response = await fetch(`${apiPath}${usersEndpoint}/${userId}/${wordsEndpoint}/${page}/${wordsPerPage}/${filter}`, { method: 'GET' });
+  //     if (response.ok) {
+  //       return await response.json() as IWord[];
+  //     } else {
+  //       return await Promise.reject(new Error(response.statusText));
+  //     }
+  //   } catch (error) {
+  //     throw new Error('Error getting words');
+  //   }
+  // },
+
+  async GetUserAggregatedWordById(userId: string, wordID:string): Promise<IUserWords | undefined > {
+    try {
+      const response = await fetch(`${apiPath}${usersEndpoint}/${userId}/aggregatedWords/${wordID}`,
+        { method: 'GET' });
+      if (response.ok) {
+        return await response.json() as IUserWords;
+      } else {
+        return await Promise.reject(new Error(response.statusText));
+      }
+    } catch (error) {
+      throw new Error('Error getting user aggregated word');
+    }
+  },
 
   async createNewUser(name: string, email: string, password: string): Promise<IUser | undefined> {
     try {
@@ -77,6 +203,7 @@ const api = {
       throw new Error("Can't get words");
     }
   },
+
   async getWord(id: string): Promise<IWord | undefined> {
     try {
       const response = await fetch(`${apiPath}${wordsEndpoint}/${id}`,
