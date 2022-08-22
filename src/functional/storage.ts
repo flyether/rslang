@@ -1,8 +1,9 @@
+/* eslint-disable object-curly-newline */
 /* eslint-disable linebreak-style */
 /* eslint-disable max-len */
 /* eslint-disable import/prefer-default-export */
 
-import { IUser, IUserData, IWord } from 'types/types';
+import { ISettings, IUser, IUserData, IUserWords, IWord } from 'types/types';
 
 class Storage {
   user?: IUserData;
@@ -10,6 +11,10 @@ class Storage {
   word?: IWord;
 
   words?: IWord[];
+
+  userWord?: IUserWords;
+
+  settings?: ISettings;
 
   constructor() {
     if (localStorage.getItem('user')) {

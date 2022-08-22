@@ -69,7 +69,6 @@ export interface IWord {
   wordTranslate: string;
   textMeaningTranslate: string;
   textExampleTranslate: string;
-  translate?: string;
 }
 
 export interface IWordGame {
@@ -92,4 +91,14 @@ export interface IUserData {
   refreshToken: string;
   userId: string;
   name: string;
+}
+
+export interface IUserWords {
+  difficulty: string;
+  optional?: IWord; // надо потом написать верный тип для optional
+}
+
+export interface ISettings {
+  wordsPerDay?: number;
+  optional?: IWord; // надо потом написать верный
 }
