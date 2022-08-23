@@ -47,7 +47,7 @@ const SprintGamePage = {
       <audio id="audio__timeover" src="${timeoverAudio}"></audio>
     </div>`;
   },
-  initMVC():void {
+  initMVC(): void {
     initSprintMVC();
   },
 };
