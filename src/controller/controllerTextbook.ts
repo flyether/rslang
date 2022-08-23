@@ -20,17 +20,19 @@ export class TextbookController {
   }
 
   setEventListeners(unit: number): void {
-    document.addEventListener('click', (e: MouseEvent) => {
+    const click: (e: MouseEvent) => void = (e: MouseEvent) => {
       if (e.target) {
         const target = e.target as HTMLElement;
         if ((target).classList.contains(this.unitSelector)) {
           window.location.hash = `${hashes.textbook}/${(target).dataset.unit}`;
         }
         if ((target).classList.contains(this.pageSelector)) {
-          window.location.hash = `${hashes.textbook}/${unit}/${(target).dataset.page}`;
+          console.log('click');
+          window.location.hash = `${window.location.hash}/${(target).dataset.page}`;
+          document.removeEventListener('click', click);
         }
         if ((target).id === 'go-back') {
-          if (+window.location.hash.split('/')[2]) {
+          if (+window.location.hash.split('/')[2] && unit) {
             window.location.hash = `${hashes.textbook}/${unit}`;
           } else { window.location.hash = `${hashes.textbook}`; }
         }
@@ -46,7 +48,6 @@ export class TextbookController {
               .then((res) => {
                 Words.aggregatedWords.push(res as IWord);
                 Words.learnedWords = Words.learnedWords.filter((word) => word.id !== target.dataset.word);
-                console.log(Words.aggregatedWords);
               });
           })();
         }
@@ -62,11 +63,11 @@ export class TextbookController {
               .then((res) => {
                 Words.learnedWords.push(res as IWord);
                 Words.aggregatedWords = Words.aggregatedWords.filter((word) => word.id !== target.dataset.word);
-                console.log(Words.learnedWords);
               });
           })();
         }
       }
-    });
+    };
+    document.addEventListener('click', click);
   }
 }
