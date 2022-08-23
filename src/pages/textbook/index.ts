@@ -7,6 +7,7 @@ import { IWord } from '../../types/types';
 import Header from '../../components/header';
 import Footer from '../../components/footer';
 import { TextbookController } from '../../controller/controllerTextbook';
+import Words from '../../words/words';
 
 const TextbookPage = {
   classname: 'textbook',
@@ -97,16 +98,20 @@ const TextbookPage = {
     <p class="word-example translation">${words[i].textExampleTranslate}</p>
   </div>
   <div class="word-noted">
-      <button class="btn-orange btn-difficult">Сложно?</button>
-      <button class="btn-orange btn-learned">Изучено?</button>
+      <button class="btn-orange btn-difficult" data-word = "${words[i].id}">Сложно?</button>
+      <button class="btn-orange btn-learned" data-word = "${words[i].id}">Изучено?</button>
   </div>`;
+        card.dataset.word = words[i].id;
         wordContainer?.append(card);
       }
     }
     (async () => {
       await api.getWords(unit - 1, page - 1)
         .then((res) => {
-          renderCards(res as IWord[]);
+          if (res) {
+            Words.words = res as IWord[];
+            renderCards(res as IWord[]);
+          }
         });
     })();
   },
