@@ -8,12 +8,12 @@ const StatisticsPage = {
     ${Header.render()}
     <div class = '${this.classname}-conteiner'>
       <ul class="statistics__list">
-        <li class="statistics__item statistics__item_active">Учебник</li>
-        <li class="statistics__item">Мини-игра 'Аудиовызов'</li>
-        <li class="statistics__item">Мини-игра 'Спринт'</li>
+        <li class="statistics__item statistics__textbook statistics__item_active">Учебник</li>
+        <li class="statistics__item statistics__audiocall">Мини-игра 'Аудиовызов'</li>
+        <li class="statistics__item statistics__sprint">Мини-игра 'Спринт'</li>
       </ul>
       <div class="statistics__chart">
-        <canvas id="chart" width="500" height="400"></canvas>
+        <canvas id="chart1" width="500" height="400"></canvas>
       </div>
     </div>
     ${Footer.render()}`;

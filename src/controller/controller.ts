@@ -34,6 +34,8 @@ class ModuleController {
 
   authorizationHeader !: HTMLElement;
 
+  statisticsConteiner !: HTMLElement;
+
   init(container: HTMLElement, model: ModuleModel): void {
     this.myModuleContainer = container;
     this.myModuleModel = model;
@@ -113,8 +115,21 @@ class ModuleController {
   }
 
   findStatisticsElements(): void {
-    const el = document.getElementById('chart') as HTMLCanvasElement;
-    this.myModuleModel.prepareChart(el);
+    const chartCanvas1 = document.getElementById('chart1') as HTMLCanvasElement;
+    this.myModuleModel.prepareTextbookStatistics(chartCanvas1);
+    this.statisticsConteiner = document.querySelector('.statistics-conteiner') as HTMLElement;
+    this.statisticsConteiner.addEventListener('click', (e: Event) => {
+      const el = e.target as HTMLElement;
+      if (el.closest('.statistics__textbook')) {
+        this.myModuleModel.prepareTextbookStatistics(chartCanvas1);
+      }
+      if (el.closest('.statistics__audiocall')) {
+        this.myModuleModel.prepareAudiocallStatistics(chartCanvas1);
+      }
+      if (el.closest('.statistics__sprint')) {
+        this.myModuleModel.prepareSprintStatistics(chartCanvas1);
+      }
+    });
   }
 }
 

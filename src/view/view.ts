@@ -1,6 +1,7 @@
 /* eslint-disable class-methods-use-this */
 
 import Chart from 'chart.js/auto';
+
 import { Routes, MenuItems } from '../types/types';
 import SprintGamePage from '../pages/sprint/index';
 
@@ -12,6 +13,8 @@ class ModuleView {
   routesObj!: Routes;
 
   menuStatictics !: HTMLElement;
+
+  chart1 !: Chart;
 
   init(container: HTMLElement, routes: Routes): void {
     this.myModuleContainer = container;
@@ -48,15 +51,17 @@ class ModuleView {
     }
   }
 
-  renderChart(el: HTMLCanvasElement, arrOfDays: string[]):void {
-    const ctx = el.getContext('2d') as CanvasRenderingContext2D;
-    const barChart = new Chart(ctx, {
+  renderChart(chart1: HTMLCanvasElement, arrOfLabels1: string[], label1:string, arrOfData1: number[]):void {
+    if (this.chart1) { this.chart1.destroy(); }
+    const ctx1 = chart1.getContext('2d') as CanvasRenderingContext2D;
+    ctx1.clearRect(0, 0, chart1.width, chart1.height);
+    this.chart1 = new Chart(ctx1, {
       type: 'bar',
       data: {
-        labels: arrOfDays,
+        labels: arrOfLabels1,
         datasets: [{
-          label: 'Количество новых слов за день',
-          data: [13, 19, 32, 2, 11],
+          label: label1,
+          data: arrOfData1,
           backgroundColor: [
             'rgb(255, 99, 132)',
             'rgb(54, 162, 235)',
@@ -73,6 +78,28 @@ class ModuleView {
         }],
       },
     });
+  }
+
+  hightStatistics(str:string): void {
+    const objStatiscticsItems:HTMLElement[] = Array.from(document.querySelectorAll('.statistics__item'));
+    objStatiscticsItems.forEach((element) => {
+      if (element.classList.contains('statistics__item_active')) {
+        element.classList.remove('statistics__item_active');
+      }
+    });
+    switch (str) {
+      case 'textbook':
+        objStatiscticsItems[0].classList.add('statistics__item_active');
+        break;
+      case 'audiocall':
+        objStatiscticsItems[1].classList.add('statistics__item_active');
+        break;
+      case 'sprint':
+        objStatiscticsItems[2].classList.add('statistics__item_active');
+        break;
+      default:
+        break;
+    }
   }
 }
 
