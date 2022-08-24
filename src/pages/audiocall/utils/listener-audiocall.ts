@@ -9,20 +9,20 @@
 /* eslint-disable class-methods-use-this */
 
 import { apiPath } from '../../../api/api-path';
-import {
-  clearLocalStorage, soundAudio, wordObj, storageAudiocall,
-} from './supporting-func';
+// import {
+//   clearLocalStorage, soundAudio, wordObj, storageAudiocall,
+// } from './supporting-func';
 import audioPathWrong from '../../../assets/audio/wrong-answer.mp3';
 import audioPathRight from '../../../assets/audio/right-answer.mp3';
-import { storage } from '../../../functional/storage';
+import { soundAudio, support } from './t';
 
-console.log(storageAudiocall.words, 'sstorageAudiocall.words в листнере');
+console.log(support.words, 'support.words в листнере');
 
 class ListenerAudioCall {
   keyboard(): void {
     document.addEventListener('keydown', (e) => {
       if (e.key === ' ') {
-        soundAudio((apiPath + wordObj.audio));
+        soundAudio((apiPath + support.wordObj.audio));
       }
       const dataN = Number(e.key);
       if (e.key === `Numpad ${dataN}` || e.key === `${dataN}`) {
@@ -36,13 +36,13 @@ class ListenerAudioCall {
   clik(): void {
     document.addEventListener('click', (e) => {
       if ((e.target as HTMLElement).classList.contains('btn-sound')) {
-        soundAudio((apiPath + wordObj.audio));
+        soundAudio((apiPath + support.wordObj.audio));
       }
 
       if ((e.target as HTMLElement).classList.contains('btn-translation')) {
-        if (storageAudiocall.round!) { storageAudiocall.round = 1; } else {
-          storageAudiocall.round = storageAudiocall.round! + 1;
-          if ((e.target as HTMLElement).id === wordObj.wordTranslate) {
+        if (support.round!) { support.round = 1; } else {
+          support.round = support.round! + 1;
+          if ((e.target as HTMLElement).id === support.wordObj.wordTranslate) {
             rightAnswerFunc((e.target as HTMLElement)!);
           } else {
             wrongAnswerFunc((e.target as HTMLElement));
@@ -51,27 +51,26 @@ class ListenerAudioCall {
       }
 
       if ((e.target as HTMLElement).classList.contains('restart')) {
-        clearLocalStorage();
+        support.clearLocalStorage();
         window.location.reload();
       }
       if ((e.target as HTMLElement).classList.contains('level-textbook')) {
         const locationHash = window.location.hash.split('/');
         const unit = +locationHash[1];
         const page = +locationHash[2];
-        storageAudiocall.level = unit + 1;
-        storageAudiocall.page = page;
-        storageAudiocall.textbook = true;
-        console.log('листнер', storageAudiocall.level, 'storageAudiocall.level ');
+        support.level = unit + 1;
+        support.page = page;
+        support.textbook = true;
       }
       if ((e.target as HTMLElement).classList.contains('level-change')) {
-        clearLocalStorage();
+        support.clearLocalStorage();
       }
       if ((e.target as HTMLElement).classList.contains('btn-level')) {
         const dataN = Number((e.target as HTMLElement).id.replace(/[^0-9]/g, ''));
         if ((e.target as HTMLElement).id === (`level${dataN}`)) {
-          clearLocalStorage();
-          storageAudiocall.level = dataN;
-          storageAudiocall.level = dataN;
+          support.clearLocalStorage();
+          support.level = dataN;
+          support.level = dataN;
         }
       }
     });
@@ -79,7 +78,7 @@ class ListenerAudioCall {
 }
 
 function rightAnswerFunc(el: HTMLElement) {
-  storageAudiocall.score! += 1;
+  support.score! += 1;
   soundAudio((audioPathRight));
   el.classList.add('btn-translation-right');
   setTimeout(() => {
@@ -92,8 +91,8 @@ function wrongAnswerFunc(el: HTMLElement) {
   el.classList.add('btn-translation-wrong');
   const rightAnswer = document.querySelector('.right-answer') as HTMLElement;
   if (rightAnswer) {
-    rightAnswer.innerHTML = `<div class="answer"><img class="answer-img" src="${apiPath + wordObj.image}" alt="правильный ответ"><br>${wordObj.word} — ${wordObj.wordTranslate} </div>`;
-    storageAudiocall.arrayWrongWords!.push(wordObj.word);
+    rightAnswer.innerHTML = `<div class="answer"><img class="answer-img" src="${apiPath + support.wordObj.image}" alt="правильный ответ"><br>${support.wordObj.word} — ${support.wordObj.wordTranslate} </div>`;
+    support.arrayWrongWords!.push(support.wordObj.word);
     soundAudio((audioPathWrong));
     setTimeout(() => {
       window.location.reload();

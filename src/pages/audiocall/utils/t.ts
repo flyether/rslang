@@ -14,9 +14,13 @@ import { api } from '../../../api/api';
 
 // выбор уровня для игры и страницы
 // (async function support() {
-
+function shuffle(array:string[]) {
+  array.sort(() => Math.random() - 0.5);
+}
 class Support {
-  arrayWrongWords = [];
+  textbook = false;
+
+  arrayWrongWords: string[] = [];
 
   round? = 0;
 
@@ -30,16 +34,16 @@ class Support {
 
   words: IWord[] | undefined = [];
 
-  wordString: string[] = [];
+  wordsString: string[] = [];
 
   noRepeat: string [] = [];
 
-  //   constructor() {
-  //     this.words = api.getWords(this.group!, this.page!)
-  //       .then((value) => value).catch((err) => {
-  //         console.log(err);
-  //       });
-  //   }
+  wordObj : IWord = {
+    id: '', group: 0, page: 0, word: '', image: '', audio: '', audioMeaning: '', audioExample: '', textMeaning: '', textExample: '', transcription: '', wordTranslate: '', textMeaningTranslate: '', textExampleTranslate: '',
+  };
+
+  arraySixWords:string [] = [];
+
   async getWords() {
     api.getWords(this.group!, this.page!)
       .then((value) => { this.words = value; }).catch((err) => {
@@ -53,136 +57,98 @@ class Support {
       this.page = Math.floor(Math.random() * (20 - 0 + 1)) + 0;
     }
   }
+
+  getFiveWords(): void {
+    this.wordsString = storage.words!.map((item) => item.wordTranslate);
+    if (this.noRepeat!.length > 0) {
+      this.wordsString = this.wordsString.filter((item) => !this.noRepeat!.includes(item));
+    }
+
+    shuffle(this.wordsString);
+
+    this.arraySixWords = this.wordsString.slice(0, 5);
+    const wordRight = this.arraySixWords[Math.floor(Math.random() * this.arraySixWords.length)];
+    for (let i = 0; i < this.words!.length; i++) {
+      if (this.words![i].wordTranslate === wordRight) {
+        this.wordObj = this.words![i];
+      }
+    }
+    this.noRepeat!.push(this.wordObj.wordTranslate);
+    if (localStorage.getItem('noRepeat')) {
+      this.noRepeat = JSON.parse(localStorage.getItem('noRepeat')!);
+      this.noRepeat.push(this.wordObj.wordTranslate);
+    }
+  }
+
+  printBtnString(): string {
+    this.getWords();
+    this.levelGame();
+    this.getFiveWords();
+    let a = '';
+    let containerBtn = ' ';
+    if (this.round! < 10) {
+      for (let i = 0; i < this.arraySixWords.length; i++) {
+        a = this.arraySixWords[i];
+        containerBtn += `<button data-num="${i + 1}" type="button" id="${a}" class="btn-translation">${a}</button> `;
+      }
+    } else {
+      this.wordObj.audio = '';
+      let a = '';
+      if (this.arrayWrongWords!.length > 0) {
+        a = ` <p class="game-text">Рекомендуем выучить:&nbsp${this.arrayWrongWords!.join(',\n')}</p> `;
+      } else {
+        a = ' <p class="game-text">Вы ниразу не ошиблись!</p> ';
+      }
+      containerBtn += `
+   <div class="game-over">
+     <p class="game-text">Вы прошли игру!</p>
+     <p class="game-text">Ваш результат: &nbsp ${this.score}</p>
+     ${a}
+     <div class="btn-game-over-container">
+       <button type="button" class="restart">Начать заново</button>
+       <a  class="link level-change" href="#audiocall" >Выбрать уровень</a>
+     </div>
+   </div>
+ 
+   `;
+      this.clearLocalStorage();
+    }
+    return containerBtn;
+  }
+
+  clearLocalStorage(): void {
+    this.arrayWrongWords = [];
+
+    this.round = 0;
+
+    this.score = 0;
+
+    this.group = 0;
+
+    this.page = 0;
+
+    this.level = 1;
+
+    this.words = [];
+
+    this.wordsString = [];
+
+    this.noRepeat = [];
+
+    this.wordObj = {
+      id: '', group: 0, page: 0, word: '', image: '', audio: '', audioMeaning: '', audioExample: '', textMeaning: '', textExample: '', transcription: '', wordTranslate: '', textMeaningTranslate: '', textExampleTranslate: '',
+    };
+
+    this.arraySixWords = [];
+  }
 }
 
-// констана которая получает с сервера массив слов
-// const apiGetWords = (api.getWords(storageAudiocall.group!, storageAudiocall.page!)
-//   .then((value) => {
-//     // storageAudiocall.words = value;
-//     // storage.words = value;
-//     localStorage.setItem('words', JSON.stringify(value));
-//   }).catch((err) => {
-//     console.log(err);
-//   })
-// );
+// функция проигрывания аудио с путем из нашего обекта-слово
+export function soundAudio(path: string): void {
+  const audioD = new Audio();
+  audioD.src = `${path}`;
+  audioD.autoplay = true;
+}
 
-// получаем массив преводов
-// function getWordsMap(): string[] {
-//   const words = storage.words!.map((item) => item.wordTranslate);
-//   console.log(words, 'words функции гет мап');
-//   return words;
-// }
-
-// let wordsString: string[] = [];
-
-// // фильтруем избавляясь от дублей
-
-// // if (storageAudiocall.noRepeat!.length > 0) {
-// //   wordsString = wordsString.filter((item) => !storageAudiocall.noRepeat!.includes(item));
-// // }
-
-// // перемешиваем массив преводов
-// // function shuffle(array:string[]) {
-// //   array.sort(() => Math.random() - 0.5);
-// // }
-// // shuffle(wordsString);
-
-// // создаем масси в котром будет тоько 5 слов для игры
-// let arraySixWords:string [] = [];
-// // arraySixWords = wordsString.slice(0, 5);
-
-// // выбираем случайное слово из 6, которое будем угадывать
-// // const wordRight = arraySixWords[Math.floor(Math.random() * arraySixWords.length)];
-
-// // получаем делаем объект в который сохраним выбранное слово со всеми данными
-// let wordObj : IWord = {
-//   id: '', group: 0, page: 0, word: '', image: '', audio: '', audioMeaning: '', audioExample: '', textMeaning: '', textExample: '', transcription: '', wordTranslate: '', textMeaningTranslate: '', textExampleTranslate: '',
-// };
-
-// // for (let i = 0; i < storageAudiocall.words!.length; i++) {
-// //   if (storageAudiocall.words![i].wordTranslate === wordRight) {
-// //     wordObj = storageAudiocall.words![i];
-// //   }
-// // }
-
-// // избавляемся от дублей в массиве преводов проолжение
-
-// // storageAudiocall.noRepeat!.push(wordObj.wordTranslate);
-// // if (localStorage.getItem('noRepeat')) {
-// //   noRepeat = JSON.parse(localStorage.getItem('noRepeat')!);
-// //   noRepeat.push(wordObj.wordTranslate);
-// //   localStorage.setItem('noRepeat', JSON.stringify(noRepeat));
-// // }
-
-// // функция проигрывания аудио с путем из нашего обекта-слово
-// function soundAudio(path: string): void {
-//   const audioD = new Audio();
-//   audioD.src = `${path}`;
-//   audioD.autoplay = true;
-// }
-
-// // рисуем кнопки с переводами
-// async function printBtnString(): Promise <string | undefined> {
-//   storageAudiocall.words = await api.getWords(storageAudiocall.group!, storageAudiocall.page!);
-
-//   wordsString = storageAudiocall.words!.map((item) => item.wordTranslate);
-
-//   if (storageAudiocall.noRepeat!.length > 0) {
-//     wordsString = wordsString.filter((item) => !storageAudiocall.noRepeat!.includes(item));
-//   }
-
-//   // перемешиваем массив преводов
-//   function shuffle(array:string[]) {
-//     array.sort(() => Math.random() - 0.5);
-//   }
-//   shuffle(wordsString);
-
-//   arraySixWords = wordsString.slice(0, 5);
-
-//   // выбираем случайное слово из 6, которое будем угадывать
-//   const wordRight = arraySixWords[Math.floor(Math.random() * arraySixWords.length)];
-
-//   for (let i = 0; i < storageAudiocall.words!.length; i++) {
-//     if (storageAudiocall.words![i].wordTranslate === wordRight) {
-//       wordObj = storageAudiocall.words![i];
-//     }
-//   }
-
-//   storageAudiocall.noRepeat!.push(wordObj.wordTranslate);
-//   console.log(storageAudiocall.words, 'sstorageAudiocall.words в принтбтн');
-
-//   // кусок который не трогали
-//   let a = '';
-//   let containerBtn = ' ';
-//   if (storageAudiocall.round! < 10) {
-//     for (let i = 0; i < arraySixWords.length; i++) {
-//       a = arraySixWords[i];
-//       containerBtn += `<button data-num="${i + 1}" type="button" id="${a}" class="btn-translation">${a}</button> `;
-//     }
-//   } else {
-//     wordObj.audio = '';
-//     let a = '';
-//     if (storageAudiocall.arrayWrongWords!.length > 0) {
-//       a = ` <p class="game-text">Рекомендуем выучить:&nbsp${storageAudiocall.arrayWrongWords!.join(',\n')}</p> `;
-//     } else {
-//       a = ' <p class="game-text">Вы ниразу не ошиблись!</p> ';
-//     }
-//     containerBtn += `
-//   <div class="game-over">
-//     <p class="game-text">Вы прошли игру!</p>
-//     <p class="game-text">Ваш результат: &nbsp ${storageAudiocall.score}</p>
-//     ${a}
-//     <div class="btn-game-over-container">
-//       <button type="button" class="restart">Начать заново</button>
-//       <a  class="link level-change" href="#audiocall" >Выбрать уровень</a>
-//     </div>
-//   </div>
-
-//   `;
-//     clearLocalStorage();
-//   }
-//   return containerBtn as string;
-// }
-// function clearLocalStorage(): void {
-//   storageAudiocall = {};
-// }
+const support = new Support();
+export { support };
