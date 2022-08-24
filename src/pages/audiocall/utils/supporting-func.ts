@@ -120,7 +120,7 @@ function printBtnString(): string {
     ${a}
     <div class="btn-game-over-container">
       <button type="button" class="restart">Начать заново</button>
-      <a  class="link" href="#audiocall" >Выбрать уровень2</a>
+      <a  class="link level-change" href="#audiocall" >Выбрать уровень</a>
     </div>
   </div>
   

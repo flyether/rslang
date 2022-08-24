@@ -72,6 +72,9 @@ class ListenerAudioCall {
         localStorage.setItem('textbook', 'true');
         clearLocalStorage();
       }
+      if ((e.target as HTMLElement).classList.contains('level-change')) {
+        clearLocalStorage();
+      }
       if ((e.target as HTMLElement).classList.contains('btn-level')) {
         const dataN = Number((e.target as HTMLElement).id.replace(/[^0-9]/g, ''));
         if ((e.target as HTMLElement).id === (`level${dataN}`)) {
