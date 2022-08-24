@@ -25,7 +25,7 @@ if (localStorage.getItem('score') === null) {
 if (localStorage.getItem('round') === null) {
   localStorage.setItem('round', JSON.stringify(round));
 }
-
+console.log(storage.level, 'storage.level в суппорте  ');
 class ListenerAudioCall {
   keyboard(): void {
     document.addEventListener('keydown', (e) => {
@@ -73,11 +73,13 @@ class ListenerAudioCall {
       }
       if ((e.target as HTMLElement).classList.contains('level-change')) {
         clearLocalStorage();
+        window.location.reload();
       }
       if ((e.target as HTMLElement).classList.contains('btn-level')) {
         const dataN = Number((e.target as HTMLElement).id.replace(/[^0-9]/g, ''));
         if ((e.target as HTMLElement).id === (`level${dataN}`)) {
           storage.level = dataN;
+          console.log(storage.level, 'storage.level в листнере аудиоигры ');
           localStorage.setItem('level', `${dataN}`);
           clearLocalStorage();
         }

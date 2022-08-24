@@ -136,6 +136,7 @@ function clearLocalStorage(): void {
   localStorage.removeItem('round');
   localStorage.removeItem('score');
   localStorage.removeItem('textbook');
+  localStorage.removeItem('page');
 }
 
 export {
