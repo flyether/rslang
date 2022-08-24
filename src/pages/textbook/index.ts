@@ -24,6 +24,8 @@ const TextbookPage = {
     const maxUnit = 7;
     const unitSelector = 'textbook-unit';
     const pageSelector = 'unit-page';
+    const minPage = 1;
+    const maxPage = 30;
     const controllerTextbook = new TextbookController(unitSelector, pageSelector);
     if (!unit) {
       view = `<div class="textbook-units">
@@ -58,10 +60,10 @@ const TextbookPage = {
       </ul>
       <div class="textbook-footer">
         <div class="textbook-pagination">
-          <button class="pagination-btn btn-orange">Предыдущая</button>
+          <button class="pagination-btn btn-orange previous" ${page === minPage ? 'disabled' : ''}>Предыдущая</button>
           <a class="textbook-game" href="${hashes.audiocall}">Аудиовызов</a>
           <a class="textbook-game" href="${hashes.aboutsprint}">Спринт</a>
-          <button class="pagination-btn btn-orange">Следующая</button>
+          <button class="pagination-btn btn-orange next" ${page === maxPage ? 'disabled' : ''}>Следующая</button>
         </div>
       </div>
     </div>`;

@@ -37,6 +37,21 @@ export class TextbookController {
             window.location.hash = `${hashes.textbook}/${unit}`;
           } else { window.location.hash = `${hashes.textbook}`; }
         }
+        if ((target).classList.contains('previous')) {
+          const splittedHash = window.location.hash.split('/');
+          let page = +splittedHash[2];
+          if (page === 1) return;
+          page -= 1;
+          window.location.hash = [splittedHash[0], splittedHash[1], page].join('/');
+        }
+        if ((target).classList.contains('next')) {
+          const splittedHash = window.location.hash.split('/');
+          let page = +splittedHash[2];
+          const maxPage = 30;
+          if (page === maxPage) return;
+          page += 1;
+          window.location.hash = [splittedHash[0], splittedHash[1], page].join('/');
+        }
         if ((target).classList.contains('btn-difficult')) {
           target.classList.add('added');
           target.innerText = 'Сложное слово';
