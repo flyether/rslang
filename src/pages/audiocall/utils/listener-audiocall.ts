@@ -58,7 +58,19 @@ class ListenerAudioCall {
       }
 
       if ((e.target as HTMLElement).classList.contains('restart')) {
+        localStorage.removeItem('page');
         window.location.reload();
+      }
+      if ((e.target as HTMLElement).classList.contains('level-textbook')) {
+        const locationHash = window.location.hash.split('/');
+        const unit = +locationHash[1];
+        const page = +locationHash[2];
+        storage.level = unit + 1;
+        console.log(unit, page, 'unit, page');
+        localStorage.setItem('level', `${unit + 1}`);
+        localStorage.setItem('page', `${page}`);
+        localStorage.setItem('textbook', 'true');
+        clearLocalStorage();
       }
       if ((e.target as HTMLElement).classList.contains('btn-level')) {
         const dataN = Number((e.target as HTMLElement).id.replace(/[^0-9]/g, ''));

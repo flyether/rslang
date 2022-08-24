@@ -8,7 +8,22 @@ export const startScrinAudioCall = {
   },
 
   render(): string {
-    return /* html */` 
+    let html = '';
+    if (localStorage.getItem('textbook') === 'true') {
+      html = /* html */` 
+
+      <div class="audio-call"> 
+        <p class="audio-call__text">В игре аудиовызов вамнужно выбрать правильный перевод слова. <br>
+      
+        Чтобы играть с помощью клавиатуры, используй клавиши
+        1, 2, 3, 4, 5  чтобы дать ответ,
+        space - для воспроизведения звука.
+        </p>
+       <a id="leveltextbook" class="btn-level link" href="${this.hashes.audiocallGame}" >Играть</a>
+   >
+      `;
+    } else {
+      html = /* html */` 
 
 <div class="audio-call"> 
   <p class="audio-call__text">В игре аудиовызов вамнужно выбрать правильный перевод слова. <br>
@@ -30,5 +45,7 @@ export const startScrinAudioCall = {
 
  <a id="level6" class="btn-level link" href="${this.hashes.audiocallGame}" >Уровень 6</a>
 `;
+    }
+    return html;
   },
 };

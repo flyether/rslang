@@ -23,12 +23,16 @@ let arraylevel: number[] = [];
 function levelGame(): void {
   if (localStorage.getItem('level')) {
     group = Number(localStorage.getItem('level')) - 1;
+    if ((localStorage.getItem('page'))) {
+      page = Number(localStorage.getItem('page'));
+    } else {
     page = Math.floor(Math.random() * (30 - 0 + 1)) + 0;
+    }
     arraylevel = [group, page];
   }
 }
 levelGame();
-
+console.log(group, page, 'group, page в выборе ');
 // констана которая получает с сервера массив слов
 const apiGetWords = api.getWords(group, page)
   .then((value) => {

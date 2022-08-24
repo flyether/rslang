@@ -58,7 +58,7 @@ const TextbookPage = {
       <div class="textbook-footer">
         <div class="textbook-pagination">
           <button class="pagination-btn btn-orange">Предыдущая</button>
-          <a class="textbook-game" href="${hashes.audiocall}">Аудиовызов</a>
+          <a class="textbook-game level-textbook"  href="${hashes.audiocall}">Аудиовызов</a>
           <a class="textbook-game" href="${hashes.aboutsprint}">Спринт</a>
           <button class="pagination-btn btn-orange">Следующая</button>
         </div>
