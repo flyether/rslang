@@ -15,16 +15,19 @@ const TextbookPage = {
 
   unitDifficultWords: 7,
 
+  isAuth: localStorage.getItem('user'),
+
   render(): string {
     const locationHash = window.location.hash.split('/');
     const unit = +locationHash[1];
-    console.log(unit);
     const page = +locationHash[2];
     let view = '';
     const minUnit = 1;
     const maxUnit = 7;
     const unitSelector = 'textbook-unit';
     const pageSelector = 'unit-page';
+    const minPage = 1;
+    const maxPage = 30;
     const controllerTextbook = new TextbookController(unitSelector, pageSelector);
     if (!unit) {
       view = `<div class="textbook-units">
@@ -34,14 +37,14 @@ const TextbookPage = {
       <div class="textbook-unit" data-unit="4">Раздел 4</div>
       <div class="textbook-unit" data-unit="5">Раздел 5</div>
       <div class="textbook-unit" data-unit="6">Раздел 6</div>
-      <div class="textbook-unit" data-unit="7">Раздел "Сложные слова"</div>
-      </div>
-      `;
+      ${this.isAuth ? `<div class="textbook-unit" data-unit="7">Раздел "Сложные слова"</div>
+      ` : ''}
+      </div>`;
     } else if (!page && unit <= maxUnit && unit >= minUnit && typeof unit === 'number') {
       view = `
          <div class="textbook-navigation unit-navigation">
             <button class="btn-round" id="go-back"></button>
-            <p class="unit-name">Раздел ${unit}</p>
+            <p class="unit-name">Раздел ${this.unitDifficultWords === unit ? '"Сложные слова"' : unit}</p>
          </div>
          <ul class="unit-pages">
             ${this.renderPages(unit)}
@@ -50,17 +53,19 @@ const TextbookPage = {
       view = `<div class=${this.classname}>
       <div class="textbook-navigation">
         <button class="btn-round" id="go-back"></button>
-        <p class="unit-name">Раздел ${unit} <span class="unit-page-name">страница ${page}</span></p>
+        <p class="unit-name">Раздел ${this.unitDifficultWords === unit ? '"Сложные слова"' : unit}
+         <span class="unit-page-name">страница ${page}</span>
+        </p>
       </div>
       <ul class=${this.wordlist}>
        ${this.getCards(unit, page)}
       </ul>
       <div class="textbook-footer">
         <div class="textbook-pagination">
-          <button class="pagination-btn btn-orange">Предыдущая</button>
-          <a class="textbook-game level-textbook"  href="${hashes.audiocall}">Аудиовызов</a>
-          <a class="textbook-game" href="${hashes.aboutsprint}">Спринт</a>
-          <button class="pagination-btn btn-orange">Следующая</button>
+          <button class="pagination-btn btn-orange previous" ${page === minPage ? 'disabled' : ''}>Предыдущая</button>
+          ${this.isAuth ? `<a class="textbook-game level-textbook" href="${hashes.audiocall}">Аудиовызов</a>
+          <a class="textbook-game" href="${hashes.aboutsprint}">Спринт</a>` : ''}
+          <button class="pagination-btn btn-orange next" ${page === maxPage ? 'disabled' : ''}>Следующая</button>
         </div>
       </div>
     </div>`;
@@ -81,12 +86,14 @@ const TextbookPage = {
     return pages;
   },
   getCards(unit: number, page: number): void {
-    const { wordlist } = this;
+    const { wordlist, isAuth } = this;
     function renderCards(words: IWord[]) {
       const wordContainer = document.querySelector(`.${wordlist}`);
       if (wordContainer) {
         wordContainer.innerHTML = '';
         for (let i = 0; i < words.length; i += 1) {
+          const isWordInDifficult = Words.aggregatedWords.some((word) => words[i].id === word.id);
+          const isWordLearned = Words.learnedWords.some((word) => words[i].id === word.id);
           const card = document.createElement('li');
           card.classList.add('word-item');
           card.innerHTML = `
@@ -96,7 +103,9 @@ const TextbookPage = {
   <div class="word-description">
     <div class="word-pronounce word-audio">
     <p class="word-name">${words[i].word} ${words[i].transcription}</p>
-      <div class="audio"><audio></audio></div>
+      <div class="audio">
+        <audio src="https://rslang-learning-english-words.herokuapp.com/${words[i].audio}"></audio>
+      </div>
     </div>
     <p class="word-pronounce translation">${words[i].wordTranslate}</p>
     <p class="word-example">${words[i].textMeaning}</p>
@@ -104,17 +113,24 @@ const TextbookPage = {
     <p class="word-example">${words[i].textExample}</p>
     <p class="word-example translation">${words[i].textExampleTranslate}</p>
   </div>
-  <div class="word-noted">
-      <button class="btn-orange btn-difficult" data-word = "${words[i].id}">Сложно?</button>
-      <button class="btn-orange btn-learned" data-word = "${words[i].id}">Изучено?</button>
-  </div>`;
+  ${isAuth ? `
+<div class="word-noted">
+      <button class="btn-orange btn-difficult  ${isWordInDifficult ? 'added' : ''}" 
+      data-word = "${words[i].id}" 
+      ${isWordInDifficult ? 'disabled' : ''} >Сложно?</button>
+      <button class="btn-orange btn-learned ${isWordLearned ? 'added' : ''}" 
+      data-word = "${words[i].id}"
+      ${isWordLearned ? 'disabled' : ''}>Изучено?</button>
+      </div>` : ''}`;
           card.dataset.word = words[i].id;
           wordContainer.append(card);
         }
       }
     }
     if (unit === this.unitDifficultWords) {
-      renderCards(Words.aggregatedWords);
+      setTimeout(() => {
+        renderCards(Words.aggregatedWords);
+      }, 0);
       return;
     }
     (async () => {
