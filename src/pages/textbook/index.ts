@@ -87,10 +87,9 @@ const TextbookPage = {
       const wordContainer = document.querySelector(`.${wordlist}`);
       if (wordContainer) {
         wordContainer.innerHTML = '';
-        console.log(Words.aggregatedWords);
         for (let i = 0; i < words.length; i += 1) {
           const isWordInDifficult = Words.aggregatedWords.some((word) => words[i].id === word.id);
-          console.log(Words.aggregatedWords.some((word) => words[i].id === word.id));
+          const isWordLearned = Words.learnedWords.some((word) => words[i].id === word.id);
           const card = document.createElement('li');
           card.classList.add('word-item');
           card.innerHTML = `
@@ -112,7 +111,9 @@ const TextbookPage = {
       <button class="btn-orange btn-difficult  ${isWordInDifficult ? 'added' : ''}" 
       data-word = "${words[i].id}" 
       ${isWordInDifficult ? 'disabled' : ''} >Сложно?</button>
-      <button class="btn-orange btn-learned" data-word = "${words[i].id}">Изучено?</button>
+      <button class="btn-orange btn-learned ${isWordLearned ? 'added' : ''}" 
+      data-word = "${words[i].id}"
+      ${isWordLearned ? 'disabled' : ''}>Изучено?</button>
   </div>`;
           card.dataset.word = words[i].id;
           wordContainer.append(card);
