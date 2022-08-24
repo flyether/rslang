@@ -13,7 +13,7 @@ import { apiPath } from '../../../api/api-path';
 import { api } from '../../../api/api';
 
 // выбор уровня для игры и страницы
-
+// (async function support() {
 let storageAudiocall:IStorageAudiocall = {
   arrayWrongWords: [],
   round: 0,
@@ -38,23 +38,29 @@ function levelGame(): void {
 }
 levelGame();
 console.log(storageAudiocall.group, storageAudiocall.page, 'group, page');
-console.log(storageAudiocall, 'storageAudiocall2');
+
 // констана которая получает с сервера массив слов
-const apiGetWords = api.getWords(storageAudiocall.group!, storageAudiocall.page!)
+const apiGetWords = (api.getWords(storageAudiocall.group!, storageAudiocall.page!)
   .then((value) => {
     storageAudiocall.words = value;
+    storage.words = value;
   }).catch((err) => {
     console.log(err);
-  });
+  })
+);
+
 // получаем массив преводов
 function getWordsMap(): string[] {
   apiGetWords;
-  const words = storageAudiocall.words!.map((item) => item.wordTranslate);
+  const words = storage.words!.map((item) => item.wordTranslate);
+  console.log(words, 'words функции гет мап');
   return words;
 }
 
+console.log(storageAudiocall, 'storageAudiocall');
+console.log(storageAudiocall.words, 'storageAudiocall.words ');
 let wordsString = getWordsMap();
-console.log(storageAudiocall, 'storageAudiocall2');
+
 // фильтруем избавляясь от дублей
 
 if (storageAudiocall.noRepeat!.length > 0) {
@@ -67,6 +73,7 @@ function shuffle(array:string[]) {
 }
 shuffle(wordsString);
 
+console.log(wordsString, 'awordsString');
 // создаем масси в котром будет тоько 5 слов для игры
 let arraySixWords:string [] = [];
 arraySixWords = wordsString.slice(0, 5);
@@ -84,7 +91,7 @@ for (let i = 0; i < storageAudiocall.words!.length; i++) {
     wordObj = storageAudiocall.words![i];
   }
 }
-console.log(storageAudiocall, 'storageAudiocall3');
+console.log(arraySixWords, 'arraySixWords');
 // избавляемся от дублей в массиве преводов проолжение
 
 storageAudiocall.noRepeat!.push(wordObj.wordTranslate);
@@ -136,15 +143,10 @@ function printBtnString(): string {
 }
 function clearLocalStorage(): void {
   storageAudiocall = {};
-  localStorage.removeItem('noRepeat');
-  localStorage.removeItem('arrayWrongWords');
-  localStorage.removeItem('round');
-  localStorage.removeItem('score');
-  localStorage.removeItem('textbook');
-  localStorage.removeItem('page');
 }
-
+// }());
 export {
+
   soundAudio,
   printBtnString, wordObj,
   clearLocalStorage,

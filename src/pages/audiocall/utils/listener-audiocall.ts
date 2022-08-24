@@ -68,7 +68,7 @@ class ListenerAudioCall {
         const dataN = Number((e.target as HTMLElement).id.replace(/[^0-9]/g, ''));
         if ((e.target as HTMLElement).id === (`level${dataN}`)) {
           clearLocalStorage();
-          storage.level = dataN;
+          storageAudiocall.level = dataN;
           storageAudiocall.level = dataN;
         }
       }
