@@ -99,7 +99,9 @@ const TextbookPage = {
   <div class="word-description">
     <div class="word-pronounce word-audio">
     <p class="word-name">${words[i].word} ${words[i].transcription}</p>
-      <div class="audio"><audio></audio></div>
+      <div class="audio">
+        <audio src="https://rslang-learning-english-words.herokuapp.com/${words[i].audio}"></audio>
+      </div>
     </div>
     <p class="word-pronounce translation">${words[i].wordTranslate}</p>
     <p class="word-example">${words[i].textMeaning}</p>

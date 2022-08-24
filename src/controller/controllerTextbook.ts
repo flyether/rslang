@@ -26,8 +26,10 @@ export class TextbookController {
         if ((target).classList.contains(this.unitSelector)) {
           window.location.hash = `${hashes.textbook}/${(target).dataset.unit}`;
         }
+        if ((target).classList.contains('audio')) {
+          target.querySelector('audio')?.play();
+        }
         if ((target).classList.contains(this.pageSelector)) {
-          console.log('click');
           window.location.hash = `${window.location.hash}/${(target).dataset.page}`;
         }
         if ((target).id === 'go-back') {
