@@ -1,9 +1,10 @@
+/* eslint-disable linebreak-style */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable max-len */
 /* eslint-disable no-restricted-globals */
 /* eslint-disable import/no-cycle */
 /* eslint-disable import/no-mutable-exports */
-/* eslint-disable linebreak-style */
+
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable class-methods-use-this */
 
@@ -73,7 +74,6 @@ class ListenerAudioCall {
       }
       if ((e.target as HTMLElement).classList.contains('level-change')) {
         clearLocalStorage();
-        window.location.reload();
       }
       if ((e.target as HTMLElement).classList.contains('btn-level')) {
         const dataN = Number((e.target as HTMLElement).id.replace(/[^0-9]/g, ''));

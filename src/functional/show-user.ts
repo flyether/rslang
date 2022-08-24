@@ -19,6 +19,5 @@ export default function showUser(ret:boolean) :string | undefined {
   if (ret) {
     return html;
   }
-  Header.render();
   header.innerHTML = html;
 }
