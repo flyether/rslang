@@ -26,15 +26,31 @@ export class TextbookController {
         if ((target).classList.contains(this.unitSelector)) {
           window.location.hash = `${hashes.textbook}/${(target).dataset.unit}`;
         }
+        if ((target).classList.contains('audio')) {
+          target.querySelector('audio')?.play();
+        }
         if ((target).classList.contains(this.pageSelector)) {
-          console.log('click');
           window.location.hash = `${window.location.hash}/${(target).dataset.page}`;
-          document.removeEventListener('click', click);
         }
         if ((target).id === 'go-back') {
           if (+window.location.hash.split('/')[2] && unit) {
             window.location.hash = `${hashes.textbook}/${unit}`;
           } else { window.location.hash = `${hashes.textbook}`; }
+        }
+        if ((target).classList.contains('previous')) {
+          const splittedHash = window.location.hash.split('/');
+          let page = +splittedHash[2];
+          if (page === 1) return;
+          page -= 1;
+          window.location.hash = [splittedHash[0], splittedHash[1], page].join('/');
+        }
+        if ((target).classList.contains('next')) {
+          const splittedHash = window.location.hash.split('/');
+          let page = +splittedHash[2];
+          const maxPage = 30;
+          if (page === maxPage) return;
+          page += 1;
+          window.location.hash = [splittedHash[0], splittedHash[1], page].join('/');
         }
         if ((target).classList.contains('btn-difficult')) {
           target.classList.add('added');
@@ -68,6 +84,6 @@ export class TextbookController {
         }
       }
     };
-    document.addEventListener('click', click);
+    document.onclick = click;
   }
 }
