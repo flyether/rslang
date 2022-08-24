@@ -36,9 +36,9 @@ const TextbookPage = {
       <div class="textbook-unit" data-unit="4">Раздел 4</div>
       <div class="textbook-unit" data-unit="5">Раздел 5</div>
       <div class="textbook-unit" data-unit="6">Раздел 6</div>
-      <div class="textbook-unit" data-unit="7">Раздел "Сложные слова"</div>
-      </div>
-      `;
+      ${isAuth ? `<div class="textbook-unit" data-unit="7">Раздел "Сложные слова"</div>
+      ` : ''}
+      </div>`;
     } else if (!page && unit <= maxUnit && unit >= minUnit && typeof unit === 'number') {
       view = `
          <div class="textbook-navigation unit-navigation">
