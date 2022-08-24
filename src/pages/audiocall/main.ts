@@ -4,17 +4,22 @@
 import { gameArea } from './utils/game-render';
 
 const AudiocallGame = {
-  hashes: {
+  // hashes: {
 
-    main: '#main',
+  //   main: '#main',
 
-  },
+  // },
 
   render(): string {
     return `
-       <div class = 'container'> <button  type="button"  class="go-main"><a href="${this.hashes.main}" ></a>Вернуться на главную</a></button> ${gameArea}</div>
+       <div class = 'container'> 
+       <a class="go-main " href='#main' >Вернуться <br> на главную</a> 
+         <div class = 'game'> ${gameArea} </div>
+         
+         
+         </div>
       `;
   },
 };
 
-export default AudiocallGame;
+export { AudiocallGame };
