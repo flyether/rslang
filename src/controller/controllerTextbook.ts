@@ -29,7 +29,6 @@ export class TextbookController {
         if ((target).classList.contains(this.pageSelector)) {
           console.log('click');
           window.location.hash = `${window.location.hash}/${(target).dataset.page}`;
-          document.removeEventListener('click', click);
         }
         if ((target).id === 'go-back') {
           if (+window.location.hash.split('/')[2] && unit) {
@@ -68,6 +67,6 @@ export class TextbookController {
         }
       }
     };
-    document.addEventListener('click', click);
+    document.onclick = click;
   }
 }

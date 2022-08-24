@@ -18,7 +18,6 @@ const TextbookPage = {
   render(): string {
     const locationHash = window.location.hash.split('/');
     const unit = +locationHash[1];
-    console.log(unit);
     const page = +locationHash[2];
     let view = '';
     const minUnit = 1;
@@ -114,7 +113,9 @@ const TextbookPage = {
       }
     }
     if (unit === this.unitDifficultWords) {
-      renderCards(Words.aggregatedWords);
+      setTimeout(() => {
+        renderCards(Words.aggregatedWords);
+      }, 0);
       return;
     }
     (async () => {
