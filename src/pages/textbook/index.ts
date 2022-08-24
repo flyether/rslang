@@ -40,7 +40,7 @@ const TextbookPage = {
       view = `
          <div class="textbook-navigation unit-navigation">
             <button class="btn-round" id="go-back"></button>
-            <p class="unit-name">Раздел ${unit}</p>
+            <p class="unit-name">Раздел ${this.unitDifficultWords === unit ? '"Сложные слова"' : unit}</p>
          </div>
          <ul class="unit-pages">
             ${this.renderPages(unit)}
@@ -49,7 +49,9 @@ const TextbookPage = {
       view = `<div class=${this.classname}>
       <div class="textbook-navigation">
         <button class="btn-round" id="go-back"></button>
-        <p class="unit-name">Раздел ${unit} <span class="unit-page-name">страница ${page}</span></p>
+        <p class="unit-name">Раздел ${this.unitDifficultWords === unit ? '"Сложные слова"' : unit}
+         <span class="unit-page-name">страница ${page}</span>
+        </p>
       </div>
       <ul class=${this.wordlist}>
        ${this.getCards(unit, page)}
@@ -85,7 +87,10 @@ const TextbookPage = {
       const wordContainer = document.querySelector(`.${wordlist}`);
       if (wordContainer) {
         wordContainer.innerHTML = '';
+        console.log(Words.aggregatedWords);
         for (let i = 0; i < words.length; i += 1) {
+          const isWordInDifficult = Words.aggregatedWords.some((word) => words[i].id === word.id);
+          console.log(Words.aggregatedWords.some((word) => words[i].id === word.id));
           const card = document.createElement('li');
           card.classList.add('word-item');
           card.innerHTML = `
@@ -104,7 +109,9 @@ const TextbookPage = {
     <p class="word-example translation">${words[i].textExampleTranslate}</p>
   </div>
   <div class="word-noted">
-      <button class="btn-orange btn-difficult" data-word = "${words[i].id}">Сложно?</button>
+      <button class="btn-orange btn-difficult  ${isWordInDifficult ? 'added' : ''}" 
+      data-word = "${words[i].id}" 
+      ${isWordInDifficult ? 'disabled' : ''} >Сложно?</button>
       <button class="btn-orange btn-learned" data-word = "${words[i].id}">Изучено?</button>
   </div>`;
           card.dataset.word = words[i].id;
