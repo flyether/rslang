@@ -16,6 +16,8 @@ import audioPathWrong from '../../../assets/audio/wrong-answer.mp3';
 import audioPathRight from '../../../assets/audio/right-answer.mp3';
 import { storage } from '../../../functional/storage';
 
+console.log(storageAudiocall.words, 'sstorageAudiocall.words в листнере');
+
 class ListenerAudioCall {
   keyboard(): void {
     document.addEventListener('keydown', (e) => {

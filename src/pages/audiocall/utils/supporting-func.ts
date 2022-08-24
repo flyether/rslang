@@ -28,73 +28,71 @@ let storageAudiocall:IStorageAudiocall = {
 };
 
 function levelGame(): void {
-  if (localStorage.getItem('level')) {
-    storageAudiocall.group = storageAudiocall.level! - 1;
-    if ((storageAudiocall.page === 0)) {
-      storageAudiocall.page = Math.floor(Math.random() * (20 - 0 + 1)) + 0;
-    }
-    storageAudiocall.arrayLevel = [storageAudiocall.group, storageAudiocall.page!];
+  storageAudiocall.group = storageAudiocall.level! - 1;
+  if ((storageAudiocall.page === 0)) {
+    storageAudiocall.page = Math.floor(Math.random() * (20 - 0 + 1)) + 0;
   }
+  storageAudiocall.arrayLevel = [storageAudiocall.group, storageAudiocall.page!];
 }
-levelGame();
+
 console.log(storageAudiocall.group, storageAudiocall.page, 'group, page');
 
 // констана которая получает с сервера массив слов
-const apiGetWords = (api.getWords(storageAudiocall.group!, storageAudiocall.page!)
-  .then((value) => {
-    storageAudiocall.words = value;
-    storage.words = value;
-  }).catch((err) => {
-    console.log(err);
-  })
-);
+const apiGetWords = (api.getWords(storageAudiocall.group!, storageAudiocall.page!));
+console.log(apiGetWords, 'apiGetWords');
+//   .then((value) => {
+//     // storageAudiocall.words = value;
+//     // storage.words = value;
+//     localStorage.setItem('words', JSON.stringify(value));
+//   }).catch((err) => {
+//     console.log(err);
+//   })
+// );
 
 // получаем массив преводов
-function getWordsMap(): string[] {
-  apiGetWords;
-  const words = storage.words!.map((item) => item.wordTranslate);
-  console.log(words, 'words функции гет мап');
-  return words;
-}
+// function getWordsMap(): string[] {
+//   const words = storage.words!.map((item) => item.wordTranslate);
+//   console.log(words, 'words функции гет мап');
+//   return words;
+// }
 
 console.log(storageAudiocall, 'storageAudiocall');
 console.log(storageAudiocall.words, 'storageAudiocall.words ');
-let wordsString = getWordsMap();
+let wordsString: string[] = [];
 
 // фильтруем избавляясь от дублей
 
-if (storageAudiocall.noRepeat!.length > 0) {
-  wordsString = wordsString.filter((item) => !storageAudiocall.noRepeat!.includes(item));
-}
+// if (storageAudiocall.noRepeat!.length > 0) {
+//   wordsString = wordsString.filter((item) => !storageAudiocall.noRepeat!.includes(item));
+// }
 
 // перемешиваем массив преводов
-function shuffle(array:string[]) {
-  array.sort(() => Math.random() - 0.5);
-}
-shuffle(wordsString);
+// function shuffle(array:string[]) {
+//   array.sort(() => Math.random() - 0.5);
+// }
+// shuffle(wordsString);
 
-console.log(wordsString, 'awordsString');
 // создаем масси в котром будет тоько 5 слов для игры
 let arraySixWords:string [] = [];
-arraySixWords = wordsString.slice(0, 5);
+// arraySixWords = wordsString.slice(0, 5);
 
 // выбираем случайное слово из 6, которое будем угадывать
-const wordRight = arraySixWords[Math.floor(Math.random() * arraySixWords.length)];
+// const wordRight = arraySixWords[Math.floor(Math.random() * arraySixWords.length)];
 
 // получаем делаем объект в который сохраним выбранное слово со всеми данными
 let wordObj : IWord = {
   id: '', group: 0, page: 0, word: '', image: '', audio: '', audioMeaning: '', audioExample: '', textMeaning: '', textExample: '', transcription: '', wordTranslate: '', textMeaningTranslate: '', textExampleTranslate: '',
 };
 
-for (let i = 0; i < storageAudiocall.words!.length; i++) {
-  if (storageAudiocall.words![i].wordTranslate === wordRight) {
-    wordObj = storageAudiocall.words![i];
-  }
-}
-console.log(arraySixWords, 'arraySixWords');
+// for (let i = 0; i < storageAudiocall.words!.length; i++) {
+//   if (storageAudiocall.words![i].wordTranslate === wordRight) {
+//     wordObj = storageAudiocall.words![i];
+//   }
+// }
+
 // избавляемся от дублей в массиве преводов проолжение
 
-storageAudiocall.noRepeat!.push(wordObj.wordTranslate);
+// storageAudiocall.noRepeat!.push(wordObj.wordTranslate);
 // if (localStorage.getItem('noRepeat')) {
 //   noRepeat = JSON.parse(localStorage.getItem('noRepeat')!);
 //   noRepeat.push(wordObj.wordTranslate);
@@ -109,10 +107,39 @@ function soundAudio(path: string): void {
 }
 
 // рисуем кнопки с переводами
-function printBtnString(): string {
+async function printBtnString(): Promise <string | undefined> {
+  storageAudiocall.words = await api.getWords(storageAudiocall.group!, storageAudiocall.page!);
+
+  wordsString = storageAudiocall.words!.map((item) => item.wordTranslate);
+
+  if (storageAudiocall.noRepeat!.length > 0) {
+    wordsString = wordsString.filter((item) => !storageAudiocall.noRepeat!.includes(item));
+  }
+
+  // перемешиваем массив преводов
+  function shuffle(array:string[]) {
+    array.sort(() => Math.random() - 0.5);
+  }
+  shuffle(wordsString);
+
+  arraySixWords = wordsString.slice(0, 5);
+
+  // выбираем случайное слово из 6, которое будем угадывать
+  const wordRight = arraySixWords[Math.floor(Math.random() * arraySixWords.length)];
+
+  for (let i = 0; i < storageAudiocall.words!.length; i++) {
+    if (storageAudiocall.words![i].wordTranslate === wordRight) {
+      wordObj = storageAudiocall.words![i];
+    }
+  }
+
+  storageAudiocall.noRepeat!.push(wordObj.wordTranslate);
+  console.log(storageAudiocall.words, 'sstorageAudiocall.words в принтбтн');
+
+  // кусок который не трогали
   let a = '';
   let containerBtn = ' ';
-  if (storageAudiocall.round! < 16) {
+  if (storageAudiocall.round! < 10) {
     for (let i = 0; i < arraySixWords.length; i++) {
       a = arraySixWords[i];
       containerBtn += `<button data-num="${i + 1}" type="button" id="${a}" class="btn-translation">${a}</button> `;
@@ -139,7 +166,7 @@ function printBtnString(): string {
   `;
     clearLocalStorage();
   }
-  return containerBtn;
+  return containerBtn as string;
 }
 function clearLocalStorage(): void {
   storageAudiocall = {};
