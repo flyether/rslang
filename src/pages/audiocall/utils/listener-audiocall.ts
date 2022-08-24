@@ -9,24 +9,13 @@
 /* eslint-disable class-methods-use-this */
 
 import { apiPath } from '../../../api/api-path';
-import { clearLocalStorage, soundAudio, wordObj } from './supporting-func';
+import {
+  clearLocalStorage, soundAudio, wordObj, storageAudiocall,
+} from './supporting-func';
 import audioPathWrong from '../../../assets/audio/wrong-answer.mp3';
 import audioPathRight from '../../../assets/audio/right-answer.mp3';
 import { storage } from '../../../functional/storage';
 
-let round = 0;
-let score = 0;
-let arrayWrongWords: string[] = [];
-if (localStorage.getItem('arrayWrongWords') === null) {
-  localStorage.setItem('arrayWrongWords', JSON.stringify(arrayWrongWords));
-}
-if (localStorage.getItem('score') === null) {
-  localStorage.setItem('score', JSON.stringify(score));
-}
-if (localStorage.getItem('round') === null) {
-  localStorage.setItem('round', JSON.stringify(round));
-}
-console.log(storage.level, 'storage.level в суппорте  ');
 class ListenerAudioCall {
   keyboard(): void {
     document.addEventListener('keydown', (e) => {
@@ -49,28 +38,28 @@ class ListenerAudioCall {
       }
 
       if ((e.target as HTMLElement).classList.contains('btn-translation')) {
-        round = Number(localStorage.getItem('round')) + 1;
-        localStorage.setItem('round', round.toString());
-        if ((e.target as HTMLElement).id === wordObj.wordTranslate) {
-          rightAnswerFunc((e.target as HTMLElement)!);
-        } else {
-          wrongAnswerFunc((e.target as HTMLElement));
+        if (storageAudiocall.round!) { storageAudiocall.round = 1; } else {
+          storageAudiocall.round = storageAudiocall.round! + 1;
+          if ((e.target as HTMLElement).id === wordObj.wordTranslate) {
+            rightAnswerFunc((e.target as HTMLElement)!);
+          } else {
+            wrongAnswerFunc((e.target as HTMLElement));
+          }
         }
       }
 
       if ((e.target as HTMLElement).classList.contains('restart')) {
-        localStorage.removeItem('page');
+        clearLocalStorage();
         window.location.reload();
       }
       if ((e.target as HTMLElement).classList.contains('level-textbook')) {
         const locationHash = window.location.hash.split('/');
         const unit = +locationHash[1];
         const page = +locationHash[2];
-        storage.level = unit + 1;
-        console.log(unit, page, 'unit, page');
-        localStorage.setItem('level', `${unit + 1}`);
-        localStorage.setItem('page', `${page}`);
-        localStorage.setItem('textbook', 'true');
+        storageAudiocall.level = unit + 1;
+        storageAudiocall.page = page;
+        storageAudiocall.textbook = true;
+        console.log('листнер', storageAudiocall.level, 'storageAudiocall.level ');
       }
       if ((e.target as HTMLElement).classList.contains('level-change')) {
         clearLocalStorage();
@@ -78,10 +67,9 @@ class ListenerAudioCall {
       if ((e.target as HTMLElement).classList.contains('btn-level')) {
         const dataN = Number((e.target as HTMLElement).id.replace(/[^0-9]/g, ''));
         if ((e.target as HTMLElement).id === (`level${dataN}`)) {
-          storage.level = dataN;
-          console.log(storage.level, 'storage.level в листнере аудиоигры ');
-          localStorage.setItem('level', `${dataN}`);
           clearLocalStorage();
+          storage.level = dataN;
+          storageAudiocall.level = dataN;
         }
       }
     });
@@ -89,8 +77,7 @@ class ListenerAudioCall {
 }
 
 function rightAnswerFunc(el: HTMLElement) {
-  score = Number(localStorage.getItem('score')) + 1;
-  localStorage.setItem('score', score.toString());
+  storageAudiocall.score! += 1;
   soundAudio((audioPathRight));
   el.classList.add('btn-translation-right');
   setTimeout(() => {
@@ -102,11 +89,9 @@ function rightAnswerFunc(el: HTMLElement) {
 function wrongAnswerFunc(el: HTMLElement) {
   el.classList.add('btn-translation-wrong');
   const rightAnswer = document.querySelector('.right-answer') as HTMLElement;
-  arrayWrongWords = JSON.parse(localStorage.getItem('arrayWrongWords')!);
   if (rightAnswer) {
     rightAnswer.innerHTML = `<div class="answer"><img class="answer-img" src="${apiPath + wordObj.image}" alt="правильный ответ"><br>${wordObj.word} — ${wordObj.wordTranslate} </div>`;
-    arrayWrongWords.push(wordObj.word);
-    localStorage.setItem('arrayWrongWords', JSON.stringify(arrayWrongWords));
+    storageAudiocall.arrayWrongWords!.push(wordObj.word);
     soundAudio((audioPathWrong));
     setTimeout(() => {
       window.location.reload();
