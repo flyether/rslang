@@ -4,15 +4,15 @@ import { MenuItems } from '../types/types';
 class ModuleModel {
   myModuleView!: ModelView;
 
-  init(view: ModelView):void {
+  init(view: ModelView): void {
     this.myModuleView = view;
   }
 
-  updateState(pageName:string):void {
+  updateState(pageName: string): void {
     this.myModuleView.renderContent(pageName);
   }
 
-  highlightActiveMenuItem(obj: MenuItems, hashName:string):void {
+  highlightActiveMenuItem(obj: MenuItems, hashName: string): void {
     this.myModuleView.highlightActiveMenuItem(obj, hashName);
   }
 }

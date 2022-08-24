@@ -35,8 +35,9 @@ class ModuleController {
   init(container: HTMLElement, model: ModuleModel): void {
     this.myModuleContainer = container;
     this.myModuleModel = model;
-    window.addEventListener('hashchange', () => {
+    window.addEventListener('hashchange', (e) => {
       changeSprintSettings();
+      console.log(e.newURL, e.oldURL);
       this.updateState();
     });
 
@@ -60,15 +61,15 @@ class ModuleController {
     }
   }
 
-  findMenuElements(hashName:string):void {
-    const hash:string = hashName.split('/')[0];
+  findMenuElements(hashName: string): void {
+    const hash: string = hashName.split('/')[0];
     this.menuMain = document.querySelector('.menu__main') as HTMLElement;
     this.menuTextbook = document.querySelector('.menu__textbook') as HTMLElement;
     this.menuStatictics = document.querySelector('.menu__statictics') as HTMLElement;
     this.menuAudiocall = document.querySelector('.menu__audiocall') as HTMLElement;
     this.menuSprint = document.querySelector('.menu__sprint') as HTMLElement;
     this.menuTeam = document.querySelector('.menu__team') as HTMLElement;
-    const obj:MenuItems = {
+    const obj: MenuItems = {
       main: this.menuMain,
       textbook: this.menuTextbook,
       statistics: this.menuStatictics,
@@ -82,7 +83,7 @@ class ModuleController {
     }
   }
 
-  addButtonsAboutSprintGameListeners():void {
+  addButtonsAboutSprintGameListeners(): void {
     this.buttonStartSprint = document.querySelector('.button__start__sprint') as HTMLButtonElement;
     this.sprintLevel = document.querySelector('.sprint__level') as HTMLInputElement;
     this.buttonStartSprint.addEventListener('click', () => {
