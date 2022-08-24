@@ -1,7 +1,9 @@
+/* eslint-disable import/no-cycle */
 /* eslint-disable linebreak-style */
 /* eslint-disable eqeqeq */
 /* eslint-disable consistent-return */
 
+import Header from '../components/header';
 import { storage } from './storage';
 
 export default function showUser(ret:boolean) :string | undefined {
@@ -17,5 +19,6 @@ export default function showUser(ret:boolean) :string | undefined {
   if (ret) {
     return html;
   }
+  Header.render();
   header.innerHTML = html;
 }

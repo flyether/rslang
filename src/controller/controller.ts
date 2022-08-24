@@ -45,7 +45,8 @@ class ModuleController {
 
     // modalAuthorization.open();
     listener.open();
-    listenerAudioCall.open();
+    listenerAudioCall.clik();
+    listenerAudioCall.keyboard();
     this.updateState();
     // window.location.hash = '#main';
   }
