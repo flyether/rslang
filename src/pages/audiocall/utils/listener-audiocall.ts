@@ -70,7 +70,6 @@ class ListenerAudioCall {
         localStorage.setItem('level', `${unit + 1}`);
         localStorage.setItem('page', `${page}`);
         localStorage.setItem('textbook', 'true');
-        clearLocalStorage();
       }
       if ((e.target as HTMLElement).classList.contains('level-change')) {
         clearLocalStorage();
