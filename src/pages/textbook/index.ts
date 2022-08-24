@@ -15,6 +15,8 @@ const TextbookPage = {
 
   unitDifficultWords: 7,
 
+  isAuth: localStorage.getItem('user'),
+
   render(): string {
     const locationHash = window.location.hash.split('/');
     const unit = +locationHash[1];
@@ -26,7 +28,6 @@ const TextbookPage = {
     const pageSelector = 'unit-page';
     const minPage = 1;
     const maxPage = 30;
-    const isAuth = localStorage.getItem('user');
     const controllerTextbook = new TextbookController(unitSelector, pageSelector);
     if (!unit) {
       view = `<div class="textbook-units">
@@ -36,7 +37,7 @@ const TextbookPage = {
       <div class="textbook-unit" data-unit="4">Раздел 4</div>
       <div class="textbook-unit" data-unit="5">Раздел 5</div>
       <div class="textbook-unit" data-unit="6">Раздел 6</div>
-      ${isAuth ? `<div class="textbook-unit" data-unit="7">Раздел "Сложные слова"</div>
+      ${this.isAuth ? `<div class="textbook-unit" data-unit="7">Раздел "Сложные слова"</div>
       ` : ''}
       </div>`;
     } else if (!page && unit <= maxUnit && unit >= minUnit && typeof unit === 'number') {
@@ -62,7 +63,7 @@ const TextbookPage = {
       <div class="textbook-footer">
         <div class="textbook-pagination">
           <button class="pagination-btn btn-orange previous" ${page === minPage ? 'disabled' : ''}>Предыдущая</button>
-          ${isAuth ? `<a class="textbook-game" href="${hashes.audiocall}">Аудиовызов</a>
+          ${this.isAuth ? `<a class="textbook-game" href="${hashes.audiocall}">Аудиовызов</a>
           <a class="textbook-game" href="${hashes.aboutsprint}">Спринт</a>` : ''}
           <button class="pagination-btn btn-orange next" ${page === maxPage ? 'disabled' : ''}>Следующая</button>
         </div>
@@ -85,7 +86,7 @@ const TextbookPage = {
     return pages;
   },
   getCards(unit: number, page: number): void {
-    const { wordlist } = this;
+    const { wordlist, isAuth } = this;
     function renderCards(words: IWord[]) {
       const wordContainer = document.querySelector(`.${wordlist}`);
       if (wordContainer) {
@@ -112,14 +113,15 @@ const TextbookPage = {
     <p class="word-example">${words[i].textExample}</p>
     <p class="word-example translation">${words[i].textExampleTranslate}</p>
   </div>
-  <div class="word-noted">
+  ${isAuth ? `
+<div class="word-noted">
       <button class="btn-orange btn-difficult  ${isWordInDifficult ? 'added' : ''}" 
       data-word = "${words[i].id}" 
       ${isWordInDifficult ? 'disabled' : ''} >Сложно?</button>
       <button class="btn-orange btn-learned ${isWordLearned ? 'added' : ''}" 
       data-word = "${words[i].id}"
       ${isWordLearned ? 'disabled' : ''}>Изучено?</button>
-  </div>`;
+      </div>` : ''}`;
           card.dataset.word = words[i].id;
           wordContainer.append(card);
         }
