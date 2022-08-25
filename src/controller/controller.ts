@@ -62,9 +62,6 @@ class ModuleController {
       case 'aboutsprint':
         this.addButtonsAboutSprintGameListeners();
         break;
-      case 'statistics':
-        this.findStatisticsElements();
-        break;
       default:
     }
   }
@@ -110,24 +107,6 @@ class ModuleController {
       }
       if (elem.closest('#autoriztionBtn')) {
         setTimeout(() => this.myModuleModel.checkUserAuthorization(this.menuStatictics), 500);
-      }
-    });
-  }
-
-  findStatisticsElements(): void {
-    const chartCanvas1 = document.getElementById('chart1') as HTMLCanvasElement;
-    this.myModuleModel.prepareTextbookStatistics(chartCanvas1);
-    this.statisticsConteiner = document.querySelector('.statistics-conteiner') as HTMLElement;
-    this.statisticsConteiner.addEventListener('click', (e: Event) => {
-      const el = e.target as HTMLElement;
-      if (el.closest('.statistics__textbook')) {
-        this.myModuleModel.prepareTextbookStatistics(chartCanvas1);
-      }
-      if (el.closest('.statistics__audiocall')) {
-        this.myModuleModel.prepareAudiocallStatistics(chartCanvas1);
-      }
-      if (el.closest('.statistics__sprint')) {
-        this.myModuleModel.prepareSprintStatistics(chartCanvas1);
       }
     });
   }

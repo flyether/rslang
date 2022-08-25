@@ -30,7 +30,6 @@ export interface Routes {
   audiocall: typeof AudiocallGamePage,
   statistics: typeof StatisticsPage,
   audiocallgame: typeof AudiocallGame
-
 }
 
 export interface InitialObj {
