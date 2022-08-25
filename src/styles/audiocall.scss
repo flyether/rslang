@@ -109,7 +109,19 @@
 }
 
 .btn-translation {
- @include button-orange;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fe8954;
+  text-align: center;
+  cursor: pointer;
+  font-size: large;
+  font-weight: 700;
+  width: 170px;
+  height: 70px; 
+  border-radius: 5px;
+  border: 1px solid #224a9a;
+  margin: 0, 5px, 0, 5px;
 }
 
 .btn-translation:hover  {
