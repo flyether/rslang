@@ -89,7 +89,7 @@
   display: flex;
   position: fixed;
   left: 15%;
-  top: 80%;
+  top: 600px;
   text-align: center;
   cursor: pointer;
   font-size: medium;
@@ -147,17 +147,13 @@
   width: 90px;
   height: 90px;
 }
-// #224a9a;
 
-.game-over{
-  margin: auto;
-}
 
 .game-over{
   display: flex;
   flex-direction: column;
   position: fixed;
-  top: 25%;
+  top: 20%;
   left: 33%;
   background-color:#fe8954;
   font-size: large;

@@ -1,10 +1,7 @@
 /* eslint-disable linebreak-style */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable max-len */
-/* eslint-disable no-restricted-globals */
 /* eslint-disable import/no-cycle */
-/* eslint-disable import/no-mutable-exports */
-/* eslint-disable prefer-const */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable class-methods-use-this */
 
@@ -14,33 +11,10 @@ import { apiPath } from '../../../api/api-path';
 // } from './supporting-func';
 import audioPathWrong from '../../../assets/audio/wrong-answer.mp3';
 import audioPathRight from '../../../assets/audio/right-answer.mp3';
-import { soundAudio, support } from './t';
-import { IStorageAudiocall } from '../../../types/types';
-import { storage } from '../../../functional/storage';
+import { soundAudio, support } from './supporting-func';
 
-console.log(support, 'support в листнере');
+// console.log(support, 'support в листнере');
 
-// export let audiocallLocalStorage: IStorageAudiocall = {
-//   round: 12,
-//   score: 0,
-//   arrayWrongWords: [],
-//   level: 1,
-// };
-
-// let round = 0;
-// let score = 0;
-// let arrayWrongWords: string[] = [];
-// if (localStorage.getItem('arrayWrongWords') === null) {
-//   localStorage.setItem('arrayWrongWords', JSON.stringify(arrayWrongWords));
-// }
-// if (localStorage.getItem('score') === null) {
-//   localStorage.setItem('score', JSON.stringify(score));
-// }
-// if (localStorage.getItem('round') === null) {
-//   localStorage.setItem('round', JSON.stringify(round));
-// }
-
-// console.log(listenerObjStore, 'listenerObjStore');
 class ListenerAudioCall {
   keyboard(): void {
     document.addEventListener('keydown', (e) => {
@@ -61,14 +35,9 @@ class ListenerAudioCall {
       if ((e.target as HTMLElement).classList.contains('btn-sound')) {
         soundAudio((apiPath + support.wordObj!.audio));
       }
-      // console.log(support.round, 'support.round в листнере 64 строка');
+
       if ((e.target as HTMLElement).classList.contains('btn-translation')) {
-        // round = Number(localStorage.getItem('round')) + 1;
-        // localStorage.setItem('round', round.toString());
-        // storage.round = round;
         support.round!++;
-        console.log(support.round, 'support.round в листнере 70 строка');
-        // audiocallLocalStorage.round!++;
         if ((e.target as HTMLElement).id === support.wordObj!.wordTranslate) {
           rightAnswerFunc((e.target as HTMLElement)!);
         } else {
@@ -77,12 +46,12 @@ class ListenerAudioCall {
       }
 
       if ((e.target as HTMLElement).classList.contains('restart')) {
-        localStorage.removeItem('page');
         support.clearLocalStorage();
         const audioSection = document.querySelector('.audio-container-game') as HTMLElement;
         audioSection.innerHTML = '';
         support.printBtnString();
       }
+
       if ((e.target as HTMLElement).classList.contains('level-textbook')) {
         const locationHash = window.location.hash.split('/');
         const unit = +locationHash[1];
@@ -91,14 +60,16 @@ class ListenerAudioCall {
         support.page = page;
         support.textbook = true;
       }
+
       if ((e.target as HTMLElement).classList.contains('level-change')) {
         support.clearLocalStorage();
       }
+
       if ((e.target as HTMLElement).classList.contains('btn-level')) {
         const dataN = Number((e.target as HTMLElement).id.replace(/[^0-9]/g, ''));
+
         if ((e.target as HTMLElement).id === (`level${dataN}`)) {
           support.clearLocalStorage();
-          support.level = dataN;
           support.level = dataN;
         }
       }
