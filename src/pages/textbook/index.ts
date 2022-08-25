@@ -29,6 +29,7 @@ const TextbookPage = {
     const minPage = 1;
     const maxPage = 30;
     const controllerTextbook = new TextbookController(unitSelector, pageSelector);
+    this.isAuth = localStorage.getItem('user');
     if (!unit) {
       view = `<div class="textbook-units">
       <div class="textbook-unit" data-unit="1">Раздел 1</div>
@@ -86,6 +87,7 @@ const TextbookPage = {
     return pages;
   },
   getCards(unit: number, page: number): void {
+    this.isAuth = localStorage.getItem('user');
     const { wordlist, isAuth } = this;
     function renderCards(words: IWord[]) {
       const wordContainer = document.querySelector(`.${wordlist}`);
