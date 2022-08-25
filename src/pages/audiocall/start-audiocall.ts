@@ -1,5 +1,9 @@
 /* eslint-disable linebreak-style */
+/* eslint-disable import/no-cycle */
 /* eslint-disable max-len */
+
+import { support } from './utils/supporting-func';
+
 export const startScrinAudioCall = {
   hashes: {
 
@@ -9,7 +13,7 @@ export const startScrinAudioCall = {
 
   render(): string {
     let html = '';
-    if (localStorage.getItem('textbook') === 'true') {
+    if (support.textbook === true) {
       html = /* html */` 
 
       <div class="audio-call"> 
