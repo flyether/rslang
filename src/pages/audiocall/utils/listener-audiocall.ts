@@ -20,18 +20,25 @@ import { storage } from '../../../functional/storage';
 
 console.log(support, 'support в листнере');
 
-let round = 0;
-let score = 0;
-let arrayWrongWords: string[] = [];
-if (localStorage.getItem('arrayWrongWords') === null) {
-  localStorage.setItem('arrayWrongWords', JSON.stringify(arrayWrongWords));
-}
-if (localStorage.getItem('score') === null) {
-  localStorage.setItem('score', JSON.stringify(score));
-}
-if (localStorage.getItem('round') === null) {
-  localStorage.setItem('round', JSON.stringify(round));
-}
+// export let audiocallLocalStorage: IStorageAudiocall = {
+//   round: 12,
+//   score: 0,
+//   arrayWrongWords: [],
+//   level: 1,
+// };
+
+// let round = 0;
+// let score = 0;
+// let arrayWrongWords: string[] = [];
+// if (localStorage.getItem('arrayWrongWords') === null) {
+//   localStorage.setItem('arrayWrongWords', JSON.stringify(arrayWrongWords));
+// }
+// if (localStorage.getItem('score') === null) {
+//   localStorage.setItem('score', JSON.stringify(score));
+// }
+// if (localStorage.getItem('round') === null) {
+//   localStorage.setItem('round', JSON.stringify(round));
+// }
 
 // console.log(listenerObjStore, 'listenerObjStore');
 class ListenerAudioCall {
@@ -54,11 +61,14 @@ class ListenerAudioCall {
       if ((e.target as HTMLElement).classList.contains('btn-sound')) {
         soundAudio((apiPath + support.wordObj!.audio));
       }
-
+      // console.log(support.round, 'support.round в листнере 64 строка');
       if ((e.target as HTMLElement).classList.contains('btn-translation')) {
-        round = Number(localStorage.getItem('round')) + 1;
-        localStorage.setItem('round', round.toString());
-        storage.round = round;
+        // round = Number(localStorage.getItem('round')) + 1;
+        // localStorage.setItem('round', round.toString());
+        // storage.round = round;
+        support.round!++;
+        console.log(support.round, 'support.round в листнере 70 строка');
+        // audiocallLocalStorage.round!++;
         if ((e.target as HTMLElement).id === support.wordObj!.wordTranslate) {
           rightAnswerFunc((e.target as HTMLElement)!);
         } else {
@@ -69,7 +79,9 @@ class ListenerAudioCall {
       if ((e.target as HTMLElement).classList.contains('restart')) {
         localStorage.removeItem('page');
         support.clearLocalStorage();
-        window.location.reload();
+        const audioSection = document.querySelector('.audio-container-game') as HTMLElement;
+        audioSection.innerHTML = '';
+        support.printBtnString();
       }
       if ((e.target as HTMLElement).classList.contains('level-textbook')) {
         const locationHash = window.location.hash.split('/');
@@ -99,10 +111,10 @@ function rightAnswerFunc(el: HTMLElement) {
   soundAudio((audioPathRight));
   el.classList.add('btn-translation-right');
   setTimeout(() => {
-    window.location.reload();
-  //   const garageSection = document.querySelector('.button-container') as HTMLElement;
-  // garageSection.innerHTML = '';
-  //   support.printBtnString();
+    const garageSection = document.querySelector('.button-container') as HTMLElement;
+    garageSection.innerHTML = '';
+    support.printBtnString();
+    el.classList.remove('btn-translation-right');
   },
   1200);
 }
@@ -115,15 +127,16 @@ function wrongAnswerFunc(el: HTMLElement) {
     support.arrayWrongWords!.push(support.wordObj!.word);
     soundAudio((audioPathWrong));
     setTimeout(() => {
-    //   const garageSection = document.querySelector('.button-container') as HTMLElement;
-    //   rightAnswer.innerHTML = '';
-    // garageSection.innerHTML = '';
-    //   support.printBtnString();
-      window.location.reload();
+      const garageSection = document.querySelector('.button-container') as HTMLElement;
+      rightAnswer.innerHTML = '';
+      garageSection.innerHTML = '';
+      support.printBtnString();
+      el.classList.remove('btn-translation-wrong');
     },
     2200);
   }
 }
 
+// console.log(audiocallLocalStorage, 'a в листнере');
 const listenerAudioCall = new ListenerAudioCall();
 export default listenerAudioCall;
