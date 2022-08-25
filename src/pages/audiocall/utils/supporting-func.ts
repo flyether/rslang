@@ -75,7 +75,6 @@ class Support {
   }
 
   async printBtnString(): Promise<void> {
-    console.log(this.round, ' this.round  84 строка t');
     const btnWrapper = document.querySelector('.audio-container-game') as HTMLElement;
 
     this.group = this.level! - 1;
@@ -83,7 +82,6 @@ class Support {
       this.page = Math.floor(Math.random() * (20 - 0 + 1)) + 0;
     }
     const res = await api.getWords(this.group!, this.page!);
-    btnWrapper.innerHTML += gameArea;
     const garageSection = document.querySelector('.button-container') as HTMLElement;
     if (garageSection) {
       garageSection.innerHTML = '';

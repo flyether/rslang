@@ -12,6 +12,7 @@ import { apiPath } from '../../../api/api-path';
 import audioPathWrong from '../../../assets/audio/wrong-answer.mp3';
 import audioPathRight from '../../../assets/audio/right-answer.mp3';
 import { soundAudio, support } from './supporting-func';
+import { gameArea } from './game-render';
 
 // console.log(support, 'support в листнере');
 
@@ -48,7 +49,7 @@ class ListenerAudioCall {
       if ((e.target as HTMLElement).classList.contains('restart')) {
         support.clearLocalStorage();
         const audioSection = document.querySelector('.audio-container-game') as HTMLElement;
-        audioSection.innerHTML = '';
+        audioSection.innerHTML += gameArea;
         support.printBtnString();
       }
 
