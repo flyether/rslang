@@ -23,8 +23,12 @@
 }
 
 .button-container{
+  margin:0 5px;
+}
+
+.button-wrapper{
+  display: flex;
   margin-bottom: 20px;
-  height: 70px;
 }
 
 // .audio-container {

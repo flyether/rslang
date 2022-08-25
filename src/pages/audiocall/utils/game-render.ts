@@ -22,16 +22,18 @@ export const gameArea = `
  <div class="audio-container-game"> 
     <div class="btn-sound">
       <div class="sound-wrapper"> 
-      <audio class="audio" src="${apiPath + support.wordObj.audio}" autoplay></audio> 
+      <audio class="audio" src="${apiPath + support.wordObj!.audio}" autoplay></audio> 
       </div>
     </div>
     
     <div class="right-answer"></div>
-    <div class="button-container"><button data-num="" type="button" id="" class="btn-translation"></button> </div>
-    <div class="button-container"><button data-num="" type="button" id="" class="btn-translation"></button> </div>
-    <div class="button-container"><button data-num="" type="button" id="" class="btn-translation"></button> </div>
-    <div class="button-container"><button data-num="" type="button" id="" class="btn-translation"></button> </div>
-    <div class="button-container"><button data-num="" type="button" id="" class="btn-translation"></button> </div>
-    
+    <div class="button-wrapper"">
+      <div class="button-container"><button data-num="" type="button" id="" class="btn-translation"></button> </div>
+      <div class="button-container"><button data-num="" type="button" id="" class="btn-translation"></button> </div>
+      <div class="button-container"><button data-num="" type="button" id="" class="btn-translation"></button> </div>
+      <div class="button-container"><button data-num="" type="button" id=""   class="btn-translation"></button> </div>
+      <div class="button-container"><button data-num="" type="button" id="" class="btn-translation"></button> </div>
+      <div class="button-container"><button data-num="" type="button" id=""   class="btn-translation"></button> </div>
+    </div>
   </div>
  `;

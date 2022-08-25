@@ -4,7 +4,7 @@
 /* eslint-disable no-restricted-globals */
 /* eslint-disable import/no-cycle */
 /* eslint-disable import/no-mutable-exports */
-
+/* eslint-disable prefer-const */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable class-methods-use-this */
 
@@ -15,15 +15,30 @@ import { apiPath } from '../../../api/api-path';
 import audioPathWrong from '../../../assets/audio/wrong-answer.mp3';
 import audioPathRight from '../../../assets/audio/right-answer.mp3';
 import { soundAudio, support } from './t';
+import { IStorageAudiocall } from '../../../types/types';
+import { storage } from '../../../functional/storage';
 
-console.log(support.words, 'support.words в листнере');
 console.log(support, 'support в листнере');
 
+let round = 0;
+let score = 0;
+let arrayWrongWords: string[] = [];
+if (localStorage.getItem('arrayWrongWords') === null) {
+  localStorage.setItem('arrayWrongWords', JSON.stringify(arrayWrongWords));
+}
+if (localStorage.getItem('score') === null) {
+  localStorage.setItem('score', JSON.stringify(score));
+}
+if (localStorage.getItem('round') === null) {
+  localStorage.setItem('round', JSON.stringify(round));
+}
+
+// console.log(listenerObjStore, 'listenerObjStore');
 class ListenerAudioCall {
   keyboard(): void {
     document.addEventListener('keydown', (e) => {
       if (e.key === ' ') {
-        soundAudio((apiPath + support.wordObj.audio));
+        soundAudio((apiPath + support.wordObj!.audio));
       }
       const dataN = Number(e.key);
       if (e.key === `Numpad ${dataN}` || e.key === `${dataN}`) {
@@ -37,21 +52,22 @@ class ListenerAudioCall {
   clik(): void {
     document.addEventListener('click', (e) => {
       if ((e.target as HTMLElement).classList.contains('btn-sound')) {
-        soundAudio((apiPath + support.wordObj.audio));
+        soundAudio((apiPath + support.wordObj!.audio));
       }
 
       if ((e.target as HTMLElement).classList.contains('btn-translation')) {
-        if (support.round!) { support.round = 1; } else {
-          support.round = support.round! + 1;
-          if ((e.target as HTMLElement).id === support.wordObj.wordTranslate) {
-            rightAnswerFunc((e.target as HTMLElement)!);
-          } else {
-            wrongAnswerFunc((e.target as HTMLElement));
-          }
+        round = Number(localStorage.getItem('round')) + 1;
+        localStorage.setItem('round', round.toString());
+        storage.round = round;
+        if ((e.target as HTMLElement).id === support.wordObj!.wordTranslate) {
+          rightAnswerFunc((e.target as HTMLElement)!);
+        } else {
+          wrongAnswerFunc((e.target as HTMLElement));
         }
       }
 
       if ((e.target as HTMLElement).classList.contains('restart')) {
+        localStorage.removeItem('page');
         support.clearLocalStorage();
         window.location.reload();
       }
@@ -95,8 +111,8 @@ function wrongAnswerFunc(el: HTMLElement) {
   el.classList.add('btn-translation-wrong');
   const rightAnswer = document.querySelector('.right-answer') as HTMLElement;
   if (rightAnswer) {
-    rightAnswer.innerHTML = `<div class="answer"><img class="answer-img" src="${apiPath + support.wordObj.image}" alt="правильный ответ"><br>${support.wordObj.word} — ${support.wordObj.wordTranslate} </div>`;
-    support.arrayWrongWords!.push(support.wordObj.word);
+    rightAnswer.innerHTML = `<div class="answer"><img class="answer-img" src="${apiPath + support.wordObj!.image}" alt="правильный ответ"><br>${support.wordObj!.word} — ${support.wordObj!.wordTranslate} </div>`;
+    support.arrayWrongWords!.push(support.wordObj!.word);
     soundAudio((audioPathWrong));
     setTimeout(() => {
     //   const garageSection = document.querySelector('.button-container') as HTMLElement;

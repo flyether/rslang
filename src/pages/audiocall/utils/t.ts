@@ -20,33 +20,63 @@ function shuffle(array:string[]) {
   array.sort(() => Math.random() - 0.5);
 }
 class Support {
-  textbook = false;
+  public textbook?: boolean;
 
-  arrayWrongWords: string[] = [];
+  public arrayWrongWords?: string[];
 
-  round? = 0;
+  public round?: number;
 
-  score? = 0;
+  public score?:number;
 
-  group = 0;
+  public group?: number;
 
-  page = 0;
+  public page?: number;
 
-  level = 1;
+  public level?: number;
 
-  words:void | IWord[] | undefined = [];
+  public words?: void | IWord[] | undefined;
 
-  wordsString: string[] = [];
+  public wordsString?: string[];
 
-  noRepeat: string [] = [];
+  public noRepeat?: string [];
 
-  wordObj : IWord = {
-    id: '', group: 0, page: 0, word: '', image: '', audio: '', audioMeaning: '', audioExample: '', textMeaning: '', textExample: '', transcription: '', wordTranslate: '', textMeaningTranslate: '', textExampleTranslate: '',
-  };
+  public wordObj?: IWord ;
 
-  arraySixWords:string [] = [];
+  public arraySixWords?: string [] ;
 
-  containerBtn = 'ggg';
+  public containerBtn?: string;
+
+  constructor() {
+    if (!this.textbook) { this.textbook = false; }
+
+    if (!this.arrayWrongWords) { this.arrayWrongWords = []; }
+
+    this.round = storage.round;
+
+    if (!this.score) { this.score = 0; }
+
+    if (!this.group) { this.group = 0; }
+
+    if (!this.page) { this.page = 0; }
+
+    if (!this.level) { this.level = 1; }
+
+    if (!this.words) { this.words = []; }
+
+    if (!this.wordsString) { this.wordsString = []; }
+
+    if (!this.noRepeat) { this.noRepeat = []; }
+
+    if (!this.wordObj) {
+      this.wordObj = {
+        id: '', group: 0, page: 0, word: '', image: '', audio: '', audioMeaning: '', audioExample: '', textMeaning: '', textExample: '', transcription: '', wordTranslate: '', textMeaningTranslate: '', textExampleTranslate: '',
+      };
+    }
+
+    if (!this.arraySixWords) { this.arraySixWords = []; }
+
+    if (!this.containerBtn) { this.containerBtn = 'ggg'; }
+  }
 
   async printBtnString(): Promise<void> {
     //  this.getWords();
@@ -74,7 +104,7 @@ class Support {
         this.wordObj = this.words![i];
       }
     }
-    this.noRepeat!.push(this.wordObj.wordTranslate);
+    this.noRepeat!.push(this.wordObj!.wordTranslate);
     const a = '';
 
     const button = document.querySelectorAll('.btn-translation');
@@ -91,14 +121,12 @@ class Support {
     //    );
     //  }
     for (let j = 0; j < this.arraySixWords.length; j++) {
-      for (let i = 0; i < button.length; i++) {
-        //  let i = 0
-        button[i].textContent = `${this.arraySixWords[j]}`;
-        button[i].id = this.arraySixWords[j];
-        (button[i] as HTMLButtonElement).dataset.num = `${i + 1}`;
-        //  garageSection.innerHTML += `<button data-num="${i + 1}" type="button" id="${a}" class="btn-translation">${a}</button> `;
-        //  i++;
-      }
+      //  let i = 0
+      button[j].textContent = `${this.arraySixWords[j]}`;
+      button[j].id = this.arraySixWords[j];
+      (button[j] as HTMLButtonElement).dataset.num = `${j + 1}`;
+      //  garageSection.innerHTML += `<button data-num="${i + 1}" type="button" id="${a}" class="btn-translation">${a}</button> `;
+      //  i++;
     }
     //    } else {
     //      this.wordObj.audio = '';
