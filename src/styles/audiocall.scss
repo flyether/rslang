@@ -23,8 +23,12 @@
 }
 
 .button-container{
-  margin-bottom: 20px;
-  height: 70px;
+  margin:0 5px;
+}
+
+.button-wrapper{
+  display: flex;
+  margin-top: 50px;
 }
 
 // .audio-container {
@@ -85,6 +89,7 @@
   display: flex;
   position: fixed;
   left: 15%;
+  top: 600px;
   text-align: center;
   cursor: pointer;
   font-size: medium;
@@ -130,7 +135,7 @@
 }
 
 .btn-sound {
-  margin-top: 5%;
+  margin-bottom: 5%;
   color: #224a9a;
   width: 80px;
   height: 80px;
@@ -142,17 +147,13 @@
   width: 90px;
   height: 90px;
 }
-// #224a9a;
 
-.game-over{
-  margin: auto;
-}
 
 .game-over{
   display: flex;
   flex-direction: column;
   position: fixed;
-  top: 25%;
+  top: 20%;
   left: 33%;
   background-color:#fe8954;
   font-size: large;
