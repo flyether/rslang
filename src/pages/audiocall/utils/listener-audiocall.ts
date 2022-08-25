@@ -17,6 +17,7 @@ import audioPathRight from '../../../assets/audio/right-answer.mp3';
 import { soundAudio, support } from './t';
 
 console.log(support.words, 'support.words в листнере');
+console.log(support, 'support в листнере');
 
 class ListenerAudioCall {
   keyboard(): void {
@@ -83,6 +84,9 @@ function rightAnswerFunc(el: HTMLElement) {
   el.classList.add('btn-translation-right');
   setTimeout(() => {
     window.location.reload();
+  //   const garageSection = document.querySelector('.button-container') as HTMLElement;
+  // garageSection.innerHTML = '';
+  //   support.printBtnString();
   },
   1200);
 }
@@ -95,6 +99,10 @@ function wrongAnswerFunc(el: HTMLElement) {
     support.arrayWrongWords!.push(support.wordObj.word);
     soundAudio((audioPathWrong));
     setTimeout(() => {
+    //   const garageSection = document.querySelector('.button-container') as HTMLElement;
+    //   rightAnswer.innerHTML = '';
+    // garageSection.innerHTML = '';
+    //   support.printBtnString();
       window.location.reload();
     },
     2200);

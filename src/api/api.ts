@@ -19,6 +19,7 @@ const api = {
       const response = await fetch(`${apiPath}${usersEndpoint}/${userId}/settings`, {
         method: 'PUT',
         headers: {
+          Authorization: `Bearer ${storage.user?.token}`,
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
