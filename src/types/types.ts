@@ -79,7 +79,6 @@ export interface IWordGame {
   image: string;
   audio: string;
 }
-
 export interface IUser {
   name: string;
   email: string;
