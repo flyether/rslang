@@ -13,6 +13,7 @@ import { storage } from '../../../functional/storage';
 import { IStorageAudiocall, IWord } from '../../../types/types';
 import { apiPath } from '../../../api/api-path';
 import { api } from '../../../api/api';
+// import { audiocallLocalStorage } from './listener-audiocall';
 
 // выбор уровня для игры и страницы
 // (async function support() {
@@ -51,7 +52,7 @@ class Support {
 
     if (!this.arrayWrongWords) { this.arrayWrongWords = []; }
 
-    this.round = storage.round;
+    this.round = 0;
 
     if (!this.score) { this.score = 0; }
 
@@ -79,7 +80,8 @@ class Support {
   }
 
   async printBtnString(): Promise<void> {
-    //  this.getWords();
+    console.log(this.round, ' this.round  84 строка t');
+
     this.group = this.level! - 1;
     if ((this.page === 0)) {
       this.page = Math.floor(Math.random() * (20 - 0 + 1)) + 0;
@@ -88,72 +90,55 @@ class Support {
     const res = await api.getWords(this.group!, this.page!);
     const garageSection = document.querySelector('.button-container') as HTMLElement;
     garageSection.innerHTML = '';
-
-    this.words = res;
-    this.wordsString = this.words!.map((item) => item.wordTranslate);
-    if (this.noRepeat!.length > 0) {
-      this.wordsString = this.wordsString.filter((item) => !this.noRepeat!.includes(item));
-    }
-
-    shuffle(this.wordsString);
-
-    this.arraySixWords = this.wordsString.slice(0, 5);
-    const wordRight = this.arraySixWords[Math.floor(Math.random() * this.arraySixWords.length)];
-    for (let i = 0; i < this.words!.length; i++) {
-      if (this.words![i].wordTranslate === wordRight) {
-        this.wordObj = this.words![i];
+    if (this.round! < 10) {
+      this.words = res;
+      this.wordsString = this.words!.map((item) => item.wordTranslate);
+      if (this.noRepeat!.length > 0) {
+        this.wordsString = this.wordsString.filter((item) => !this.noRepeat!.includes(item));
       }
+
+      shuffle(this.wordsString);
+
+      this.arraySixWords = this.wordsString.slice(0, 5);
+      const wordRight = this.arraySixWords[Math.floor(Math.random() * this.arraySixWords.length)];
+      for (let i = 0; i < this.words!.length; i++) {
+        if (this.words![i].wordTranslate === wordRight) {
+          this.wordObj = this.words![i];
+        }
+      }
+      this.noRepeat!.push(this.wordObj!.wordTranslate);
+
+      const button = document.querySelectorAll('.btn-translation');
+
+      for (let j = 0; j < this.arraySixWords.length; j++) {
+        button[j].textContent = `${this.arraySixWords[j]}`;
+        button[j].id = this.arraySixWords[j];
+        (button[j] as HTMLButtonElement).dataset.num = `${j + 1}`;
+      }
+    } else {
+      const btnWrapper = document.querySelector('.audio-container-game') as HTMLElement;
+      btnWrapper.innerHTML = '';
+      this.wordObj!.audio = '';
+      let a = '';
+      if (this.arrayWrongWords!.length > 0) {
+        a = ` <p class="game-text">Рекомендуем выучить:&nbsp${this.arrayWrongWords!.join(',\n')}</p> `;
+      } else {
+        a = ' <p class="game-text">Вы ниразу не ошиблись!</p> ';
+      }
+      btnWrapper.innerHTML += `
+      <div class="game-over">
+        <p class="game-text">Вы прошли игру!</p>
+        <p class="game-text">Ваш результат: &nbsp ${this.score}</p>
+        ${a}
+        <div class="btn-game-over-container">
+          <button type="button" class="restart">Начать заново</button>
+          <a  class="link level-change" href="#audiocall" >Выбрать уровень</a>
+        </div>
+      </div>
+
+    `;
+      this.clearLocalStorage();
     }
-    this.noRepeat!.push(this.wordObj!.wordTranslate);
-    const a = '';
-
-    const button = document.querySelectorAll('.btn-translation');
-
-    //  for (let i = 0; i < button.length; i++) {
-    //    this.arraySixWords.forEach(
-    //      (tran: string) => {
-    //        let i = 0;
-    //        a = tran;
-    //        button[i].textContent = `${a}`;
-    //        garageSection.innerHTML += `<button data-num="${i + 1}" type="button" id="${a}" class="btn-translation">${a}</button> `;
-    //        i++;
-    //      },
-    //    );
-    //  }
-    for (let j = 0; j < this.arraySixWords.length; j++) {
-      //  let i = 0
-      button[j].textContent = `${this.arraySixWords[j]}`;
-      button[j].id = this.arraySixWords[j];
-      (button[j] as HTMLButtonElement).dataset.num = `${j + 1}`;
-      //  garageSection.innerHTML += `<button data-num="${i + 1}" type="button" id="${a}" class="btn-translation">${a}</button> `;
-      //  i++;
-    }
-    //    } else {
-    //      this.wordObj.audio = '';
-    //      let a = '';
-    //      if (this.arrayWrongWords!.length > 0) {
-    //        a = ` <p class="game-text">Рекомендуем выучить:&nbsp${this.arrayWrongWords!.join(',\n')}</p> `;
-    //      } else {
-    //        a = ' <p class="game-text">Вы ниразу не ошиблись!</p> ';
-    //      }
-    //      this.containerBtn += `
-    // <div class="game-over">
-    //   <p class="game-text">Вы прошли игру!</p>
-    //   <p class="game-text">Ваш результат: &nbsp ${this.score}</p>
-    //   ${a}
-    //   <div class="btn-game-over-container">
-    //     <button type="button" class="restart">Начать заново</button>
-    //     <a  class="link level-change" href="#audiocall" >Выбрать уровень</a>
-    //   </div>
-    // </div>
-
-    // `;
-    //      this.clearLocalStorage();
-    //    }
-    //  } else { console.log('err'); }
-
-    //  //  this.getFiveWords();
-    //  return this.containerBtn;
   }
 
   clearLocalStorage(): void {
