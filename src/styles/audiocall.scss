@@ -11,14 +11,23 @@
 
 .audio-container-game {
   width: 1200px;
-  height: 600px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 150px;
   flex-direction: column;
   align-items: center;
   flex-wrap: wrap;
-  margin: 0 auto;
-  background: url('../pages/audiocall/img/ocean1.jpg') 0 0 no-repeat;
+  margin: auto auto 100px;
+}
+
+.container {
+  background-image: url('https://www.wallpaperflare.com/static/902/419/614/ocean-sand-beach-blue-wallpaper.jpg');
+  height: 100%;
+  width: 100%;
+  background-size: cover;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
 }
 
 .audio-call {
@@ -37,6 +46,17 @@
   margin: 5% auto;
   padding: 20px;
   border-radius: 5px;
+}
+
+.go-main {
+  @include orange-btn;
+  margin: 70px auto 0;
+  transition: all 0.5s ease-out;
+
+  &:hover {
+    cursor: pointer;
+    background-color: $dark-orange;
+  }
 }
 
 .audio-call__btns {
@@ -70,31 +90,30 @@
 }
 
 .btn-translation {
-  color: #224a9a;
+  @include orange-btn;
   font-size: large;
   font-weight: 700;
-  width: 170px;
-  height: 70px;
-  background-color: #bdf5ff;
+  min-width: 140px;
+  height: 50px;
   text-align: center;
   line-height: 35px;
-  border-radius: 5px;
-  border: #224a9a solid 1px;
   margin: 0 5px 20px 5px;
-  cursor: pointer
+  cursor: pointer;
+  padding: 5px 15px;
+
+  &:hover {
+    background-color: $dark-orange;
+  }
 }
 
-.btn-translation:hover {
-  background-color: #bdccff;
-}
 
 .btn-sound {
-  margin-top: 10%;
   color: #224a9a;
   width: 80px;
   height: 80px;
-  background: url('../pages/audiocall/img/sound.svg') 0 0 no-repeat;
-  cursor: pointer
+  background: url('../../src/assets/volume.png') center no-repeat;
+  background-size: 70%;
+  cursor: pointer;
 }
 
 .btn-sound:hover {
