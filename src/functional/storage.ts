@@ -12,6 +12,8 @@ class Storage {
 
   words?: IWord[];
 
+  level?: number;
+
   userWord?: IUserWords;
 
   settings?: ISettings;
