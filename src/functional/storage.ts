@@ -1,9 +1,8 @@
-/* eslint-disable object-curly-newline */
-/* eslint-disable linebreak-style */
-/* eslint-disable max-len */
 /* eslint-disable import/prefer-default-export */
 
-import { ISettings, IUser, IUserData, IUserWords, IWord } from 'types/types';
+import {
+  ISettings, IUserData, IUserWords, IWord,
+} from 'types/types';
 
 class Storage {
   user?: IUserData;

@@ -28,17 +28,7 @@
 
 .button-wrapper{
   display: flex;
-  margin-top: 50px;
-}
-
-// .audio-container {
-
-//   width: 100%;
- 
-// }
-
-.container{
- 
+  margin-bottom: 20px;
 }
 
 .audio-container-game{
@@ -52,7 +42,7 @@
   align-items: center;
   flex-wrap: wrap;
   margin:  auto;
-  background: url('../pages/audiocall/img/ocean1.jpg') 0 0 no-repeat;
+  background-color: #679fe5;
 }
 
 .audio-call {
@@ -89,7 +79,6 @@
   display: flex;
   position: fixed;
   left: 15%;
-  top: 600px;
   text-align: center;
   cursor: pointer;
   font-size: medium;
@@ -103,6 +92,7 @@
   z-index: 2;
   padding: 15px 20px;
 }
+
 .go-main:hover{
   background-color: #679fe5;
   color: #f8631d;
@@ -134,9 +124,16 @@
   border: #580488 solid 1px;
 }
 
-.restart {
+.btn-blue {
   @include button-blue;
   margin-bottom:0 auto 10px;
+  justify-content: center;
+  align-items: center;
+  margin: 20px;
+}
+
+.btn-bluen:hover  {
+  background-color:#bdccff ;
 }
 
 .btn-translation-wrong{
@@ -147,7 +144,7 @@
 }
 
 .btn-sound {
-  margin-bottom: 5%;
+  margin-top: 5%;
   color: #224a9a;
   width: 80px;
   height: 80px;
@@ -159,7 +156,6 @@
   width: 90px;
   height: 90px;
 }
-
 
 .game-over{
   display: flex;
@@ -177,6 +173,11 @@
   border-radius: 5px;
   border: #224a9a solid 1px;
   margin: 0, 0, 20px, 0;
+}
+
+.btn-game-over-container{
+  display: flex;
+  justify-content: center;
 }
 
 .answer{

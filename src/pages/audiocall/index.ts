@@ -1,5 +1,3 @@
-/* eslint-disable import/no-cycle */
-
 import Header from '../../components/header';
 import Footer from '../../components/footer';
 import { startScrinAudioCall } from './start-audiocall';

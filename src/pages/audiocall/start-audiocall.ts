@@ -1,7 +1,3 @@
-/* eslint-disable linebreak-style */
-/* eslint-disable import/no-cycle */
-/* eslint-disable max-len */
-
 import { support } from './utils/supporting-func';
 
 export const startScrinAudioCall = {
@@ -18,8 +14,8 @@ export const startScrinAudioCall = {
 
       <div class="audio-call"> 
         <p class="audio-call__text">В игре аудиовызов вамнужно выбрать правильный перевод слова. <br>
-      
-        Чтобы играть с помощью клавиатуры, используй клавиши
+        Для того чтобы прослушать слово еще раз нажмите пробел или на иконку звука.<br>
+        Для игры с помощью клавиатуры, использте клавиши
         1, 2, 3, 4, 5  чтобы дать ответ,
         space - для воспроизведения звука.
         </p>
@@ -31,8 +27,8 @@ export const startScrinAudioCall = {
 
 <div class="audio-call"> 
   <p class="audio-call__text">В игре аудиовызов вамнужно выбрать правильный перевод слова. <br>
-
-  Чтобы играть с помощью клавиатуры, используй клавиши
+  Для того чтобы прослушать слово еще раз нажмите пробел или на иконку звука.<br>
+  Для игры с помощью клавиатуры, использте клавиши
   1, 2, 3, 4, 5  чтобы дать ответ,
   space - для воспроизведения звука.
   <br> <br>
