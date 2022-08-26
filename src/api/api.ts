@@ -1,7 +1,4 @@
-/* eslint-disable linebreak-style */
-/* eslint-disable max-len */
 /* eslint-disable no-else-return */
-/* eslint-disable import/no-cycle */
 /* eslint-disable import/prefer-default-export */
 
 import {
@@ -55,9 +52,10 @@ const api = {
 
   async getAllUserWords(userId: string): Promise<IUserWords[] | undefined> {
     try {
-      const response = await fetch(`${apiPath}${usersEndpoint}/${userId}${wordsEndpoint}`,
+      const response = await fetch(`${apiPath}${usersEndpoint}/${userId}/${wordsEndpoint}`,
         {
           method: 'GET',
+          credentials: 'same-origin',
           headers: {
             Authorization: `Bearer ${storage.user?.token}`,
           },
@@ -72,17 +70,19 @@ const api = {
     }
   },
 
-  async CreateUserWord(userId: string, wordID: string): Promise<IUserWords | undefined> {
+  async CreateUserWord(userId: string, wordID: string, value:IUserWords): Promise<IUserWords | undefined> {
     try {
       const response = await fetch(`${apiPath}${usersEndpoint}/${userId}/${wordsEndpoint}/${wordID}`, {
         method: 'POST',
+          credentials: 'same-origin',
         headers: {
           Authorization: `Bearer ${storage.user?.token}`,
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(storage.userWord),
+        body: JSON.stringify(value),
       });
+      console.log(storage.user?.token, 'storage.user?.token ');
       if (response.ok) {
         return await response.json() as IUserWords;
       } else {
@@ -94,7 +94,7 @@ const api = {
     }
   },
 
-  async UpdateUserWord(userId: string, wordID: string): Promise<IUserWords | undefined> {
+  async UpdateUserWord(userId: string, wordID: string, value:IUserWords): Promise<IUserWords | undefined> {
     try {
       const response = await fetch(`${apiPath}${usersEndpoint}/${userId}/${wordsEndpoint}/${wordID}`, {
         method: 'PUT',
@@ -103,7 +103,7 @@ const api = {
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(storage.userWord),
+        body: JSON.stringify(value),
       });
       if (response.ok) {
         return await response.json() as IUserWords;

@@ -98,7 +98,7 @@ export interface IGroupPageObj {
 }
 export interface IUserWords {
   difficulty: string;
-  optional?: IWord; // надо потом написать верный тип для optional
+  optional?: string; // надо потом написать верный тип для optional
 }
 
 export interface ISettings {

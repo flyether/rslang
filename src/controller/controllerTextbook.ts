@@ -61,6 +61,12 @@ export class TextbookController {
           (btnLearned as HTMLButtonElement).disabled = false;
           (btnLearned as HTMLButtonElement).innerText = 'Изучено?';
           (async () => {
+            console.log(JSON.parse(localStorage.getItem('user')!).userId);
+            const userWordq = {
+              difficulty: 'нужный уровень',
+              optional: 'конь в польто',
+            };
+            api.CreateUserWord(JSON.parse(localStorage.getItem('user')!).userId, target.dataset.word!, userWordq);
             await api.getWord(target.dataset.word as string)
               .then((res) => {
                 Words.aggregatedWords.push(res as IWord);

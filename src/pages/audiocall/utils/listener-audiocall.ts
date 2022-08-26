@@ -1,7 +1,4 @@
-/* eslint-disable linebreak-style */
 /* eslint-disable @typescript-eslint/no-use-before-define */
-/* eslint-disable max-len */
-/* eslint-disable import/no-cycle */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable class-methods-use-this */
 
@@ -13,6 +10,9 @@ import audioPathWrong from '../../../assets/audio/wrong-answer.mp3';
 import audioPathRight from '../../../assets/audio/right-answer.mp3';
 import { soundAudio, support } from './supporting-func';
 import { gameArea } from './game-render';
+import { api } from '../../../api/api';
+import { IWord } from '../../../types/types';
+import Words from '../../../words/words';
 
 // console.log(support, 'support в листнере');
 
@@ -36,7 +36,27 @@ class ListenerAudioCall {
       if ((e.target as HTMLElement).classList.contains('btn-sound')) {
         soundAudio((apiPath + support.wordObj!.audio));
       }
-
+      const target = e.target as HTMLElement;
+      if ((target).classList.contains('save')) {
+        (async () => {
+          api.getAllUserWords(JSON.parse(localStorage.getItem('user')!).userId);
+          await api.getWord('5e9f5ee35eb9e72bc21af4a0')
+            .then((res) => {
+              console.log(res, 'res  ');
+            });
+        })();
+const userWordq = {
+  difficulty: 'нужный уровень',
+  optional: 'конь в польто',
+};
+        (async () => {
+          api.CreateUserWord(JSON.parse(localStorage.getItem('user')!).userId, '5e9f5ee35eb9e72bc21af4a0', userWordq);
+          await api.getWord('5e9f5ee35eb9e72bc21af4a0')
+            .then((res) => {
+              console.log(res, 'res CreateUserWord');
+            });
+        })();
+      }
       if ((e.target as HTMLElement).classList.contains('btn-translation')) {
         support.round!++;
         if ((e.target as HTMLElement).id === support.wordObj!.wordTranslate) {
@@ -63,6 +83,7 @@ class ListenerAudioCall {
       }
 
       if ((e.target as HTMLElement).classList.contains('level-change')) {
+        support.textbook = false;
         support.clearLocalStorage();
       }
 

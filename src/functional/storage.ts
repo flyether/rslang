@@ -1,9 +1,8 @@
-/* eslint-disable object-curly-newline */
-/* eslint-disable linebreak-style */
-/* eslint-disable max-len */
 /* eslint-disable import/prefer-default-export */
 
-import { ISettings, IUser, IUserData, IUserWords, IWord } from 'types/types';
+import {
+  ISettings, IUserData, IUserWords, IWord,
+} from 'types/types';
 
 class Storage {
   user?: IUserData;
@@ -21,6 +20,10 @@ class Storage {
   round?: number;
 
   constructor() {
+    // this.userWord = {
+    //   difficulty: 'нужный уровень',
+    //   optional: this.word,
+    // };
     if (localStorage.getItem('round')) {
       this.round = Number(JSON.parse(localStorage.getItem('user') as string));
     }
@@ -44,8 +47,6 @@ class Storage {
       this.words = [];
     }
     const [w] = JSON.parse(localStorage.getItem('words') as string);
-    this.userWord = w;
-    console.log(w);
   }
 }
 
