@@ -1,5 +1,4 @@
 /* eslint-disable import/no-cycle */
-
 import showUser from '../functional/show-user';
 import { hashes } from './hashes';
 

@@ -53,7 +53,7 @@ const api = {
     }
   },
 
-  async getAllUserWords(userId: string): Promise<IUserWords[] | undefined > {
+  async getAllUserWords(userId: string): Promise<IUserWords[] | undefined> {
     try {
       const response = await fetch(`${apiPath}${usersEndpoint}/${userId}${wordsEndpoint}`,
         {
@@ -72,7 +72,7 @@ const api = {
     }
   },
 
-  async CreateUserWord(userId: string, wordID:string): Promise<IUserWords | undefined > {
+  async CreateUserWord(userId: string, wordID: string): Promise<IUserWords | undefined> {
     try {
       const response = await fetch(`${apiPath}${usersEndpoint}/${userId}/${wordsEndpoint}/${wordID}`, {
         method: 'POST',
@@ -86,6 +86,7 @@ const api = {
       if (response.ok) {
         return await response.json() as IUserWords;
       } else {
+        console.log(response.statusText);
         return await Promise.reject(new Error(response.statusText));
       }
     } catch (error) {
@@ -93,7 +94,7 @@ const api = {
     }
   },
 
-  async UpdateUserWord(userId: string, wordID:string): Promise<IUserWords | undefined > {
+  async UpdateUserWord(userId: string, wordID: string): Promise<IUserWords | undefined> {
     try {
       const response = await fetch(`${apiPath}${usersEndpoint}/${userId}/${wordsEndpoint}/${wordID}`, {
         method: 'PUT',
@@ -114,7 +115,7 @@ const api = {
     }
   },
 
-  async DeleteUserWord(userId: string, wordID:string): Promise<void> {
+  async DeleteUserWord(userId: string, wordID: string): Promise<void> {
     try {
       await fetch(`${apiPath}${usersEndpoint}/${userId}/${wordsEndpoint}/${wordID}`, {
         method: 'DELETE',
@@ -140,7 +141,7 @@ const api = {
   //   }
   // },
 
-  async GetUserAggregatedWordById(userId: string, wordID:string): Promise<IUserWords | undefined > {
+  async GetUserAggregatedWordById(userId: string, wordID: string): Promise<IUserWords | undefined> {
     try {
       const response = await fetch(`${apiPath}${usersEndpoint}/${userId}/aggregatedWords/${wordID}`,
         {
