@@ -32,7 +32,7 @@ const TextbookPage: ITextbookPage = {
     const controllerTextbook = new TextbookController(unitSelector, pageSelector);
     const isLearnedPage = this.learnedPages.some((learnedPage) => learnedPage.unit === unit
       && learnedPage.page === page);
-    console.log(this.learnedPages);
+    (async () => { console.log(await api.getAllUserWords(JSON.parse(localStorage.getItem('user')!).userId)); })();
     this.isAuth = !!localStorage.getItem('user');
     if (!unit) {
       view = `<div class="textbook-units">
