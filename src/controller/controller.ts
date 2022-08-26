@@ -32,6 +32,10 @@ class ModuleController {
 
   audiocallgame !: HTMLElement;
 
+  authorizationHeader !: HTMLElement;
+
+  statisticsConteiner !: HTMLElement;
+
   init(container: HTMLElement, model: ModuleModel): void {
     this.myModuleContainer = container;
     this.myModuleModel = model;
@@ -53,6 +57,7 @@ class ModuleController {
     const hashPageName = window.location.hash.slice(1).toLowerCase();
     this.myModuleModel.updateState(hashPageName);
     this.findMenuElements(hashPageName);
+    this.findAuthorizationElements();
     switch (hashPageName) {
       case 'aboutsprint':
         this.addButtonsAboutSprintGameListeners();
@@ -81,6 +86,7 @@ class ModuleController {
     if (this.menuMain) {
       this.myModuleModel.highlightActiveMenuItem(obj, hash);
     }
+    this.myModuleModel.checkUserAuthorization(this.menuStatictics);
   }
 
   addButtonsAboutSprintGameListeners(): void {
@@ -89,6 +95,19 @@ class ModuleController {
     this.buttonStartSprint.addEventListener('click', () => {
       if (this.sprintLevel) { sprintSettings.setLevelFromSelect(this.sprintLevel.value); }
       location.hash = '#sprint';
+    });
+  }
+
+  findAuthorizationElements():void {
+    this.authorizationHeader = document.querySelector('.header__auth') as HTMLElement;
+    document.addEventListener('click', (e) => {
+      const elem = e.target as HTMLElement;
+      if (elem.closest('.exit_btn')) {
+        setTimeout(() => this.myModuleModel.checkUserAuthorization(this.menuStatictics), 500);
+      }
+      if (elem.closest('#autoriztionBtn')) {
+        setTimeout(() => this.myModuleModel.checkUserAuthorization(this.menuStatictics), 500);
+      }
     });
   }
 }

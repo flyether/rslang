@@ -12,7 +12,7 @@ const AudiocallGame = {
   // },
 
   render(): string {
-   support.printBtnString();
+    support.printBtnString();
     return `
        <div class = 'container'> 
        <a class="go-main " href='#main' >Вернуться <br> на главную</a> 
