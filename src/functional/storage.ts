@@ -20,6 +20,10 @@ class Storage {
   round?: number;
 
   constructor() {
+    // this.userWord = {
+    //   difficulty: 'нужный уровень',
+    //   optional: this.word,
+    // };
     if (localStorage.getItem('round')) {
       this.round = Number(JSON.parse(localStorage.getItem('user') as string));
     }
@@ -43,8 +47,6 @@ class Storage {
       this.words = [];
     }
     const [w] = JSON.parse(localStorage.getItem('words') as string);
-    this.userWord = w;
-    console.log(w);
   }
 }
 

@@ -4,6 +4,7 @@ export const gameArea = `
      <div class="sound-wrapper">  
    </div>
 </div>
+<div  class="btn-blue save"> сохраним слово</div>
 <div class="right-answer"></div>
 
     <div class="button-wrapper">
