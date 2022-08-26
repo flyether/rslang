@@ -39,24 +39,23 @@ class ListenerAudioCall {
       const target = e.target as HTMLElement;
       if ((target).classList.contains('save')) {
         (async () => {
-          console.log(JSON.parse(localStorage.getItem('user')!).userId);
           api.getAllUserWords(JSON.parse(localStorage.getItem('user')!).userId);
-          await api.getWord(target.dataset.word as string)
+          await api.getWord('5e9f5ee35eb9e72bc21af4a0')
             .then((res) => {
               console.log(res, 'res  ');
             });
         })();
-
-        // (async () => {
-        //   console.log(JSON.parse(localStorage.getItem('user')!).userId);
-        //   api.CreateUserWord(JSON.parse(localStorage.getItem('user')!).userId, '5e9f5ee35eb9e72bc21af4a0');
-        //   await api.getWord(target.dataset.word as string)
-        //     .then((res) => {
-        //       Words.aggregatedWords.push(res as IWord);
-        //       Words.learnedWords = Words.learnedWords.filter((word) => word.id !== target.dataset.word);
-        //       console.log(Words.learnedWords, 'Words.learnedWords ');
-        //     });
-        // })();
+const userWordq = {
+  difficulty: 'нужный уровень',
+  optional: 'конь в польто',
+};
+        (async () => {
+          api.CreateUserWord(JSON.parse(localStorage.getItem('user')!).userId, '5e9f5ee35eb9e72bc21af4a0', userWordq);
+          await api.getWord('5e9f5ee35eb9e72bc21af4a0')
+            .then((res) => {
+              console.log(res, 'res CreateUserWord');
+            });
+        })();
       }
       if ((e.target as HTMLElement).classList.contains('btn-translation')) {
         support.round!++;
