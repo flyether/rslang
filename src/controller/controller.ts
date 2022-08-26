@@ -41,7 +41,6 @@ class ModuleController {
     this.myModuleModel = model;
     window.addEventListener('hashchange', (e) => {
       changeSprintSettings();
-      console.log(e.newURL, e.oldURL);
       this.updateState();
     });
 
@@ -85,8 +84,8 @@ class ModuleController {
     };
     if (this.menuMain) {
       this.myModuleModel.highlightActiveMenuItem(obj, hash);
+      this.myModuleModel.checkUserAuthorization(this.menuStatictics);
     }
-    this.myModuleModel.checkUserAuthorization(this.menuStatictics);
   }
 
   addButtonsAboutSprintGameListeners(): void {

@@ -43,8 +43,6 @@ class Storage {
       this.words = [];
     }
     const [w] = JSON.parse(localStorage.getItem('words') as string);
-    this.userWord = w;
-    console.log(w);
   }
 }
 
