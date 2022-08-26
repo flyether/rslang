@@ -2,6 +2,7 @@
 /* eslint-disable linebreak-style */
 /* eslint-disable max-len */
 import { gameArea } from './utils/game-render';
+import { support } from './utils/supporting-func';
 
 const AudiocallGame = {
   // hashes: {
@@ -11,6 +12,7 @@ const AudiocallGame = {
   // },
 
   render(): string {
+    support.printBtnString();
     return `
        <div class = 'container'> 
        <a class="go-main " href='#main' >Вернуться <br> на главную</a> 

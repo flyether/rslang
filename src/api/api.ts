@@ -19,6 +19,7 @@ const api = {
       const response = await fetch(`${apiPath}${usersEndpoint}/${userId}/settings`, {
         method: 'PUT',
         headers: {
+          Authorization: `Bearer ${storage.user?.token}`,
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
@@ -36,7 +37,12 @@ const api = {
 
   async GetSettings(userId: string): Promise<ISettings | undefined> {
     try {
-      const response = await fetch(`${apiPath}${usersEndpoint}/${userId}/settings`, { method: 'GET' });
+      const response = await fetch(`${apiPath}${usersEndpoint}/${userId}/settings`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${storage.user?.token}`,
+        },
+      });
       if (response.ok) {
         return await response.json() as ISettings;
       } else {
@@ -50,7 +56,12 @@ const api = {
   async getAllUserWords(userId: string): Promise<IUserWords[] | undefined> {
     try {
       const response = await fetch(`${apiPath}${usersEndpoint}/${userId}${wordsEndpoint}`,
-        { method: 'GET' });
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${storage.user?.token}`,
+          },
+        });
       if (response.ok) {
         return await response.json() as IUserWords[];
       } else {
@@ -66,6 +77,7 @@ const api = {
       const response = await fetch(`${apiPath}${usersEndpoint}/${userId}/${wordsEndpoint}/${wordID}`, {
         method: 'POST',
         headers: {
+          Authorization: `Bearer ${storage.user?.token}`,
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
@@ -87,6 +99,7 @@ const api = {
       const response = await fetch(`${apiPath}${usersEndpoint}/${userId}/${wordsEndpoint}/${wordID}`, {
         method: 'PUT',
         headers: {
+          Authorization: `Bearer ${storage.user?.token}`,
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
@@ -104,7 +117,12 @@ const api = {
 
   async DeleteUserWord(userId: string, wordID: string): Promise<void> {
     try {
-      await fetch(`${apiPath}${usersEndpoint}/${userId}/${wordsEndpoint}/${wordID}`, { method: 'DELETE' });
+      await fetch(`${apiPath}${usersEndpoint}/${userId}/${wordsEndpoint}/${wordID}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${storage.user?.token}`,
+        },
+      });
     } catch (error) {
       throw new Error('Error deleting user word');
     }
@@ -126,7 +144,12 @@ const api = {
   async GetUserAggregatedWordById(userId: string, wordID: string): Promise<IUserWords | undefined> {
     try {
       const response = await fetch(`${apiPath}${usersEndpoint}/${userId}/aggregatedWords/${wordID}`,
-        { method: 'GET' });
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${storage.user?.token}`,
+          },
+        });
       if (response.ok) {
         return await response.json() as IUserWords;
       } else {
@@ -160,7 +183,12 @@ const api = {
   async getUser(id: string): Promise<IUser | undefined> {
     try {
       const response = await fetch(`${apiPath}${usersEndpoint}/${id}`,
-        { method: 'GET' });
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${storage.user?.token}`,
+          },
+        });
       if (response.ok) {
         return await response.json() as IUser;
       } else {
@@ -194,7 +222,12 @@ const api = {
   async getWords(group: number, page: number): Promise<IWord[] | undefined> {
     try {
       const response = await fetch(`${apiPath}${wordsEndpoint}?group=${group}&page=${page}`,
-        { method: 'GET' });
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${storage.user?.token}`,
+          },
+        });
       if (response.ok) {
         return await response.json() as IWord[];
       } else {
@@ -208,7 +241,12 @@ const api = {
   async getWord(id: string): Promise<IWord | undefined> {
     try {
       const response = await fetch(`${apiPath}${wordsEndpoint}/${id}`,
-        { method: 'GET' });
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${storage.user?.token}`,
+          },
+        });
       if (response.ok) {
         return await response.json() as IWord;
       } else {

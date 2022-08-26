@@ -99,7 +99,7 @@ const TextbookPage = {
           const card = document.createElement('li');
           card.classList.add('word-item');
           card.innerHTML = `
-  <div class="word-image" 
+  <div class="word-image"
   style="background-image: url(https://rslang-learning-english-words.herokuapp.com/${words[i].image})">
   </div>
   <div class="word-description">
@@ -117,10 +117,10 @@ const TextbookPage = {
   </div>
   ${isAuth ? `
 <div class="word-noted">
-      <button class="btn-orange btn-difficult  ${isWordInDifficult ? 'added' : ''}" 
-      data-word = "${words[i].id}" 
+      <button class="btn-orange btn-difficult  ${isWordInDifficult ? 'added' : ''}"
+      data-word = "${words[i].id}"
       ${isWordInDifficult ? 'disabled' : ''} >Сложно?</button>
-      <button class="btn-orange btn-learned ${isWordLearned ? 'added' : ''}" 
+      <button class="btn-orange btn-learned ${isWordLearned ? 'added' : ''}"
       data-word = "${words[i].id}"
       ${isWordLearned ? 'disabled' : ''}>Изучено?</button>
       </div>` : ''}`;

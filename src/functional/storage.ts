@@ -18,7 +18,12 @@ class Storage {
 
   settings?: ISettings;
 
+  round?: number;
+
   constructor() {
+    if (localStorage.getItem('round')) {
+      this.round = Number(JSON.parse(localStorage.getItem('user') as string));
+    }
     if (localStorage.getItem('user')) {
       this.user = JSON.parse(localStorage.getItem('user') as string);
     } else {

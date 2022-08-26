@@ -30,7 +30,6 @@ export interface Routes {
   audiocall: typeof AudiocallGamePage,
   statistics: typeof StatisticsPage,
   audiocallgame: typeof AudiocallGame
-
 }
 
 export interface InitialObj {
@@ -79,7 +78,6 @@ export interface IWordGame {
   image: string;
   audio: string;
 }
-
 export interface IUser {
   name: string;
   email: string;
@@ -106,4 +104,17 @@ export interface IUserWords {
 export interface ISettings {
   wordsPerDay?: number;
   optional?: IWord; // надо потом написать верный
+}
+
+export interface IStorageAudiocall {
+  group?: number;
+  page?: number;
+  level?: number;
+  noRepeat?:string[];
+  round?:number;
+  arrayWrongWords?: string[];
+  score?: number;
+  textbook?: boolean;
+  arrayLevel?: number[];
+  words?: IWord[];
 }
