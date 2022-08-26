@@ -1,4 +1,5 @@
-/* eslint-disable import/no-cycle */
+import TextbookPage from '../pages/textbook';
+
 import { IWord } from '../types/types';
 import Words from '../words/words';
 import { hashes } from '../components/hashes';
@@ -60,16 +61,16 @@ export class TextbookController {
           (btnLearned as HTMLButtonElement).disabled = false;
           (btnLearned as HTMLButtonElement).innerText = 'Изучено?';
           (async () => {
-            console.log(JSON.parse(localStorage.getItem('user')!).userId);
-            const userWordq = {
-              difficulty: 'нужный уровень',
-              optional: 'конь в польто',
-            };
-            api.CreateUserWord(JSON.parse(localStorage.getItem('user')!).userId, target.dataset.word!, userWordq);
+            try {
+              api.CreateUserWord(JSON.parse(localStorage.getItem('user')!).userId, target.dataset.word!, { difficulty: 'aggregated' });
+            } catch (_e) {
+              api.UpdateUserWord(JSON.parse(localStorage.getItem('user')!).userId, target.dataset.word!, { difficulty: 'aggregated' });
+            }
             await api.getWord(target.dataset.word as string)
               .then((res) => {
                 Words.aggregatedWords.push(res as IWord);
                 Words.learnedWords = Words.learnedWords.filter((word) => word.id !== target.dataset.word);
+                TextbookPage.render();
               });
           })();
         }
@@ -81,10 +82,17 @@ export class TextbookController {
           (btnDifficult as HTMLButtonElement).disabled = false;
           (btnDifficult as HTMLButtonElement).innerText = 'Сложно?';
           (async () => {
+            try {
+              api.CreateUserWord(JSON.parse(localStorage.getItem('user')!).userId, target.dataset.word!, { difficulty: 'learned' });
+            } catch (_e) {
+              api.UpdateUserWord(JSON.parse(localStorage.getItem('user')!).userId, target.dataset.word!, { difficulty: 'learned' });
+            }
+
             await api.getWord(target.dataset.word as string)
               .then((res) => {
                 Words.learnedWords.push(res as IWord);
                 Words.aggregatedWords = Words.aggregatedWords.filter((word) => word.id !== target.dataset.word);
+                TextbookPage.render();
               });
           })();
         }

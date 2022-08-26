@@ -1,21 +1,22 @@
-/* eslint-disable import/no-cycle */
 import './textbook.scss';
 import { hashes } from '../../components/hashes';
 import { api } from '../../api/api';
-import { IWord } from '../../types/types';
+import { ILearnedPages, ITextbookPage, IWord } from '../../types/types';
 
 import Header from '../../components/header';
 import Footer from '../../components/footer';
 import { TextbookController } from '../../controller/controllerTextbook';
 import Words from '../../words/words';
 
-const TextbookPage = {
+const TextbookPage: ITextbookPage = {
   classname: 'textbook',
   wordlist: 'word-list',
 
   unitDifficultWords: 7,
 
-  isAuth: localStorage.getItem('user'),
+  isAuth: !!localStorage.getItem('user'),
+
+  learnedPages: [{ unit: 0, page: 0 }],
 
   render(): string {
     const locationHash = window.location.hash.split('/');
@@ -29,7 +30,10 @@ const TextbookPage = {
     const minPage = 1;
     const maxPage = 30;
     const controllerTextbook = new TextbookController(unitSelector, pageSelector);
-    this.isAuth = localStorage.getItem('user');
+    const isLearnedPage = this.learnedPages.some((learnedPage) => learnedPage.unit === unit
+      && learnedPage.page === page);
+    (async () => { console.log(await api.getAllUserWords(JSON.parse(localStorage.getItem('user')!).userId)); })();
+    this.isAuth = !!localStorage.getItem('user');
     if (!unit) {
       view = `<div class="textbook-units">
       <div class="textbook-unit" data-unit="1">Раздел 1</div>
@@ -81,13 +85,15 @@ const TextbookPage = {
     if (unit === this.unitDifficultWords) {
       pagesCount = Math.ceil(Words.aggregatedWords.length / wordsPerPage);
     }
+
     for (let i = 1; i <= pagesCount; i += 1) {
-      pages += `<li class="unit-page" data-page="${i}">Page ${i}</li>`;
+      const isLearnedPage = this.learnedPages.some((page) => page.unit === unit && page.page === i);
+      pages += `<li class="unit-page ${isLearnedPage ? 'learned-page-menu' : ''}" data-page="${i}">Page ${i}</li>`;
     }
     return pages;
   },
   getCards(unit: number, page: number): void {
-    this.isAuth = localStorage.getItem('user');
+    this.isAuth = !!localStorage.getItem('user');
     const { wordlist, isAuth } = this;
     function renderCards(words: IWord[]) {
       const wordContainer = document.querySelector(`.${wordlist}`);
@@ -119,10 +125,10 @@ const TextbookPage = {
 <div class="word-noted">
       <button class="btn-orange btn-difficult  ${isWordInDifficult ? 'added' : ''}"
       data-word = "${words[i].id}"
-      ${isWordInDifficult ? 'disabled' : ''} >Сложно?</button>
+      ${isWordInDifficult ? 'disabled' : ''} >${isWordInDifficult ? 'Сложное слово' : 'Сложно?'}</button>
       <button class="btn-orange btn-learned ${isWordLearned ? 'added' : ''}"
       data-word = "${words[i].id}"
-      ${isWordLearned ? 'disabled' : ''}>Изучено?</button>
+      ${isWordLearned ? 'disabled' : ''}>${isWordLearned ? 'Изучено' : 'Изучено?'}</button>
       </div>` : ''}`;
           card.dataset.word = words[i].id;
           wordContainer.append(card);
@@ -140,6 +146,20 @@ const TextbookPage = {
         .then((res) => {
           if (res) {
             Words.words = res as IWord[];
+            const areWordsLearned = [];
+            for (let i = 0; i < res.length; i += 1) {
+              const isWordLearned = Words.learnedWords.some((word) => word.id === res[i].id);
+              const isAggregatedWord = Words.aggregatedWords.some((word) => word.id === res[i].id);
+              areWordsLearned.push(isWordLearned || isAggregatedWord);
+            }
+            if (!areWordsLearned.includes(false)) {
+              document.querySelector('.word-list')?.classList.add('learned-page');
+              document.querySelectorAll('.textbook-game')?.forEach((item) => {
+                item.classList.add('learned-page-game');
+                (item as HTMLButtonElement).disabled = true;
+              });
+              this.learnedPages.push({ unit, page });
+            }
             renderCards(res as IWord[]);
           }
         });
