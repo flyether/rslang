@@ -80,6 +80,7 @@ const api = {
         },
         body: JSON.stringify(storage.userWord),
       });
+      console.log(storage.user?.token, 'storage.user?.token ');
       if (response.ok) {
         return await response.json() as IUserWords;
       } else {

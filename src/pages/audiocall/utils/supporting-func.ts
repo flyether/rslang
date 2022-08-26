@@ -1,3 +1,5 @@
+/* eslint-disable class-methods-use-this */
+/* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
@@ -166,5 +168,4 @@ class Support {
 // функция проигрывания аудио с путем из нашего обекта-слово
 
 const support = new Support();
-console.log(support, 'support в t 179');
 export { support };
