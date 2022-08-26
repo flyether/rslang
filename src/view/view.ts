@@ -42,9 +42,9 @@ class ModuleView {
   };
 
   disableStatistics(flag:boolean, statisticMenu:HTMLElement): void {
-    if (!flag) {
+    if (!flag && statisticMenu) {
       statisticMenu.classList.remove('menu__item_disable');
-    } else {
+    } else if (statisticMenu) {
       statisticMenu.classList.add('menu__item_disable');
     }
   }
