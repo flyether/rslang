@@ -86,7 +86,7 @@ class Support {
     if (garageSection) {
       garageSection.innerHTML = '';
     }
-    if (this.round! < 10) {
+    if (this.round! < 5) {
       this.words = res;
 
       this.wordsString = this.words!.map((item) => item.wordTranslate);
@@ -127,8 +127,9 @@ class Support {
         <p class="game-text">Ваш результат: &nbsp ${this.score}</p>
         ${a}
         <div class="btn-game-over-container">
-          <button type="button" class="restart">Начать заново</button>
-          <a  class="link level-change" href="#audiocall" >Выбрать уровень</a>
+          <div  class="btn-blue restart"> Начать заново</div>
+          <div  class="btn-blue"> <a  class="level-change" href="#audiocall" > Выбрать уровень</a> </div>
+          
         </div>
       </div>
 

@@ -63,6 +63,7 @@ class ListenerAudioCall {
       }
 
       if ((e.target as HTMLElement).classList.contains('level-change')) {
+        support.textbook = false;
         support.clearLocalStorage();
       }
 
