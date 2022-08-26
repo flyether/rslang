@@ -1,7 +1,3 @@
-/* eslint-disable linebreak-style */
-/* eslint-disable import/no-cycle */
-/* eslint-disable max-len */
-
 import { support } from './utils/supporting-func';
 
 export const startScrinAudioCall = {

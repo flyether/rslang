@@ -1,5 +1,3 @@
-/* eslint-disable linebreak-style */
-
 export const gameArea = ` 
  <div class="audio-container-game"> 
    <div class="btn-sound">

@@ -28,7 +28,7 @@
 
 .button-wrapper{
   display: flex;
-  margin-top: 50px;
+  margin-bottom: 20px;
 }
 
 .audio-container-game{
@@ -79,7 +79,6 @@
   display: flex;
   position: fixed;
   left: 15%;
-  top: 600px;
   text-align: center;
   cursor: pointer;
   font-size: medium;
@@ -145,7 +144,7 @@
 }
 
 .btn-sound {
-  margin-bottom: 5%;
+  margin-top: 5%;
   color: #224a9a;
   width: 80px;
   height: 80px;

@@ -1,5 +1,3 @@
-/* eslint-disable import/no-cycle */
-/* eslint-disable linebreak-style */
 /* eslint-disable eqeqeq */
 /* eslint-disable consistent-return */
 
