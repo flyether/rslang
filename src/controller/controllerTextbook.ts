@@ -1,4 +1,5 @@
-/* eslint-disable import/no-cycle */
+import TextbookPage from '../pages/textbook';
+
 import { IWord } from '../types/types';
 import Words from '../words/words';
 import { hashes } from '../components/hashes';
@@ -60,12 +61,12 @@ export class TextbookController {
           (btnLearned as HTMLButtonElement).disabled = false;
           (btnLearned as HTMLButtonElement).innerText = 'Изучено?';
           (async () => {
-            console.log(JSON.parse(localStorage.getItem('user')!).userId);
-            api.CreateUserWord(JSON.parse(localStorage.getItem('user')!).userId, target.dataset.word!);
             await api.getWord(target.dataset.word as string)
               .then((res) => {
                 Words.aggregatedWords.push(res as IWord);
+                console.log(Words.aggregatedWords);
                 Words.learnedWords = Words.learnedWords.filter((word) => word.id !== target.dataset.word);
+                TextbookPage.render();
               });
           })();
         }
@@ -81,6 +82,7 @@ export class TextbookController {
               .then((res) => {
                 Words.learnedWords.push(res as IWord);
                 Words.aggregatedWords = Words.aggregatedWords.filter((word) => word.id !== target.dataset.word);
+                TextbookPage.render();
               });
           })();
         }

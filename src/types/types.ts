@@ -110,11 +110,27 @@ export interface IStorageAudiocall {
   group?: number;
   page?: number;
   level?: number;
-  noRepeat?:string[];
-  round?:number;
+  noRepeat?: string[];
+  round?: number;
   arrayWrongWords?: string[];
   score?: number;
   textbook?: boolean;
   arrayLevel?: number[];
   words?: IWord[];
+}
+
+export interface ILearnedPages {
+  unit: number;
+  page: number;
+}
+
+export interface ITextbookPage {
+  learnedPages: ILearnedPages[];
+  isAuth: boolean;
+  classname: string;
+  wordlist: string;
+  unitDifficultWords: number;
+  render(): string;
+  renderPages(unit: number): string;
+  getCards(unit: number, page: number): void;
 }
