@@ -145,8 +145,9 @@ export interface ITextbookPage {
   getCards(unit: number, page: number): void;
 }
 export interface IObjStatisticStorage {
-  date: string;
+  date?: string;
   percentOfRightAnswers: number;
-  newWords: number;
+  newWords?: number;
   longestSeriesOfRightAnswers: number;
+  answer?: string[];
 }

@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import { IObjStatisticStorage } from 'types/types';
+import StatisticsPage from '.';
 import { support } from '../audiocall/utils/supporting-func';
 
 function getArrOfLast5Days() {
@@ -21,7 +22,6 @@ function dataNow(): string {
   const dateCurr = `${date}/${month}/${year}`;
   return dateCurr;
 }
-const dateCurrent: string = dataNow();
 
 export const statisticsDataLongTerm = {
   labels: getArrOfLast5Days(),
@@ -38,42 +38,29 @@ export const statisticsDataTextbookShortTerm = {
 };
 
 let objAudiocallDate: IObjStatisticStorage = {
-  date: 'dateCurrGame',
+  date: dataNow(),
   percentOfRightAnswers: 0,
   newWords: 0,
   longestSeriesOfRightAnswers: 0,
 };
 
-if (localStorage.getItem('dataAudiocall')) {
-  objAudiocallDate = JSON.parse(localStorage.getItem('dataAudiocall')!);
-}
-
-export const statisticsDataAudiocallShortTerm = {
-  newWords: 0,
-  percentOfRightAnswers: 0,
-  longestSeriesOfRightAnswers: 0,
-};
-
-getstatisticsDataAudiocallShortTerm();
-
-function getstatisticsDataAudiocallShortTerm(): void {
-  if ((dateCurrent as string) !== (objAudiocallDate.date)) {
-    statisticsDataAudiocallShortTerm.newWords = 0;
-    statisticsDataAudiocallShortTerm.longestSeriesOfRightAnswers = 0;
-    statisticsDataAudiocallShortTerm.percentOfRightAnswers = 0;
-    objAudiocallDate = {
-      date: 'dateCurrGame',
-      percentOfRightAnswers: 0,
-      newWords: 0,
-      longestSeriesOfRightAnswers: 0,
-    };
-    localStorage.setItem('dataAudiocall', JSON.stringify(objAudiocallDate));
-  } else {
-    statisticsDataAudiocallShortTerm.newWords += objAudiocallDate.newWords;
-    statisticsDataAudiocallShortTerm.longestSeriesOfRightAnswers += objAudiocallDate.longestSeriesOfRightAnswers;
-    statisticsDataAudiocallShortTerm.percentOfRightAnswers += objAudiocallDate.percentOfRightAnswers;
+export function getStatisticsDataAudiocallShortTerm(): void {
+  if (localStorage.getItem('dataAudiocall')) {
+    if ((objAudiocallDate.date) === JSON.parse(localStorage.getItem('dataAudiocall')!).date) {
+      objAudiocallDate = JSON.parse(localStorage.getItem('dataAudiocall')!);
+    } else {
+      localStorage.setItem('dataAudiocall', JSON.stringify(objAudiocallDate));
+    }
   }
 }
+
+getStatisticsDataAudiocallShortTerm();
+// StatisticsPage.render();
+export const statisticsDataAudiocallShortTerm = {
+  newWords: objAudiocallDate.newWords,
+  percentOfRightAnswers: objAudiocallDate.percentOfRightAnswers,
+  longestSeriesOfRightAnswers: objAudiocallDate.longestSeriesOfRightAnswers,
+};
 
 export const statisticsDataSprintShortTerm = {
   newWords: 100,

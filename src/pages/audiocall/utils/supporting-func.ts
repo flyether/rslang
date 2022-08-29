@@ -3,11 +3,13 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
-import { IObjStatisticStorage, IWord, IUserWords } from '../../../types/types';
+import {
+  IObjStatisticStorage, IWord, IUserWords, InitialObj,
+} from '../../../types/types';
 import { apiPath } from '../../../api/api-path';
 import { api } from '../../../api/api';
-import { statisticsDataAudiocallShortTerm } from '../../statistics/statisticsData';
-import StatisticsPage from '../../statistics/index';
+import { getStatisticsDataAudiocallShortTerm, statisticsDataAudiocallShortTerm } from '../../statistics/statisticsData';
+import { initialObj, mySPA } from '../../../index';
 
 function shuffle(array:string[]) {
   array.sort(() => Math.random() - 0.5);
@@ -86,14 +88,17 @@ class Support {
     this.containerBtn = 'ggg';
   }
 
-  // async getUserWords() : Promise<void> {
-  //   api.getAllUserWords(JSON.parse(localStorage.getItem('user')!).userId)
-  //     .then((res) => {
-  //       res!.forEach((element) => {
-  //         this.noRepeat?.push(element.optional?.wordsLearned as string);
-  //       });
-  //     });
-  // }
+  async getUserWords() : Promise<void> {
+    api.getAllUserWords(JSON.parse(localStorage.getItem('user')!).userId)
+      .then((res) => {
+        res!.forEach((element) => {
+          api.getWord(element.wordId)
+            .then((ress) => {
+              this.noRepeat?.push(ress?.word as string);
+            });
+        });
+      });
+  }
 
   async printBtnString(): Promise<void> {
     const btnWrapper = document.querySelector('.audio-container-game') as HTMLElement;
@@ -129,7 +134,7 @@ class Support {
       this.noRepeat!.push(this.wordObj!.wordTranslate);
       soundAudio((apiPath + support.wordObj!.audio));
       const button = document.querySelectorAll('.btn-translation');
-
+      console.log(this.noRepeat, 'this.noRepeat');
       for (let j = 0; j < this.arraySixWords.length; j++) {
         button[j].textContent = `${this.arraySixWords[j]}`;
         button[j].id = this.arraySixWords[j];
@@ -157,35 +162,50 @@ class Support {
       </div>
 
     `;
+      console.log(this.RightAnsweredWords!, 'this.RightAnsweredWords!');
       if (this.longestSeriesOfRightAnswers! < this.RightAnsweredWords!.length) {
         this.longestSeriesOfRightAnswers = this.RightAnsweredWords!.length;
       }
 
-      this.allWords = this.allWords! + 5;
+      let objAudiocallDate: IObjStatisticStorage = {
+        percentOfRightAnswers: 0,
+        longestSeriesOfRightAnswers: 0,
+        answer: [],
+        newWords: 0,
+      };
 
-      this.rightAnsweredWordsStatistic = this.rightAnsweredWordsStatistic?.concat(this.RightAnsweredWords!);
+      if (localStorage.getItem('dataAudiocall')) {
+        objAudiocallDate = JSON.parse(localStorage.getItem('dataAudiocall')!);
+      }
 
-      const percentOfRightAnswersLocal = (this.rightAnsweredWordsStatistic!.length * 100) / this.allWords;
+      if (objAudiocallDate.answer) {
+        this.rightAnsweredWordsStatistic = objAudiocallDate.answer!.concat(this.RightAnsweredWords!);
+      } else {
+        this.rightAnsweredWordsStatistic = this.RightAnsweredWords;
+      }
+      console.log(this.RightAnsweredWords!, 'this.RightAnsweredWords!', objAudiocallDate.answer, 'objAudiocallDate.answer');
+      this.allWords = objAudiocallDate.newWords! + 5;
 
-      this.percentOfRightAnswers = percentOfRightAnswersLocal;
+      this.percentOfRightAnswers = Math.floor((this.rightAnsweredWordsStatistic!.length * 100) / this.allWords);
+      // const newWordsLocal = (new Set(this.rightAnsweredWordsStatistic!)).size;
 
-      const newWordsLocal = (new Set(this.rightAnsweredWordsStatistic!)).size;
-
-      this.newWords = newWordsLocal;
-
-      console.log(this.rightAnsweredWordsStatistic, 'this.rightAnsweredWordsStatistic', statisticsDataAudiocallShortTerm.percentOfRightAnswers, 'statisticsDataAudiocallShortTerm.percentOfRightAnswers');
-
-      const dateCurrGame = this.dataNow();
       const objStatisticStorage: IObjStatisticStorage = {
-        date: dateCurrGame,
+        date: this.dataNow(),
         percentOfRightAnswers: this.percentOfRightAnswers,
-        newWords: this.newWords,
+        newWords: this.allWords,
         longestSeriesOfRightAnswers: this.longestSeriesOfRightAnswers as number,
+        answer: this.rightAnsweredWordsStatistic,
       };
 
       localStorage.setItem('dataAudiocall', JSON.stringify(objStatisticStorage));
       this.clearLocalStorage();
-      // StatisticsPage.render();
+      getStatisticsDataAudiocallShortTerm();
+      // const view = new ModuleModel();
+      // view.prepareStatistics();
+
+      // window.addEventListener('DOMContentLoaded', () => {
+      //   mySPA.init(initialObj);
+      // });
     }
   }
 

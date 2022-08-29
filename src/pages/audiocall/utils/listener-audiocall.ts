@@ -4,18 +4,10 @@
 /* eslint-disable class-methods-use-this */
 
 import { apiPath } from '../../../api/api-path';
-// import {
-//   clearLocalStorage, soundAudio, wordObj, storageAudiocall,
-// } from './supporting-func';
 import audioPathWrong from '../../../assets/audio/wrong-answer.mp3';
 import audioPathRight from '../../../assets/audio/right-answer.mp3';
 import { soundAudio, support } from './supporting-func';
 import { gameArea } from './game-render';
-import { api } from '../../../api/api';
-import { IWord } from '../../../types/types';
-import Words from '../../../words/words';
-
-// console.log(support, 'support в листнере');
 
 class ListenerAudioCall {
   keyboard(): void {
