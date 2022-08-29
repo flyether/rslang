@@ -5,7 +5,7 @@ import {
   apiPath, usersEndpoint, wordsEndpoint, signIn, apiCategory,
 } from './api-path';
 import {
-  IUser, IWord, IUserData, IUserWords, ISettings,
+  IUser, IWord, IUserData, IUserWords, ISettings, IUserWord,
 } from '../types/types';
 import { storage } from '../functional/storage';
 
@@ -50,7 +50,7 @@ const api = {
     }
   },
 
-  async getAllUserWords(userId: string): Promise<IUserWords[] | undefined> {
+  async getAllUserWords(userId: string): Promise<IUserWord[] | undefined> {
     try {
       const response = await fetch(`${apiPath}${usersEndpoint}/${userId}/${wordsEndpoint}`,
         {
@@ -61,7 +61,7 @@ const api = {
           },
         });
       if (response.ok) {
-        return await response.json() as IUserWords[];
+        return await response.json() as IUserWord[];
       } else {
         return await Promise.reject(new Error(response.statusText));
       }
@@ -70,11 +70,11 @@ const api = {
     }
   },
 
-  async CreateUserWord(userId: string, wordID: string, value:IUserWords): Promise<IUserWords | undefined> {
+  async CreateUserWord(userId: string, wordID: string, value: IUserWords): Promise<IUserWords | undefined> {
     try {
       const response = await fetch(`${apiPath}${usersEndpoint}/${userId}/${wordsEndpoint}/${wordID}`, {
         method: 'POST',
-          credentials: 'same-origin',
+        credentials: 'same-origin',
         headers: {
           Authorization: `Bearer ${storage.user?.token}`,
           Accept: 'application/json',
@@ -94,7 +94,7 @@ const api = {
     }
   },
 
-  async UpdateUserWord(userId: string, wordID: string, value:IUserWords): Promise<IUserWords | undefined> {
+  async UpdateUserWord(userId: string, wordID: string, value: IUserWords): Promise<IUserWords | undefined> {
     try {
       const response = await fetch(`${apiPath}${usersEndpoint}/${userId}/${wordsEndpoint}/${wordID}`, {
         method: 'PUT',
