@@ -35,7 +35,16 @@ const TextbookPage: ITextbookPage = {
     const controllerTextbook = new TextbookController(unitSelector, pageSelector);
     const isLearnedPage = this.learnedPages.some((learnedPage) => learnedPage.unit === unit
       && learnedPage.page === page);
-    // (async () => { console.log(await api.getAllUserWords(JSON.parse(localStorage.getItem('user')!).userId)); })();
+    (async () => {
+      const userWords = await api.getAllUserWords(JSON.parse(localStorage.getItem('user')!).userId);
+      if (userWords?.length) {
+        Words.aggregatedWords = [];
+        for (let i = 0; i < userWords?.length; i += 1) {
+          const newWord: IWord = (await api.getWord(userWords[i].wordId))!;
+          Words.aggregatedWords.push(newWord);
+        }
+      }
+    })();
     this.isAuth = !!localStorage.getItem('user');
     if (!unit) {
       view = `<div class="textbook-units">
