@@ -3,10 +3,10 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
-import { IWord } from '../../../types/types';
+import { IObjStatisticStorage, IWord } from '../../../types/types';
 import { apiPath } from '../../../api/api-path';
 import { api } from '../../../api/api';
-import { gameArea } from './game-render';
+import { statisticsDataAudiocallShortTerm } from '../../statistics/statisticsData';
 
 function shuffle(array:string[]) {
   array.sort(() => Math.random() - 0.5);
@@ -18,6 +18,8 @@ export function soundAudio(path: string): void {
 }
 
 class Support {
+  public wordStudied: string[];
+
   public textbook?: boolean;
 
   public arrayWrongWords?: string[];
@@ -40,37 +42,56 @@ class Support {
 
   public wordObj?: IWord ;
 
-  public arraySixWords?: string [] ;
+  public arraySixWords?: string [];
 
   public containerBtn?: string;
 
+  public RightAnsweredWords?: string [];
+
+  public WrongAnsweredWords?: string [];
+
+  public rightAnsweredWordsStatistic?: string [];
+
+  public newWords?: number;
+
+  public percentOfRightAnswers?: number;
+
+  public longestSeriesOfRightAnswers?: number;
+
+  public allWords?: number;
+
   constructor() {
+    this.newWords = 0;
+    this.allWords = 0;
+    this.rightAnsweredWordsStatistic = [];
+    this.longestSeriesOfRightAnswers = this.rightAnsweredWordsStatistic?.length;
+    this.WrongAnsweredWords = [];
+    this.RightAnsweredWords = [];
     this.textbook = false;
     this.arrayWrongWords = [];
-
     this.round = 0;
-
     this.score = 0;
-
     this.group = 0;
-
     this.page = 0;
-
     this.level = 1;
-
     this.words = [];
-
     this.wordsString = [];
-
     this.noRepeat = [];
-
+    this.wordStudied = [];
     this.wordObj = {
       id: '', group: 0, page: 0, word: '', image: '', audio: '', audioMeaning: '', audioExample: '', textMeaning: '', textExample: '', transcription: '', wordTranslate: '', textMeaningTranslate: '', textExampleTranslate: '',
     };
-
     this.arraySixWords = [];
-
     this.containerBtn = 'ggg';
+  }
+
+  async getUserWords() : Promise<void> {
+    api.getAllUserWords(JSON.parse(localStorage.getItem('user')!).userId)
+      .then((res) => {
+        res!.forEach((element) => {
+          this.noRepeat?.push(element.optional?.wordsLearned as string);
+        });
+      });
   }
 
   async printBtnString(): Promise<void> {
@@ -87,7 +108,9 @@ class Support {
     }
     if (this.round! < 5) {
       this.words = res;
-
+      if (this.wordStudied.length > 0) {
+        this.noRepeat = this.noRepeat!.concat(this.wordStudied);
+      }
       this.wordsString = this.words!.map((item) => item.wordTranslate);
       if (this.noRepeat!.length > 0) {
         this.wordsString = this.wordsString.filter((item) => !this.noRepeat!.includes(item));
@@ -133,34 +156,62 @@ class Support {
       </div>
 
     `;
+      if (this.longestSeriesOfRightAnswers! < this.RightAnsweredWords!.length) {
+        this.longestSeriesOfRightAnswers = this.RightAnsweredWords!.length;
+      }
+
+      this.allWords = this.allWords! + 5;
+
+      this.rightAnsweredWordsStatistic = this.rightAnsweredWordsStatistic?.concat(this.RightAnsweredWords!);
+
+      const percentOfRightAnswersLocal = (this.rightAnsweredWordsStatistic!.length * 100) / this.allWords;
+
+      this.percentOfRightAnswers = percentOfRightAnswersLocal;
+
+      const newWordsLocal = (new Set(this.rightAnsweredWordsStatistic!)).size;
+
+      this.newWords = newWordsLocal;
+
+      console.log(this.rightAnsweredWordsStatistic, 'this.rightAnsweredWordsStatistic', statisticsDataAudiocallShortTerm.percentOfRightAnswers, 'statisticsDataAudiocallShortTerm.percentOfRightAnswers');
+
+      const dateCurrGame = this.dataNow();
+      const objStatisticStorage: IObjStatisticStorage = {
+        date: dateCurrGame,
+        percentOfRightAnswers: this.percentOfRightAnswers,
+        newWords: this.newWords,
+        longestSeriesOfRightAnswers: this.longestSeriesOfRightAnswers as number,
+      };
+
+      localStorage.setItem('dataAudiocall', JSON.stringify(objStatisticStorage));
       this.clearLocalStorage();
     }
-    console.log(support, 'support в t 142 d бтн рендер');
+  }
+
+  dataNow(): string {
+    const t = new Date();
+    const date = (`0${t.getDate()}`).slice(-2);
+    const month = (`0${t.getMonth() + 1}`).slice(-2);
+    const year = t.getFullYear();
+    const dataCurr = `${date}/${month}/${year}`;
+    return dataCurr;
   }
 
   clearLocalStorage(): void {
+    this.WrongAnsweredWords = [];
+    this.RightAnsweredWords = [];
+    this.textbook = false;
     this.arrayWrongWords = [];
-
     this.round = 0;
-
     this.score = 0;
-
     this.group = 0;
-
     this.page = 0;
-
-    this.level = 1;
-
+    // this.level = 1;
     this.words = [];
-
     this.wordsString = [];
-
     this.noRepeat = [];
-
     this.wordObj = {
       id: '', group: 0, page: 0, word: '', image: '', audio: '', audioMeaning: '', audioExample: '', textMeaning: '', textExample: '', transcription: '', wordTranslate: '', textMeaningTranslate: '', textExampleTranslate: '',
     };
-
     this.arraySixWords = [];
   }
 }

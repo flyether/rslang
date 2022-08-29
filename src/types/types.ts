@@ -96,9 +96,13 @@ export interface IGroupPageObj {
   group: number;
   page: number;
 }
+
+interface IOptionalUserWords {
+  wordsLearned: string;
+}
 export interface IUserWords {
   difficulty: string;
-  optional?: string; // надо потом написать верный тип для optional
+  optional?: IOptionalUserWords; // надо потом написать верный тип для optional
 }
 
 export interface ISettings {
@@ -133,4 +137,10 @@ export interface ITextbookPage {
   render(): string;
   renderPages(unit: number): string;
   getCards(unit: number, page: number): void;
+}
+export interface IObjStatisticStorage {
+  date: string;
+  percentOfRightAnswers: number;
+  newWords: number;
+  longestSeriesOfRightAnswers: number;
 }

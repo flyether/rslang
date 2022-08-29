@@ -34,19 +34,12 @@ class Storage {
         message: '', token: '', refreshToken: '', userId: '', name: '',
       };
     }
-    if (localStorage.getItem('word')) {
-      this.word = JSON.parse(localStorage.getItem('word') as string);
-    } else {
-      this.word = {
-        id: '', group: 0, page: 0, word: '', image: '', audio: '', audioMeaning: '', audioExample: '', textMeaning: '', textExample: '', transcription: '', wordTranslate: '', textMeaningTranslate: '', textExampleTranslate: '',
-      };
-    }
-    if (localStorage.getItem('words')) {
-      this.words = JSON.parse(localStorage.getItem('words') as string);
-    } else {
-      this.words = [];
-    }
-    const [w] = JSON.parse(localStorage.getItem('words') as string);
+
+    this.word = {
+      id: '', group: 0, page: 0, word: '', image: '', audio: '', audioMeaning: '', audioExample: '', textMeaning: '', textExample: '', transcription: '', wordTranslate: '', textMeaningTranslate: '', textExampleTranslate: '',
+    };
+
+    this.words = [];
   }
 }
 

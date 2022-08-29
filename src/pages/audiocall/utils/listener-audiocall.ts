@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable class-methods-use-this */
@@ -36,32 +37,14 @@ class ListenerAudioCall {
       if ((e.target as HTMLElement).classList.contains('btn-sound')) {
         soundAudio((apiPath + support.wordObj!.audio));
       }
-      const target = e.target as HTMLElement;
-//       if ((target).classList.contains('save')) {
-//         (async () => {
-//           api.getAllUserWords(JSON.parse(localStorage.getItem('user')!).userId);
-//           await api.getWord('5e9f5ee35eb9e72bc21af4a0')
-//             .then((res) => {
-//               console.log(res, 'res  ');
-//             });
-//         })();
-// const userWordq = {
-//   difficulty: 'нужный уровень',
-//   optional: 'конь в польто',
-// };
-//         (async () => {
-//           api.CreateUserWord(JSON.parse(localStorage.getItem('user')!).userId, '5e9f5ee35eb9e72bc21af4a0', userWordq);
-//           await api.getWord('5e9f5ee35eb9e72bc21af4a0')
-//             .then((res) => {
-//               console.log(res, 'res CreateUserWord');
-//             });
-//         })();
-//       }
+
       if ((e.target as HTMLElement).classList.contains('btn-translation')) {
         support.round!++;
         if ((e.target as HTMLElement).id === support.wordObj!.wordTranslate) {
+          support.RightAnsweredWords?.push(support.wordObj!.word);
           rightAnswerFunc((e.target as HTMLElement)!);
         } else {
+          support.WrongAnsweredWords?.push(support.wordObj!.word);
           wrongAnswerFunc((e.target as HTMLElement));
         }
       }
@@ -83,7 +66,6 @@ class ListenerAudioCall {
       }
 
       if ((e.target as HTMLElement).classList.contains('level-change')) {
-        support.textbook = false;
         support.clearLocalStorage();
       }
 
@@ -109,7 +91,7 @@ function rightAnswerFunc(el: HTMLElement) {
     support.printBtnString();
     el.classList.remove('btn-translation-right');
   },
-  1200);
+  1000);
 }
 
 function wrongAnswerFunc(el: HTMLElement) {
