@@ -55,16 +55,14 @@ export class TextbookController {
         }
         if ((target).classList.contains('btn-difficult')) {
           target.classList.add('added');
-          target.innerText = 'Сложное слово';
-          (target as HTMLButtonElement).disabled = true;
           const btnLearned = document.querySelector(`.btn-learned[data-word="${target.dataset.word}"]`);
-          (btnLearned as HTMLButtonElement).disabled = false;
-          (btnLearned as HTMLButtonElement).innerText = 'Изучено?';
           (async () => {
             try {
-              api.CreateUserWord(JSON.parse(localStorage.getItem('user')!).userId, target.dataset.word!, { difficulty: 'aggregated' });
+              api.CreateUserWord(JSON.parse(localStorage.getItem('user')!).userId, target.dataset.word!,
+                { difficulty: 'aggregated' });
             } catch (_e) {
-              api.UpdateUserWord(JSON.parse(localStorage.getItem('user')!).userId, target.dataset.word!, { difficulty: 'aggregated' });
+              api.UpdateUserWord(JSON.parse(localStorage.getItem('user')!).userId, target.dataset.word!,
+                { difficulty: 'aggregated' });
             }
             await api.getWord(target.dataset.word as string)
               .then((res) => {
@@ -76,16 +74,14 @@ export class TextbookController {
         }
         if ((target).classList.contains('btn-learned')) {
           target.classList.add('added');
-          target.innerText = 'Изучено';
-          (target as HTMLButtonElement).disabled = true;
           const btnDifficult = document.querySelector(`.btn-difficult[data-word="${target.dataset.word}"]`);
-          (btnDifficult as HTMLButtonElement).disabled = false;
-          (btnDifficult as HTMLButtonElement).innerText = 'Сложно?';
           (async () => {
             try {
-              api.CreateUserWord(JSON.parse(localStorage.getItem('user')!).userId, target.dataset.word!, { difficulty: 'learned' });
+              api.CreateUserWord(JSON.parse(localStorage.getItem('user')!).userId, target.dataset.word!,
+                { difficulty: 'learned' });
             } catch (_e) {
-              api.UpdateUserWord(JSON.parse(localStorage.getItem('user')!).userId, target.dataset.word!, { difficulty: 'learned' });
+              api.UpdateUserWord(JSON.parse(localStorage.getItem('user')!).userId, target.dataset.word!,
+                { difficulty: 'learned' });
             }
 
             await api.getWord(target.dataset.word as string)
