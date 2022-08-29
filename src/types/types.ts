@@ -54,6 +54,12 @@ export interface MenuItems {
   team: HTMLElement,
 }
 
+export interface IUserWord {
+  id: string,
+  wordId: string,
+  difficulty: string,
+}
+
 export interface IWord {
   id: string;
   group: number;
