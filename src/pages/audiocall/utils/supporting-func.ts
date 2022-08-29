@@ -7,6 +7,7 @@ import { IObjStatisticStorage, IWord, IUserWords } from '../../../types/types';
 import { apiPath } from '../../../api/api-path';
 import { api } from '../../../api/api';
 import { statisticsDataAudiocallShortTerm } from '../../statistics/statisticsData';
+import StatisticsPage from '../../statistics/index';
 
 function shuffle(array:string[]) {
   array.sort(() => Math.random() - 0.5);
@@ -85,14 +86,14 @@ class Support {
     this.containerBtn = 'ggg';
   }
 
-  async getUserWords() : Promise<void> {
-    api.getAllUserWords(JSON.parse(localStorage.getItem('user')!).userId)
-      .then((res) => {
-        res!.forEach((element) => {
-          this.noRepeat?.push(element.optional?.wordsLearned as string);
-        });
-      });
-  }
+  // async getUserWords() : Promise<void> {
+  //   api.getAllUserWords(JSON.parse(localStorage.getItem('user')!).userId)
+  //     .then((res) => {
+  //       res!.forEach((element) => {
+  //         this.noRepeat?.push(element.optional?.wordsLearned as string);
+  //       });
+  //     });
+  // }
 
   async printBtnString(): Promise<void> {
     const btnWrapper = document.querySelector('.audio-container-game') as HTMLElement;
@@ -184,6 +185,7 @@ class Support {
 
       localStorage.setItem('dataAudiocall', JSON.stringify(objStatisticStorage));
       this.clearLocalStorage();
+      // StatisticsPage.render();
     }
   }
 

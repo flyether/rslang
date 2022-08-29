@@ -36,9 +36,6 @@ export const statisticsDataTextbookShortTerm = {
   learnedWords: 10,
   percentOfRightAnswers: 50,
 };
-let a:number;
-let b:number;
-let c:number;
 
 let objAudiocallDate: IObjStatisticStorage = {
   date: 'dateCurrGame',
@@ -50,14 +47,15 @@ let objAudiocallDate: IObjStatisticStorage = {
 if (localStorage.getItem('dataAudiocall')) {
   objAudiocallDate = JSON.parse(localStorage.getItem('dataAudiocall')!);
 }
-console.log(objAudiocallDate);
+
 export const statisticsDataAudiocallShortTerm = {
-  newWords: objAudiocallDate.newWords,
-  percentOfRightAnswers: objAudiocallDate.percentOfRightAnswers,
-  longestSeriesOfRightAnswers: objAudiocallDate.longestSeriesOfRightAnswers,
+  newWords: 0,
+  percentOfRightAnswers: 0,
+  longestSeriesOfRightAnswers: 0,
 };
 
 getstatisticsDataAudiocallShortTerm();
+
 function getstatisticsDataAudiocallShortTerm(): void {
   if ((dateCurrent as string) !== (objAudiocallDate.date)) {
     statisticsDataAudiocallShortTerm.newWords = 0;
@@ -70,6 +68,10 @@ function getstatisticsDataAudiocallShortTerm(): void {
       longestSeriesOfRightAnswers: 0,
     };
     localStorage.setItem('dataAudiocall', JSON.stringify(objAudiocallDate));
+  } else {
+    statisticsDataAudiocallShortTerm.newWords += objAudiocallDate.newWords;
+    statisticsDataAudiocallShortTerm.longestSeriesOfRightAnswers += objAudiocallDate.longestSeriesOfRightAnswers;
+    statisticsDataAudiocallShortTerm.percentOfRightAnswers += objAudiocallDate.percentOfRightAnswers;
   }
 }
 
