@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
-import { IObjStatisticStorage, IWord } from '../../../types/types';
+import { IObjStatisticStorage, IWord, IUserWords } from '../../../types/types';
 import { apiPath } from '../../../api/api-path';
 import { api } from '../../../api/api';
 import { statisticsDataAudiocallShortTerm } from '../../statistics/statisticsData';
