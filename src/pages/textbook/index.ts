@@ -1,12 +1,15 @@
 import './textbook.scss';
 import { hashes } from '../../components/hashes';
 import { api } from '../../api/api';
-import { ILearnedPages, ITextbookPage, IWord } from '../../types/types';
+import {
+  ILearnedPages, ITextbookPage, IUserData, IUserWord, IWord,
+} from '../../types/types';
 
 import Header from '../../components/header';
 import Footer from '../../components/footer';
 import { TextbookController } from '../../controller/controllerTextbook';
 import Words from '../../words/words';
+import { difficulties } from '../../words/difficulties';
 
 const TextbookPage: ITextbookPage = {
   classname: 'textbook',
@@ -32,7 +35,7 @@ const TextbookPage: ITextbookPage = {
     const controllerTextbook = new TextbookController(unitSelector, pageSelector);
     const isLearnedPage = this.learnedPages.some((learnedPage) => learnedPage.unit === unit
       && learnedPage.page === page);
-    (async () => { console.log(await api.getAllUserWords(JSON.parse(localStorage.getItem('user')!).userId)); })();
+    // (async () => { console.log(await api.getAllUserWords(JSON.parse(localStorage.getItem('user')!).userId)); })();
     this.isAuth = !!localStorage.getItem('user');
     if (!unit) {
       view = `<div class="textbook-units">
@@ -95,13 +98,20 @@ const TextbookPage: ITextbookPage = {
   getCards(unit: number, page: number): void {
     this.isAuth = !!localStorage.getItem('user');
     const { wordlist, isAuth } = this;
-    function renderCards(words: IWord[]) {
+    const { userId } = JSON.parse(localStorage.getItem('user')!);
+    function renderCards(words: IWord[], userWords?: IUserWord[] | undefined) {
       const wordContainer = document.querySelector(`.${wordlist}`);
       if (wordContainer) {
         wordContainer.innerHTML = '';
         for (let i = 0; i < words.length; i += 1) {
-          const isWordInDifficult = Words.aggregatedWords.some((word) => words[i].id === word.id);
-          const isWordLearned = Words.learnedWords.some((word) => words[i].id === word.id);
+          let isWordInDifficult = Words.aggregatedWords.some((word) => words[i].id === word.id);
+          let isWordLearned = Words.learnedWords.some((word) => words[i].id === word.id);
+          if (userWords) {
+            isWordInDifficult = userWords.some((word) => words[i].id === word.wordId
+              && word.difficulty === difficulties.aggregated);
+            isWordLearned = userWords.some((word) => words[i].id === word.wordId
+              && word.difficulty === difficulties.learned);
+          }
           const card = document.createElement('li');
           card.classList.add('word-item');
           card.innerHTML = `
@@ -142,27 +152,27 @@ const TextbookPage: ITextbookPage = {
       return;
     }
     (async () => {
-      await api.getWords(unit - 1, page - 1)
-        .then((res) => {
-          if (res) {
-            Words.words = res as IWord[];
-            const areWordsLearned = [];
-            for (let i = 0; i < res.length; i += 1) {
-              const isWordLearned = Words.learnedWords.some((word) => word.id === res[i].id);
-              const isAggregatedWord = Words.aggregatedWords.some((word) => word.id === res[i].id);
-              areWordsLearned.push(isWordLearned || isAggregatedWord);
-            }
-            if (!areWordsLearned.includes(false)) {
-              document.querySelector('.word-list')?.classList.add('learned-page');
-              document.querySelectorAll('.textbook-game')?.forEach((item) => {
-                item.classList.add('learned-page-game');
-                (item as HTMLButtonElement).disabled = true;
-              });
-              this.learnedPages.push({ unit, page });
-            }
-            renderCards(res as IWord[]);
-          }
-        });
+      const res = await api.getWords(unit - 1, page - 1);
+      const userWords: IUserWord[] | undefined = await api.getAllUserWords(userId);
+      if (res) {
+        Words.words = res as IWord[];
+        const areWordsLearned = [];
+        for (let i = 0; i < res.length; i += 1) {
+          const isWordLearned = Words.learnedWords.some((word) => word.id === res[i].id);
+          const isAggregatedWord = Words.aggregatedWords.some((word) => word.id === res[i].id);
+          areWordsLearned.push(isWordLearned || isAggregatedWord);
+        }
+        if (!areWordsLearned.includes(false)) {
+          document.querySelector('.word-list')?.classList.add('learned-page');
+          document.querySelectorAll('.textbook-game')?.forEach((item) => {
+            item.classList.add('learned-page-game');
+            (item as HTMLButtonElement).disabled = true;
+          });
+          this.learnedPages.push({ unit, page });
+        }
+
+        renderCards(res as IWord[], userWords);
+      }
     })();
   },
 };

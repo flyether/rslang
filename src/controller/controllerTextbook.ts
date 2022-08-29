@@ -21,6 +21,7 @@ export class TextbookController {
   }
 
   setEventListeners(unit: number): void {
+    const { userId } = JSON.parse(localStorage.getItem('user')!);
     const click: (e: MouseEvent) => void = (e: MouseEvent) => {
       if (e.target) {
         const target = e.target as HTMLElement;
@@ -55,13 +56,12 @@ export class TextbookController {
         }
         if ((target).classList.contains('btn-difficult')) {
           target.classList.add('added');
-          const btnLearned = document.querySelector(`.btn-learned[data-word="${target.dataset.word}"]`);
           (async () => {
             try {
-              api.CreateUserWord(JSON.parse(localStorage.getItem('user')!).userId, target.dataset.word!,
+              api.CreateUserWord(userId, target.dataset.word!,
                 { difficulty: 'aggregated' });
             } catch (_e) {
-              api.UpdateUserWord(JSON.parse(localStorage.getItem('user')!).userId, target.dataset.word!,
+              api.UpdateUserWord(userId, target.dataset.word!,
                 { difficulty: 'aggregated' });
             }
             await api.getWord(target.dataset.word as string)
@@ -74,16 +74,15 @@ export class TextbookController {
         }
         if ((target).classList.contains('btn-learned')) {
           target.classList.add('added');
-          const btnDifficult = document.querySelector(`.btn-difficult[data-word="${target.dataset.word}"]`);
           (async () => {
+            api.getUser(userId);
             try {
-              api.CreateUserWord(JSON.parse(localStorage.getItem('user')!).userId, target.dataset.word!,
+              api.CreateUserWord(userId, target.dataset.word!,
                 { difficulty: 'learned' });
             } catch (_e) {
-              api.UpdateUserWord(JSON.parse(localStorage.getItem('user')!).userId, target.dataset.word!,
+              api.UpdateUserWord(userId, target.dataset.word!,
                 { difficulty: 'learned' });
             }
-
             await api.getWord(target.dataset.word as string)
               .then((res) => {
                 Words.learnedWords.push(res as IWord);
