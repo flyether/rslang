@@ -58,10 +58,10 @@ export class TextbookController {
           target.classList.add('added');
           (async () => {
             try {
-              api.CreateUserWord(userId, target.dataset.word!,
+              await api.CreateUserWord(userId, target.dataset.word!,
                 { difficulty: 'aggregated' });
             } catch (_e) {
-              api.UpdateUserWord(userId, target.dataset.word!,
+              await api.UpdateUserWord(userId, target.dataset.word!,
                 { difficulty: 'aggregated' });
             }
             await api.getWord(target.dataset.word as string)
@@ -75,12 +75,11 @@ export class TextbookController {
         if ((target).classList.contains('btn-learned')) {
           target.classList.add('added');
           (async () => {
-            api.getUser(userId);
             try {
-              api.CreateUserWord(userId, target.dataset.word!,
+              await api.CreateUserWord(userId, target.dataset.word!,
                 { difficulty: 'learned' });
             } catch (_e) {
-              api.UpdateUserWord(userId, target.dataset.word!,
+              await api.UpdateUserWord(userId, target.dataset.word!,
                 { difficulty: 'learned' });
             }
             await api.getWord(target.dataset.word as string)
