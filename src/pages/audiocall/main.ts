@@ -12,7 +12,7 @@ const AudiocallGame = {
     support.printBtnString();
     return `
        <div class = 'container'> 
-       <a class="go-main " href='#main' >Вернуться <br> на главную</a> 
+       <a class="go-main " href='#main' >Вернуться на главную</a> 
          <div class = 'game'> ${gameArea} </div>
          
          
