@@ -5,26 +5,34 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
 import {
-  IObjStatisticStorage, IWord,
+  IObjStatisticStorage, IWord, IOptionalUserWords,
 } from '../../../types/types';
 import { apiPath } from '../../../api/api-path';
 import { api } from '../../../api/api';
-import { getStatisticsDataAudiocallShortTerm, statisticsDataAudiocallShortTerm } from '../../statistics/statisticsData';
-import { initialObj, mySPA } from '../../../index';
+import { getStatisticsDataAudiocallShortTerm } from '../../statistics/statisticsData';
 
 function shuffle(array:string[]) {
   array.sort(() => Math.random() - 0.5);
 }
+
+// функция проигрывания аудио с путем из нашего обекта-слово
 export function soundAudio(path: string): void {
   const audioD = new Audio();
   audioD.src = `${path}`;
   audioD.autoplay = true;
 }
 
+let userId = '';
+if (localStorage.getItem('user')) {
+  userId = JSON.parse(localStorage.getItem('user')!).userId;
+}
+
 class Support {
   public wordStudied: string[];
 
   public textbook?: boolean;
+
+  public CheckRight?: boolean;
 
   public arrayWrongWords?: string[];
 
@@ -67,6 +75,7 @@ class Support {
   public allWords?: number;
 
   constructor() {
+    this.CheckRight = false;
     this.newWords = 0;
     this.allWords = 0;
     this.rightAnsweredWordsStatistic = [];
@@ -100,7 +109,9 @@ class Support {
           api.getWord(element.wordId)
             .then((ress) => {
               this.noRepeat?.push(ress?.wordTranslate as string);
+              this.noRepeat = this.noRepeat!.filter((item, index) => this.noRepeat!.indexOf(item) === index);
               this.noRepeatID?.push(ress?.id as string);
+              this.noRepeatID = this.noRepeatID!.filter((item, index) => this.noRepeatID!.indexOf(item) === index);
             });
         });
       });
@@ -109,44 +120,62 @@ class Support {
   // проверка слов на изученность
 
   async checkLearnedWrds() : Promise<void> {
-    let lernWordIDArr = getCountsSorted_1(this.rightAnsweredWordsStatistic!);
+    let lernWordIDArr = getLearnedWord(this.rightAnsweredWordsStatistic!);
     lernWordIDArr = lernWordIDArr.filter((item) => !this.noRepeatID!.includes(item));
-    console.log(lernWordIDArr, 'lernWordArr 144');
     lernWordIDArr.forEach(async (element) => {
-      let userId = '';
-      if (localStorage.getItem('user')) {
-        userId = JSON.parse(localStorage.getItem('user')!).userId;
-      }
-
       if (userId) {
         try {
           await api.CreateUserWord(userId, element,
             { difficulty: 'learned' });
         } catch (_e) {
           await api.UpdateUserWord(userId, element,
-            { difficulty: 'learned', optional: { wordsLearned: element } });
+            { difficulty: 'learned' });
         }
       }
     });
   }
 
+  // добавляем на сервер новые слова появившиеся в игре
+  async CrateNewWord() : Promise<void> {
+    // console.log(this.wordObj!.id, 'this.wordObj!.id');
+    let optional: IOptionalUserWords;
+    if (this.CheckRight) {
+      optional = { wordsLearned: 'right' };
+    } else {
+      optional = { wordsLearned: 'wrong' };
+    }
+
+    console.log(optional, ' optional');
+    if (userId) {
+      try {
+        await api.CreateUserWord(userId, this.wordObj!.id,
+          { difficulty: 'new', optional });
+      } catch (_e) {
+        await api.UpdateUserWord(userId, this.wordObj!.id,
+          { difficulty: 'new', optional });
+      }
+    }
+  }
+
+  // отрисовка хтмл в игре
   async printBtnString(): Promise<void> {
     this.getUserWords();
-    // console.log(this.noRepeat, 'this.noRepeat 105');
+
     const btnWrapper = document.querySelector('.audio-container-game') as HTMLElement;
+
+    //     выбор уровня и страницы для загрузки слов  ссервера
 
     this.group = this.level! - 1;
     if ((this.page === 0)) {
       this.page = Math.floor(Math.random() * (20 - 0 + 1)) + 0;
     }
 
-    console.log(this.group, 'this.group', this.page, 'this.page');
     const res = await api.getWords(this.group!, this.page!);
     const garageSection = document.querySelector('.button-container') as HTMLElement;
     if (garageSection) {
       garageSection.innerHTML = '';
     }
-    if (this.round! < 5) {
+    if (this.round! < 3) {
       this.words = res;
       if (this.wordStudied.length > 0) {
         this.noRepeat = this.noRepeat!.concat(this.wordStudied);
@@ -165,16 +194,17 @@ class Support {
           this.wordObj = this.words![i];
         }
       }
+
       this.noRepeat!.push(this.wordObj!.wordTranslate);
       soundAudio((apiPath + support.wordObj!.audio));
       const button = document.querySelectorAll('.btn-translation');
-      // this.noRepeat = Array.from(new Set(this.rightAnsweredWordsStatistic!));
-      console.log(this.noRepeat, 'this.noRepeat');
+
       for (let j = 0; j < this.arraySixWords.length; j++) {
         button[j].textContent = `${this.arraySixWords[j]}`;
         button[j].id = this.arraySixWords[j];
         (button[j] as HTMLButtonElement).dataset.num = `${j + 1}`;
       }
+      // this.CrateNewWord();
     } else {
       btnWrapper.innerHTML = '';
       this.wordObj!.audio = '';
@@ -197,7 +227,7 @@ class Support {
       </div>
 
     `;
-      console.log(this.RightAnsweredWords!, 'this.RightAnsweredWords!');
+      // console.log(this.RightAnsweredWords!, 'this.RightAnsweredWords!');
       if (this.longestSeriesOfRightAnswers! < this.RightAnsweredWords!.length) {
         this.longestSeriesOfRightAnswers = this.RightAnsweredWords!.length;
       }
@@ -219,7 +249,7 @@ class Support {
         this.rightAnsweredWordsStatistic = this.RightAnsweredWords;
       }
       // console.log(this.RightAnsweredWords!, 'this.RightAnsweredWords!', objAudiocallDate.answer, 'objAudiocallDate.answer');
-      this.allWords = objAudiocallDate.newWords! + 5;
+      this.allWords = objAudiocallDate.newWords! + 15;
 
       this.percentOfRightAnswers = Math.floor((this.rightAnsweredWordsStatistic!.length * 100) / this.allWords);
 
@@ -260,8 +290,6 @@ class Support {
     this.round = 0;
     this.score = 0;
     this.group = 0;
-    // this.page = 0;
-    // this.level = 1;
     this.words = [];
     this.wordsString = [];
     this.noRepeat = [];
@@ -273,7 +301,7 @@ class Support {
 }
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
-function getCountsSorted_1(arr: string[]):string[] {
+function getLearnedWord(arr: string[]):string[] {
   const counts = new Map();
   let lernWord = '';
   const lernWordArr: string[] = [];
@@ -287,17 +315,14 @@ function getCountsSorted_1(arr: string[]):string[] {
   const counts2 = Array.from(counts);
 
   counts2.forEach((element) => {
-    if (element[1] > 3) {
+    if (element[1] === 3) {
       lernWord = element[0] as string;
       (lernWordArr as string[]).push(lernWord);
-      alert(lernWord);
     }
   });
 
   return lernWordArr;
 }
-
-// функция проигрывания аудио с путем из нашего обекта-слово
 
 const support = new Support();
 export { support };

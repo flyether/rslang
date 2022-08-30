@@ -34,9 +34,12 @@ class ListenerAudioCall {
         support.round!++;
         if ((e.target as HTMLElement).id === support.wordObj!.wordTranslate) {
           support.RightAnsweredWords?.push(support.wordObj!.id);
+          support.CheckRight = true;
+          support.CrateNewWord();
           rightAnswerFunc((e.target as HTMLElement)!);
         } else {
           support.WrongAnsweredWords?.push(support.wordObj!.word);
+          support.CrateNewWord();
           wrongAnswerFunc((e.target as HTMLElement));
         }
       }
@@ -44,6 +47,7 @@ class ListenerAudioCall {
       if ((e.target as HTMLElement).classList.contains('restart')) {
         support.clearLocalStorage();
         const audioSection = document.querySelector('.audio-container-game') as HTMLElement;
+
         audioSection.innerHTML += gameArea;
         support.printBtnString();
       }
@@ -52,8 +56,8 @@ class ListenerAudioCall {
         const locationHash = window.location.hash.split('/');
         const unit = +locationHash[1];
         const page = +locationHash[2];
-        support.level = unit + 1;
-        support.page = page;
+        support.level = unit;
+        support.page = page - 1;
         support.textbook = true;
       }
 

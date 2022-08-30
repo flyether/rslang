@@ -103,7 +103,7 @@ export interface IGroupPageObj {
   page: number;
 }
 
-interface IOptionalUserWords {
+export interface IOptionalUserWords {
   wordsLearned: string;
 }
 export interface IUserWords {
