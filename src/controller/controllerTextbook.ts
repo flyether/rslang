@@ -64,12 +64,9 @@ export class TextbookController {
               await api.UpdateUserWord(userId, target.dataset.word!,
                 { difficulty: 'aggregated' });
             }
-            await api.getWord(target.dataset.word as string)
-              .then((res) => {
-                Words.aggregatedWords.push(res as IWord);
-                Words.learnedWords = Words.learnedWords.filter((word) => word.id !== target.dataset.word);
-                TextbookPage.render();
-              });
+            Words.aggregatedWords.push(target.dataset.word!);
+            Words.learnedWords = Words.learnedWords.filter((word) => word !== target.dataset.word);
+            TextbookPage.render();
           })();
         }
         if ((target).classList.contains('btn-learned')) {
@@ -82,12 +79,9 @@ export class TextbookController {
               await api.UpdateUserWord(userId, target.dataset.word!,
                 { difficulty: 'learned' });
             }
-            await api.getWord(target.dataset.word as string)
-              .then((res) => {
-                Words.learnedWords.push(res as IWord);
-                Words.aggregatedWords = Words.aggregatedWords.filter((word) => word.id !== target.dataset.word);
-                TextbookPage.render();
-              });
+            Words.learnedWords.push(target.dataset.word!);
+            Words.aggregatedWords = Words.aggregatedWords.filter((word) => word !== target.dataset.word);
+            TextbookPage.render();
           })();
         }
       }
