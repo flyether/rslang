@@ -1,73 +1,244 @@
-/* eslint-disable linebreak-style */
-/* eslint-disable import/no-mutable-exports */
-/* eslint-disable prefer-destructuring */
-/* eslint-disable no-param-reassign */
+/* eslint-disable class-methods-use-this */
 /* eslint-disable max-len */
-/* eslint-disable @typescript-eslint/no-unused-expressions */
-/* eslint-disable import/no-cycle */
+/* eslint-disable @typescript-eslint/no-use-before-define */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 
-/* eslint-disable @typescript-eslint/no-shadow */
-
-import { storage } from '../../../functional/storage';
-import { IWord } from '../../../types/types';
+import {
+  IObjStatisticStorage, IWord, IUserWords, InitialObj,
+} from '../../../types/types';
 import { apiPath } from '../../../api/api-path';
 import { api } from '../../../api/api';
-// констана которая получает с сервера массив слов
-const apiGetWords = api.getWords(0, 0)
-  .then((value) => {
-    storage.words = value;
-    localStorage.setItem('words', JSON.stringify(value));
-  }).catch((err) => {
-    console.log(err);
-  });
-// получаем массив преводов
-function getWordsMap(): string[] {
-  apiGetWords;
-  const words = storage.words!.map((item) => item.wordTranslate);
-  return words;
-}
+import { getStatisticsDataAudiocallShortTerm, statisticsDataAudiocallShortTerm } from '../../statistics/statisticsData';
+import { initialObj, mySPA } from '../../../index';
 
-const wordsString = getWordsMap();
-
-// перемешиваем массив преводов
 function shuffle(array:string[]) {
   array.sort(() => Math.random() - 0.5);
 }
-shuffle(wordsString);
+export function soundAudio(path: string): void {
+  const audioD = new Audio();
+  audioD.src = `${path}`;
+  audioD.autoplay = true;
+}
 
-let arraySixWords:string [] = [];
-arraySixWords = wordsString.slice(0, 6);
-const wordRight = arraySixWords[Math.floor(Math.random() * arraySixWords.length)];
+class Support {
+  public wordStudied: string[];
 
-console.log(wordsString, 'wordsString');
-let wordObj : IWord = {
-  id: '', group: 0, page: 0, word: '', image: '', audio: '', audioMeaning: '', audioExample: '', textMeaning: '', textExample: '', transcription: '', wordTranslate: '', textMeaningTranslate: '', textExampleTranslate: '',
-};
+  public textbook?: boolean;
 
-for (let i = 0; i < storage.words!.length; i++) {
-  if (storage.words![i].wordTranslate === wordRight) {
-    wordObj = storage.words![i];
+  public arrayWrongWords?: string[];
+
+  public round?: number;
+
+  public score?:number;
+
+  public group?: number;
+
+  public page?: number;
+
+  public level?: number;
+
+  public words?: void | IWord[] | undefined;
+
+  public wordsString?: string[];
+
+  public noRepeat?: string [];
+
+  public wordObj?: IWord ;
+
+  public arraySixWords?: string [];
+
+  public containerBtn?: string;
+
+  public RightAnsweredWords?: string [];
+
+  public WrongAnsweredWords?: string [];
+
+  public rightAnsweredWordsStatistic?: string [];
+
+  public newWords?: number;
+
+  public percentOfRightAnswers?: number;
+
+  public longestSeriesOfRightAnswers?: number;
+
+  public allWords?: number;
+
+  constructor() {
+    this.newWords = 0;
+    this.allWords = 0;
+    this.rightAnsweredWordsStatistic = [];
+    this.longestSeriesOfRightAnswers = this.rightAnsweredWordsStatistic?.length;
+    this.WrongAnsweredWords = [];
+    this.RightAnsweredWords = [];
+    this.textbook = false;
+    this.arrayWrongWords = [];
+    this.round = 0;
+    this.score = 0;
+    this.group = 0;
+    this.page = 0;
+    this.level = 1;
+    this.words = [];
+    this.wordsString = [];
+    this.noRepeat = [];
+    this.wordStudied = [];
+    this.wordObj = {
+      id: '', group: 0, page: 0, word: '', image: '', audio: '', audioMeaning: '', audioExample: '', textMeaning: '', textExample: '', transcription: '', wordTranslate: '', textMeaningTranslate: '', textExampleTranslate: '',
+    };
+    this.arraySixWords = [];
+    this.containerBtn = 'ggg';
+  }
+
+  async getUserWords() : Promise<void> {
+    api.getAllUserWords(JSON.parse(localStorage.getItem('user')!).userId)
+      .then((res) => {
+        res!.forEach((element) => {
+          api.getWord(element.wordId)
+            .then((ress) => {
+              this.noRepeat?.push(ress?.word as string);
+            });
+        });
+      });
+  }
+
+  async printBtnString(): Promise<void> {
+    const btnWrapper = document.querySelector('.audio-container-game') as HTMLElement;
+
+    this.group = this.level! - 1;
+    if ((this.page === 0)) {
+      this.page = Math.floor(Math.random() * (20 - 0 + 1)) + 0;
+    }
+    const res = await api.getWords(this.group!, this.page!);
+    const garageSection = document.querySelector('.button-container') as HTMLElement;
+    if (garageSection) {
+      garageSection.innerHTML = '';
+    }
+    if (this.round! < 5) {
+      this.words = res;
+      if (this.wordStudied.length > 0) {
+        this.noRepeat = this.noRepeat!.concat(this.wordStudied);
+      }
+      this.wordsString = this.words!.map((item) => item.wordTranslate);
+      if (this.noRepeat!.length > 0) {
+        this.wordsString = this.wordsString.filter((item) => !this.noRepeat!.includes(item));
+      }
+
+      shuffle(this.wordsString);
+
+      this.arraySixWords = this.wordsString.slice(0, 5);
+      const wordRight = this.arraySixWords[Math.floor(Math.random() * this.arraySixWords.length)];
+      for (let i = 0; i < this.words!.length; i++) {
+        if (this.words![i].wordTranslate === wordRight) {
+          this.wordObj = this.words![i];
+        }
+      }
+      this.noRepeat!.push(this.wordObj!.wordTranslate);
+      soundAudio((apiPath + support.wordObj!.audio));
+      const button = document.querySelectorAll('.btn-translation');
+      console.log(this.noRepeat, 'this.noRepeat');
+      for (let j = 0; j < this.arraySixWords.length; j++) {
+        button[j].textContent = `${this.arraySixWords[j]}`;
+        button[j].id = this.arraySixWords[j];
+        (button[j] as HTMLButtonElement).dataset.num = `${j + 1}`;
+      }
+    } else {
+      btnWrapper.innerHTML = '';
+      this.wordObj!.audio = '';
+      let a = '';
+      if (this.arrayWrongWords!.length > 0) {
+        a = ` <p class="game-text">Рекомендуем выучить:&nbsp${this.arrayWrongWords!.join(',\n')}</p> `;
+      } else {
+        a = ' <p class="game-text">Вы ниразу не ошиблись!</p> ';
+      }
+      btnWrapper.innerHTML += `
+      <div class="game-over">
+        <p class="game-text">Вы прошли игру!</p>
+        <p class="game-text">Ваш результат: &nbsp ${this.score}</p>
+        ${a}
+        <div class="btn-game-over-container">
+          <div  class="btn-blue restart"> Начать заново</div>
+          <div  class="btn-blue"> <a  class="level-change" href="#audiocall" > Выбрать уровень</a> </div>
+          
+        </div>
+      </div>
+
+    `;
+      console.log(this.RightAnsweredWords!, 'this.RightAnsweredWords!');
+      if (this.longestSeriesOfRightAnswers! < this.RightAnsweredWords!.length) {
+        this.longestSeriesOfRightAnswers = this.RightAnsweredWords!.length;
+      }
+
+      let objAudiocallDate: IObjStatisticStorage = {
+        percentOfRightAnswers: 0,
+        longestSeriesOfRightAnswers: 0,
+        answer: [],
+        newWords: 0,
+      };
+
+      if (localStorage.getItem('dataAudiocall')) {
+        objAudiocallDate = JSON.parse(localStorage.getItem('dataAudiocall')!);
+      }
+
+      if (objAudiocallDate.answer) {
+        this.rightAnsweredWordsStatistic = objAudiocallDate.answer!.concat(this.RightAnsweredWords!);
+      } else {
+        this.rightAnsweredWordsStatistic = this.RightAnsweredWords;
+      }
+      console.log(this.RightAnsweredWords!, 'this.RightAnsweredWords!', objAudiocallDate.answer, 'objAudiocallDate.answer');
+      this.allWords = objAudiocallDate.newWords! + 5;
+
+      this.percentOfRightAnswers = Math.floor((this.rightAnsweredWordsStatistic!.length * 100) / this.allWords);
+      // const newWordsLocal = (new Set(this.rightAnsweredWordsStatistic!)).size;
+
+      const objStatisticStorage: IObjStatisticStorage = {
+        date: this.dataNow(),
+        percentOfRightAnswers: this.percentOfRightAnswers,
+        newWords: this.allWords,
+        longestSeriesOfRightAnswers: this.longestSeriesOfRightAnswers as number,
+        answer: this.rightAnsweredWordsStatistic,
+      };
+
+      localStorage.setItem('dataAudiocall', JSON.stringify(objStatisticStorage));
+      this.clearLocalStorage();
+      getStatisticsDataAudiocallShortTerm();
+      // const view = new ModuleModel();
+      // view.prepareStatistics();
+
+      // window.addEventListener('DOMContentLoaded', () => {
+      //   mySPA.init(initialObj);
+      // });
+    }
+  }
+
+  dataNow(): string {
+    const t = new Date();
+    const date = (`0${t.getDate()}`).slice(-2);
+    const month = (`0${t.getMonth() + 1}`).slice(-2);
+    const year = t.getFullYear();
+    const dataCurr = `${date}/${month}/${year}`;
+    return dataCurr;
+  }
+
+  clearLocalStorage(): void {
+    this.WrongAnsweredWords = [];
+    this.RightAnsweredWords = [];
+    this.textbook = false;
+    this.arrayWrongWords = [];
+    this.round = 0;
+    this.score = 0;
+    this.group = 0;
+    this.page = 0;
+    // this.level = 1;
+    this.words = [];
+    this.wordsString = [];
+    this.noRepeat = [];
+    this.wordObj = {
+      id: '', group: 0, page: 0, word: '', image: '', audio: '', audioMeaning: '', audioExample: '', textMeaning: '', textExample: '', transcription: '', wordTranslate: '', textMeaningTranslate: '', textExampleTranslate: '',
+    };
+    this.arraySixWords = [];
   }
 }
 
-function soundClickAudio(): void {
-  const audiod = new Audio();
-  audiod.src = `${apiPath + wordObj.audio}`;
-  audiod.autoplay = true;
-}
+// функция проигрывания аудио с путем из нашего обекта-слово
 
-function printBtnString(): string {
-  let a = '';
-  let containerBtn = ' ';
-  for (let i = 0; i < arraySixWords.length; i++) {
-    a = arraySixWords[i];
-    containerBtn += `<button  type="button" id="${a}" class="btn-translation">${a}</button> `;
-  }
-
-  return containerBtn;
-}
-
-export {
-  soundClickAudio,
-  printBtnString, wordObj,
-};
+const support = new Support();
+export { support };

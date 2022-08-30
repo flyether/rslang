@@ -1,4 +1,4 @@
-/* eslint-disable linebreak-style */
+import { support } from './utils/supporting-func';
 
 export const startScrinAudioCall = {
   hashes: {
@@ -8,26 +8,45 @@ export const startScrinAudioCall = {
   },
 
   render(): string {
-    return /* html */` 
+    let html = '';
+    if (support.textbook === true) {
+      html = /* html */` 
+
+      <div class="audio-call"> 
+        <p class="audio-call__text">В игре аудиовызов вамнужно выбрать правильный перевод слова. <br>
+        Для того чтобы прослушать слово еще раз нажмите пробел или на иконку звука.<br>
+        Для игры с помощью клавиатуры, использте клавиши
+        1, 2, 3, 4, 5  чтобы дать ответ,
+        space - для воспроизведения звука.
+        </p>
+       <a id="leveltextbook" class="btn-level link" href="${this.hashes.audiocallGame}" >Играть</a>
+   >
+      `;
+    } else {
+      html = /* html */` 
 
 <div class="audio-call"> 
-<p class="audio-call__text">В игре аудиовызов вам нужно выбрать правильный перевод слова. <br>
+  <p class="audio-call__text">В игре аудиовызов вамнужно выбрать правильный перевод слова. 
+  Для того чтобы прослушать слово еще раз нажмите пробел или на иконку звука.
+  Для игры с помощью клавиатуры, использте клавиши
+  1, 2, 3, 4, 5  чтобы дать ответ,
+  space - для воспроизведения звука.
+  Выбери уровень сложности:</p>
+  <div class="audio-call__btns">
+ <a id="level1" class="btn-level link" href="${this.hashes.audiocallGame}" >Уровень 1</a>
+ 
+ <a id="level2" class="btn-level link" href="${this.hashes.audiocallGame}" >Уровень 2</a>
 
-Чтобы играть с помощью клавиатуры, используй клавиши
-1, 2, 3, 4, 5 - чтобы дать ответ,
-space - для воспроизведения звука,
-enter - чтобы пропустить вопрос,
-стрелка-вправо - чтобы перейти к следующему вопросу.</p>
-<p>Выбери уровень сложности:</p>
-<div class="audio-call__btns">
-<button id="level1" type="button"  class="btn-level"><a href="${this.hashes.audiocallGame}" class="menu__main menu__item_active">Уровень 1</a></button>
-<button id="level2" type="button"  class="btn-level">Уровень 2</button>
-<button id="level3" type="button"  class="btn-level">Уровень 3</button>
-<button id="level4" type="button"  class="btn-level">Уровень 4</button>
-<button id="level5" type="button"  class="btn-level">Уровень 5</button>
-<button id="level6" type="button"  class="btn-level">Уровень 6</button>
-</div>
-</div>
+ <a id="level3" class="btn-level link" href="${this.hashes.audiocallGame}" >Уровень 3</a>
+
+ <a id="level4" class="btn-level link" href="${this.hashes.audiocallGame}" >Уровень 4</a>
+
+ <a id="level5" class="btn-level link" href="${this.hashes.audiocallGame}" >Уровень 5</a>
+
+ <a id="level6" class="btn-level link" href="${this.hashes.audiocallGame}" >Уровень 6</a>
+ </div>
 `;
+    }
+    return html;
   },
 };

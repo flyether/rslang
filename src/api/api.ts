@@ -1,14 +1,11 @@
-/* eslint-disable linebreak-style */
-/* eslint-disable max-len */
 /* eslint-disable no-else-return */
-/* eslint-disable import/no-cycle */
 /* eslint-disable import/prefer-default-export */
 
 import {
   apiPath, usersEndpoint, wordsEndpoint, signIn, apiCategory,
 } from './api-path';
 import {
-  IUser, IWord, IUserData, IUserWords, ISettings,
+  IUser, IWord, IUserData, IUserWords, ISettings, IUserWord,
 } from '../types/types';
 import { storage } from '../functional/storage';
 
@@ -19,6 +16,7 @@ const api = {
       const response = await fetch(`${apiPath}${usersEndpoint}/${userId}/settings`, {
         method: 'PUT',
         headers: {
+          Authorization: `Bearer ${storage.user?.token}`,
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
@@ -36,7 +34,12 @@ const api = {
 
   async GetSettings(userId: string): Promise<ISettings | undefined> {
     try {
-      const response = await fetch(`${apiPath}${usersEndpoint}/${userId}/settings`, { method: 'GET' });
+      const response = await fetch(`${apiPath}${usersEndpoint}/${userId}/settings`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${storage.user?.token}`,
+        },
+      });
       if (response.ok) {
         return await response.json() as ISettings;
       } else {
@@ -47,12 +50,18 @@ const api = {
     }
   },
 
-  async getAllUserWords(userId: string): Promise<IUserWords[] | undefined > {
+  async getAllUserWords(userId: string): Promise<IUserWord[] | undefined> {
     try {
-      const response = await fetch(`${apiPath}${usersEndpoint}/${userId}${wordsEndpoint}`,
-        { method: 'GET' });
+      const response = await fetch(`${apiPath}${usersEndpoint}/${userId}/${wordsEndpoint}`,
+        {
+          method: 'GET',
+          credentials: 'same-origin',
+          headers: {
+            Authorization: `Bearer ${storage.user?.token}`,
+          },
+        });
       if (response.ok) {
-        return await response.json() as IUserWords[];
+        return await response.json() as IUserWord[];
       } else {
         return await Promise.reject(new Error(response.statusText));
       }
@@ -61,19 +70,23 @@ const api = {
     }
   },
 
-  async CreateUserWord(userId: string, wordID:string): Promise<IUserWords | undefined > {
+  async CreateUserWord(userId: string, wordID: string, value: IUserWords): Promise<IUserWords | undefined> {
     try {
       const response = await fetch(`${apiPath}${usersEndpoint}/${userId}/${wordsEndpoint}/${wordID}`, {
         method: 'POST',
+        credentials: 'same-origin',
         headers: {
+          Authorization: `Bearer ${storage.user?.token}`,
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(storage.userWord),
+        body: JSON.stringify(value),
       });
+      console.log(storage.user?.token, 'storage.user?.token ');
       if (response.ok) {
         return await response.json() as IUserWords;
       } else {
+        console.log(response.statusText);
         return await Promise.reject(new Error(response.statusText));
       }
     } catch (error) {
@@ -81,15 +94,16 @@ const api = {
     }
   },
 
-  async UpdateUserWord(userId: string, wordID:string): Promise<IUserWords | undefined > {
+  async UpdateUserWord(userId: string, wordID: string, value: IUserWords): Promise<IUserWords | undefined> {
     try {
       const response = await fetch(`${apiPath}${usersEndpoint}/${userId}/${wordsEndpoint}/${wordID}`, {
         method: 'PUT',
         headers: {
+          Authorization: `Bearer ${storage.user?.token}`,
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(storage.userWord),
+        body: JSON.stringify(value),
       });
       if (response.ok) {
         return await response.json() as IUserWords;
@@ -101,9 +115,14 @@ const api = {
     }
   },
 
-  async DeleteUserWord(userId: string, wordID:string): Promise<void> {
+  async DeleteUserWord(userId: string, wordID: string): Promise<void> {
     try {
-      await fetch(`${apiPath}${usersEndpoint}/${userId}/${wordsEndpoint}/${wordID}`, { method: 'DELETE' });
+      await fetch(`${apiPath}${usersEndpoint}/${userId}/${wordsEndpoint}/${wordID}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${storage.user?.token}`,
+        },
+      });
     } catch (error) {
       throw new Error('Error deleting user word');
     }
@@ -122,10 +141,15 @@ const api = {
   //   }
   // },
 
-  async GetUserAggregatedWordById(userId: string, wordID:string): Promise<IUserWords | undefined > {
+  async GetUserAggregatedWordById(userId: string, wordID: string): Promise<IUserWords | undefined> {
     try {
       const response = await fetch(`${apiPath}${usersEndpoint}/${userId}/aggregatedWords/${wordID}`,
-        { method: 'GET' });
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${storage.user?.token}`,
+          },
+        });
       if (response.ok) {
         return await response.json() as IUserWords;
       } else {
@@ -159,7 +183,12 @@ const api = {
   async getUser(id: string): Promise<IUser | undefined> {
     try {
       const response = await fetch(`${apiPath}${usersEndpoint}/${id}`,
-        { method: 'GET' });
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${storage.user?.token}`,
+          },
+        });
       if (response.ok) {
         return await response.json() as IUser;
       } else {
@@ -193,7 +222,12 @@ const api = {
   async getWords(group: number, page: number): Promise<IWord[] | undefined> {
     try {
       const response = await fetch(`${apiPath}${wordsEndpoint}?group=${group}&page=${page}`,
-        { method: 'GET' });
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${storage.user?.token}`,
+          },
+        });
       if (response.ok) {
         return await response.json() as IWord[];
       } else {
@@ -207,7 +241,12 @@ const api = {
   async getWord(id: string): Promise<IWord | undefined> {
     try {
       const response = await fetch(`${apiPath}${wordsEndpoint}/${id}`,
-        { method: 'GET' });
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${storage.user?.token}`,
+          },
+        });
       if (response.ok) {
         return await response.json() as IWord;
       } else {

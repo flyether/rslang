@@ -1,7 +1,7 @@
-/* eslint-disable linebreak-style */
 /* eslint-disable eqeqeq */
 /* eslint-disable consistent-return */
 
+import Header from '../components/header';
 import { storage } from './storage';
 
 export default function showUser(ret:boolean) :string | undefined {

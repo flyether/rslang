@@ -1,4 +1,5 @@
-/* eslint-disable import/no-cycle */
+import TextbookPage from '../pages/textbook';
+
 import { IWord } from '../types/types';
 import Words from '../words/words';
 import { hashes } from '../components/hashes';
@@ -20,6 +21,10 @@ export class TextbookController {
   }
 
   setEventListeners(unit: number): void {
+    let userId = '';
+    if (localStorage.getItem('user')) {
+      userId = JSON.parse(localStorage.getItem('user')!).userId;
+    }
     const click: (e: MouseEvent) => void = (e: MouseEvent) => {
       if (e.target) {
         const target = e.target as HTMLElement;
@@ -54,32 +59,36 @@ export class TextbookController {
         }
         if ((target).classList.contains('btn-difficult')) {
           target.classList.add('added');
-          target.innerText = 'Сложное слово';
-          (target as HTMLButtonElement).disabled = true;
-          const btnLearned = document.querySelector(`.btn-learned[data-word="${target.dataset.word}"]`);
-          (btnLearned as HTMLButtonElement).disabled = false;
-          (btnLearned as HTMLButtonElement).innerText = 'Изучено?';
           (async () => {
-            await api.getWord(target.dataset.word as string)
-              .then((res) => {
-                Words.aggregatedWords.push(res as IWord);
-                Words.learnedWords = Words.learnedWords.filter((word) => word.id !== target.dataset.word);
-              });
+            if (userId) {
+              try {
+                await api.CreateUserWord(userId, target.dataset.word!,
+                  { difficulty: 'aggregated' });
+              } catch (_e) {
+                await api.UpdateUserWord(userId, target.dataset.word!,
+                  { difficulty: 'aggregated' });
+              }
+            }
+            Words.aggregatedWords.push(target.dataset.word!);
+            Words.learnedWords = Words.learnedWords.filter((word) => word !== target.dataset.word);
+            TextbookPage.render();
           })();
         }
         if ((target).classList.contains('btn-learned')) {
           target.classList.add('added');
-          target.innerText = 'Изучено';
-          (target as HTMLButtonElement).disabled = true;
-          const btnDifficult = document.querySelector(`.btn-difficult[data-word="${target.dataset.word}"]`);
-          (btnDifficult as HTMLButtonElement).disabled = false;
-          (btnDifficult as HTMLButtonElement).innerText = 'Сложно?';
           (async () => {
-            await api.getWord(target.dataset.word as string)
-              .then((res) => {
-                Words.learnedWords.push(res as IWord);
-                Words.aggregatedWords = Words.aggregatedWords.filter((word) => word.id !== target.dataset.word);
-              });
+            if (userId) {
+              try {
+                await api.CreateUserWord(userId, target.dataset.word!,
+                  { difficulty: 'learned' });
+              } catch (_e) {
+                await api.UpdateUserWord(userId, target.dataset.word!,
+                  { difficulty: 'learned' });
+              }
+            }
+            Words.learnedWords.push(target.dataset.word!);
+            Words.aggregatedWords = Words.aggregatedWords.filter((word) => word !== target.dataset.word);
+            TextbookPage.render();
           })();
         }
       }

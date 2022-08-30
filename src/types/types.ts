@@ -1,3 +1,4 @@
+/* eslint-disable import/no-named-as-default */
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-cycle */
 import TextbookPage from '../pages/textbook';
@@ -12,7 +13,7 @@ import Content from '../components/content';
 import Footer from '../components/footer';
 
 import MainPage from '../pages/main';
-import AudiocallGame from '../pages/audiocall/main';
+import { AudiocallGame } from '../pages/audiocall/main';
 
 export interface Components {
   header: typeof Header,
@@ -29,7 +30,6 @@ export interface Routes {
   audiocall: typeof AudiocallGamePage,
   statistics: typeof StatisticsPage,
   audiocallgame: typeof AudiocallGame
-
 }
 
 export interface InitialObj {
@@ -52,6 +52,12 @@ export interface MenuItems {
   sprint: HTMLElement,
   aboutsprint: HTMLElement,
   team: HTMLElement,
+}
+
+export interface IUserWord {
+  id: string,
+  wordId: string,
+  difficulty: string,
 }
 
 export interface IWord {
@@ -78,7 +84,6 @@ export interface IWordGame {
   image: string;
   audio: string;
 }
-
 export interface IUser {
   name: string;
   email: string;
@@ -93,12 +98,56 @@ export interface IUserData {
   name: string;
 }
 
+export interface IGroupPageObj {
+  group: number;
+  page: number;
+}
+
+interface IOptionalUserWords {
+  wordsLearned: string;
+}
 export interface IUserWords {
   difficulty: string;
-  optional?: IWord; // надо потом написать верный тип для optional
+  optional?: IOptionalUserWords; // надо потом написать верный тип для optional
 }
 
 export interface ISettings {
   wordsPerDay?: number;
   optional?: IWord; // надо потом написать верный
+}
+
+export interface IStorageAudiocall {
+  group?: number;
+  page?: number;
+  level?: number;
+  noRepeat?: string[];
+  round?: number;
+  arrayWrongWords?: string[];
+  score?: number;
+  textbook?: boolean;
+  arrayLevel?: number[];
+  words?: IWord[];
+}
+
+export interface ILearnedPages {
+  unit: number;
+  page: number;
+}
+
+export interface ITextbookPage {
+  learnedPages: ILearnedPages[];
+  isAuth: boolean;
+  classname: string;
+  wordlist: string;
+  unitDifficultWords: number;
+  render(): string;
+  renderPages(unit: number): string;
+  getCards(unit: number, page: number): void;
+}
+export interface IObjStatisticStorage {
+  date?: string;
+  percentOfRightAnswers: number;
+  newWords?: number;
+  longestSeriesOfRightAnswers: number;
+  answer?: string[];
 }

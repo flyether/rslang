@@ -23,7 +23,7 @@ import SprintGamePage from './pages/sprint/index';
 import AboutSprintGamePage from './pages/aboutsprint';
 import AudiocallGamePage from './pages/audiocall/index';
 import StatisticsPage from './pages/statistics/index';
-import AudiocallGame from './pages/audiocall/main';
+import { AudiocallGame } from './pages/audiocall/main';
 
 const components: Components = {
   header: Header,
@@ -43,14 +43,14 @@ const routes: Routes = {
   statistics: StatisticsPage,
 };
 
-const initialObj: InitialObj = {
+export const initialObj: InitialObj = {
   container: 'spa',
   routes,
   components,
 };
 
 /* ----- spa init module --- */
-const mySPA = (() => {
+export const mySPA = (() => {
   let view: ModuleView;
   let model: ModuleModel;
   let controller: ModuleController;
