@@ -62,6 +62,8 @@ class Support {
 
   public RightAnsweredWords?: string [];
 
+  public LearnedWordsID?: string [];
+
   public WrongAnsweredWords?: string [];
 
   public rightAnsweredWordsStatistic?: string [];
@@ -75,6 +77,7 @@ class Support {
   public allWords?: number;
 
   constructor() {
+    this.LearnedWordsID = [];
     this.CheckRight = false;
     this.newWords = 0;
     this.allWords = 0;
@@ -106,12 +109,15 @@ class Support {
     api.getAllUserWords(JSON.parse(localStorage.getItem('user')!).userId)
       .then((res) => {
         res!.forEach((element) => {
+          this.LearnedWordsID?.push(element.wordId as string);
           api.getWord(element.wordId)
             .then((ress) => {
-              this.noRepeat?.push(ress?.wordTranslate as string);
-              this.noRepeat = this.noRepeat!.filter((item, index) => this.noRepeat!.indexOf(item) === index);
-              this.noRepeatID?.push(ress?.id as string);
-              this.noRepeatID = this.noRepeatID!.filter((item, index) => this.noRepeatID!.indexOf(item) === index);
+              if (this.textbook) {
+                this.noRepeat?.push(ress?.wordTranslate as string);
+                this.noRepeat = this.noRepeat!.filter((item, index) => this.noRepeat!.indexOf(item) === index);
+                this.noRepeatID?.push(ress?.id as string);
+                this.noRepeatID = this.noRepeatID!.filter((item, index) => this.noRepeatID!.indexOf(item) === index);
+              }
             });
         });
       });
@@ -121,7 +127,9 @@ class Support {
 
   async checkLearnedWrds() : Promise<void> {
     let lernWordIDArr = getLearnedWord(this.rightAnsweredWordsStatistic!);
-    lernWordIDArr = lernWordIDArr.filter((item) => !this.noRepeatID!.includes(item));
+
+    lernWordIDArr = lernWordIDArr.filter((item) => !this.LearnedWordsID!.includes(item));
+
     lernWordIDArr.forEach(async (element) => {
       if (userId) {
         try {
@@ -135,25 +143,35 @@ class Support {
     });
   }
 
+  // удалим слово в котором ошибся юзер
+
+  async deleteWrongWordFromServer():Promise<void> {
+    if (userId) {
+      if (this.LearnedWordsID!.includes(this.wordObj!.id)) {
+        alert('слово удаеляем');
+        await api.DeleteUserWord(userId, this.wordObj!.id);
+      }
+    }
+  }
+
   // добавляем на сервер новые слова появившиеся в игре
   async CrateNewWord() : Promise<void> {
-    // console.log(this.wordObj!.id, 'this.wordObj!.id');
-    let optional: IOptionalUserWords;
-    if (this.CheckRight) {
-      optional = { wordsLearned: 'right' };
-    } else {
-      optional = { wordsLearned: 'wrong' };
-    }
-
-    console.log(optional, ' optional');
     if (userId) {
-      try {
-        await api.CreateUserWord(userId, this.wordObj!.id,
-          { difficulty: 'new', optional });
-      } catch (_e) {
-        await api.UpdateUserWord(userId, this.wordObj!.id,
-          { difficulty: 'new', optional });
-      }
+      // if (!this.LearnedWordsID!.includes(this.wordObj!.id)) {
+        let optional: IOptionalUserWords;
+        if (this.CheckRight) {
+          optional = { wordsLearned: 'right' };
+        } else {
+          optional = { wordsLearned: 'wrong' };
+        }
+        try {
+          await api.CreateUserWord(userId, this.wordObj!.id,
+            { difficulty: 'new', optional });
+        } catch (_e) {
+          await api.UpdateUserWord(userId, this.wordObj!.id,
+            { difficulty: 'new', optional });
+        }
+      // }
     }
   }
 
@@ -166,10 +184,10 @@ class Support {
     //     выбор уровня и страницы для загрузки слов  ссервера
 
     this.group = this.level! - 1;
-    if ((this.page === 0)) {
+    if ((!this.textbook)) {
       this.page = Math.floor(Math.random() * (20 - 0 + 1)) + 0;
     }
-
+    console.log(this.group!, this.page!, 'this.group!, this.page!');
     const res = await api.getWords(this.group!, this.page!);
     const garageSection = document.querySelector('.button-container') as HTMLElement;
     if (garageSection) {
@@ -198,13 +216,13 @@ class Support {
       this.noRepeat!.push(this.wordObj!.wordTranslate);
       soundAudio((apiPath + support.wordObj!.audio));
       const button = document.querySelectorAll('.btn-translation');
-
-      for (let j = 0; j < this.arraySixWords.length; j++) {
-        button[j].textContent = `${this.arraySixWords[j]}`;
-        button[j].id = this.arraySixWords[j];
-        (button[j] as HTMLButtonElement).dataset.num = `${j + 1}`;
+      if (this.arraySixWords) {
+        for (let j = 0; j < this.arraySixWords.length; j++) {
+          button[j].textContent = `${this.arraySixWords[j]}`;
+          button[j].id = this.arraySixWords[j];
+          (button[j] as HTMLButtonElement).dataset.num = `${j + 1}`;
+        }
       }
-      // this.CrateNewWord();
     } else {
       btnWrapper.innerHTML = '';
       this.wordObj!.audio = '';
