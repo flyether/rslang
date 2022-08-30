@@ -33,7 +33,7 @@ class ListenerAudioCall {
       if ((e.target as HTMLElement).classList.contains('btn-translation')) {
         support.round!++;
         if ((e.target as HTMLElement).id === support.wordObj!.wordTranslate) {
-          support.RightAnsweredWords?.push(support.wordObj!.word);
+          support.RightAnsweredWords?.push(support.wordObj!.id);
           rightAnswerFunc((e.target as HTMLElement)!);
         } else {
           support.WrongAnsweredWords?.push(support.wordObj!.word);

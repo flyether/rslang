@@ -4,7 +4,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
 import {
-  IObjStatisticStorage, IWord, IUserWords, InitialObj,
+  IObjStatisticStorage, IWord,
 } from '../../../types/types';
 import { apiPath } from '../../../api/api-path';
 import { api } from '../../../api/api';
@@ -88,19 +88,28 @@ class Support {
     this.containerBtn = 'ggg';
   }
 
+  // метод который берет с сервера изученые слова чтобы их не выводить в игру
   async getUserWords() : Promise<void> {
     api.getAllUserWords(JSON.parse(localStorage.getItem('user')!).userId)
       .then((res) => {
         res!.forEach((element) => {
           api.getWord(element.wordId)
             .then((ress) => {
-              this.noRepeat?.push(ress?.word as string);
+              this.noRepeat?.push(ress?.wordTranslate as string);
             });
         });
       });
   }
 
+  // проверка слов на изученность
+
+//   async checkLearnedWrds() : Promise<void> {
+//  this.RightAnsweredWords
+//   }
+
   async printBtnString(): Promise<void> {
+    this.getUserWords();
+    console.log(this.noRepeat, 'this.noRepeat 105');
     const btnWrapper = document.querySelector('.audio-container-game') as HTMLElement;
 
     this.group = this.level! - 1;
@@ -134,6 +143,7 @@ class Support {
       this.noRepeat!.push(this.wordObj!.wordTranslate);
       soundAudio((apiPath + support.wordObj!.audio));
       const button = document.querySelectorAll('.btn-translation');
+      // this.noRepeat = Array.from(new Set(this.rightAnsweredWordsStatistic!));
       console.log(this.noRepeat, 'this.noRepeat');
       for (let j = 0; j < this.arraySixWords.length; j++) {
         button[j].textContent = `${this.arraySixWords[j]}`;
@@ -187,7 +197,6 @@ class Support {
       this.allWords = objAudiocallDate.newWords! + 5;
 
       this.percentOfRightAnswers = Math.floor((this.rightAnsweredWordsStatistic!.length * 100) / this.allWords);
-      // const newWordsLocal = (new Set(this.rightAnsweredWordsStatistic!)).size;
 
       const objStatisticStorage: IObjStatisticStorage = {
         date: this.dataNow(),
