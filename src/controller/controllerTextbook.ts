@@ -21,7 +21,10 @@ export class TextbookController {
   }
 
   setEventListeners(unit: number): void {
-    const { userId } = JSON.parse(localStorage.getItem('user')!);
+    let userId = '';
+    if (localStorage.getItem('user')) {
+      userId = JSON.parse(localStorage.getItem('user')!).userId;
+    }
     const click: (e: MouseEvent) => void = (e: MouseEvent) => {
       if (e.target) {
         const target = e.target as HTMLElement;
@@ -57,12 +60,14 @@ export class TextbookController {
         if ((target).classList.contains('btn-difficult')) {
           target.classList.add('added');
           (async () => {
-            try {
-              await api.CreateUserWord(userId, target.dataset.word!,
-                { difficulty: 'aggregated' });
-            } catch (_e) {
-              await api.UpdateUserWord(userId, target.dataset.word!,
-                { difficulty: 'aggregated' });
+            if (userId) {
+              try {
+                await api.CreateUserWord(userId, target.dataset.word!,
+                  { difficulty: 'aggregated' });
+              } catch (_e) {
+                await api.UpdateUserWord(userId, target.dataset.word!,
+                  { difficulty: 'aggregated' });
+              }
             }
             Words.aggregatedWords.push(target.dataset.word!);
             Words.learnedWords = Words.learnedWords.filter((word) => word !== target.dataset.word);
@@ -72,12 +77,14 @@ export class TextbookController {
         if ((target).classList.contains('btn-learned')) {
           target.classList.add('added');
           (async () => {
-            try {
-              await api.CreateUserWord(userId, target.dataset.word!,
-                { difficulty: 'learned' });
-            } catch (_e) {
-              await api.UpdateUserWord(userId, target.dataset.word!,
-                { difficulty: 'learned' });
+            if (userId) {
+              try {
+                await api.CreateUserWord(userId, target.dataset.word!,
+                  { difficulty: 'learned' });
+              } catch (_e) {
+                await api.UpdateUserWord(userId, target.dataset.word!,
+                  { difficulty: 'learned' });
+              }
             }
             Words.learnedWords.push(target.dataset.word!);
             Words.aggregatedWords = Words.aggregatedWords.filter((word) => word !== target.dataset.word);

@@ -108,7 +108,10 @@ const TextbookPage: ITextbookPage = {
   getCards(unit: number, page: number): void {
     this.isAuth = !!localStorage.getItem('user');
     const { wordlist, isAuth } = this;
-    const { userId } = JSON.parse(localStorage.getItem('user')!);
+    let userId = '';
+    if (this.isAuth) {
+      userId = JSON.parse(localStorage.getItem('user')!).userId;
+    }
     function renderCards(words: IWord[], userWords?: IUserWord[] | undefined) {
       const wordContainer = document.querySelector(`.${wordlist}`);
       if (wordContainer) {
@@ -163,7 +166,10 @@ const TextbookPage: ITextbookPage = {
     // }
     (async () => {
       const res = await api.getWords(unit - 1, page - 1);
-      const userWords: IUserWord[] = (await api.getAllUserWords(userId))!;
+      let userWords: IUserWord[] = [];
+      if (userId) {
+        userWords = (await api.getAllUserWords(userId))!;
+      }
       Words.aggregatedWords = [];
       Words.learnedWords = [];
       for (let i = 0; i < userWords?.length; i += 1) {
