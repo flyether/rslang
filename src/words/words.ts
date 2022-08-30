@@ -4,9 +4,9 @@ import { IWord } from '../types/types';
 class Words {
   static words: IWord[] = [];
 
-  static aggregatedWords: IWord[] = [];
+  static aggregatedWords: string[] = [];
 
-  static learnedWords: IWord[] = [];
+  static learnedWords: string[] = [];
 }
 
 export default Words;
