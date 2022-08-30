@@ -1,3 +1,8 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
+import { IObjStatisticStorage } from 'types/types';
+import StatisticsPage from '.';
+import { support } from '../audiocall/utils/supporting-func';
+
 function getArrOfLast5Days() {
   let now = Date.now();
   const oneDay = 86400000;
@@ -7,6 +12,15 @@ function getArrOfLast5Days() {
     now -= oneDay;
   }
   return arr.map((elem) => elem.toLocaleDateString()).reverse();
+}
+
+function dataNow(): string {
+  const t = new Date();
+  const date = (`0${t.getDate()}`).slice(-2);
+  const month = (`0${t.getMonth() + 1}`).slice(-2);
+  const year = t.getFullYear();
+  const dateCurr = `${date}/${month}/${year}`;
+  return dateCurr;
 }
 
 export const statisticsDataLongTerm = {
@@ -23,10 +37,29 @@ export const statisticsDataTextbookShortTerm = {
   percentOfRightAnswers: 50,
 };
 
+let objAudiocallDate: IObjStatisticStorage = {
+  date: dataNow(),
+  percentOfRightAnswers: 0,
+  newWords: 0,
+  longestSeriesOfRightAnswers: 0,
+};
+
+export function getStatisticsDataAudiocallShortTerm(): void {
+  if (localStorage.getItem('dataAudiocall')) {
+    if ((objAudiocallDate.date) === JSON.parse(localStorage.getItem('dataAudiocall')!).date) {
+      objAudiocallDate = JSON.parse(localStorage.getItem('dataAudiocall')!);
+    } else {
+      localStorage.setItem('dataAudiocall', JSON.stringify(objAudiocallDate));
+    }
+  }
+}
+
+getStatisticsDataAudiocallShortTerm();
+// StatisticsPage.render();
 export const statisticsDataAudiocallShortTerm = {
-  newWords: 30,
-  percentOfRightAnswers: 70,
-  longestSeriesOfRightAnswers: 60,
+  newWords: objAudiocallDate.newWords,
+  percentOfRightAnswers: objAudiocallDate.percentOfRightAnswers,
+  longestSeriesOfRightAnswers: objAudiocallDate.longestSeriesOfRightAnswers,
 };
 
 export const statisticsDataSprintShortTerm = {

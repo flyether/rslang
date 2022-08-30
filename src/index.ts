@@ -43,14 +43,14 @@ const routes: Routes = {
   statistics: StatisticsPage,
 };
 
-const initialObj: InitialObj = {
+export const initialObj: InitialObj = {
   container: 'spa',
   routes,
   components,
 };
 
 /* ----- spa init module --- */
-const mySPA = (() => {
+export const mySPA = (() => {
   let view: ModuleView;
   let model: ModuleModel;
   let controller: ModuleController;
