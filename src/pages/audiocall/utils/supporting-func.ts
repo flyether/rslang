@@ -9,7 +9,7 @@ import {
 } from '../../../types/types';
 import { apiPath } from '../../../api/api-path';
 import { api } from '../../../api/api';
-import { getStatisticsDataAudiocallShortTerm } from '../../statistics/statisticsData';
+import { getStatisticsDataAudiocallShortTerm, statisticsDataAudiocallShortTerm } from '../../statistics/statisticsData';
 
 function shuffle(array:string[]) {
   array.sort(() => Math.random() - 0.5);
@@ -150,10 +150,8 @@ class Support {
 
   async deleteWrongWordFromServer():Promise<void> {
     if (userId) {
-      if (this.LearnedWordsID!.includes(this.wordObj!.id)) {
         alert('слово удаеляем');
         await api.DeleteUserWord(userId, this.wordObj!.id);
-      }
     }
   }
 
@@ -196,7 +194,7 @@ class Support {
     if (garageSection) {
       garageSection.innerHTML = '';
     }
-    if (this.round! < 3) {
+    if (this.round! < 15) {
       this.words = res;
       if (this.wordStudied.length > 0) {
         this.noRepeat = this.noRepeat!.concat(this.wordStudied);
@@ -268,7 +266,7 @@ class Support {
       } else {
         this.rightAnsweredWordsStatistic = this.RightAnsweredWords;
       }
-      // console.log(this.RightAnsweredWords!, 'this.RightAnsweredWords!', objAudiocallDate.answer, 'objAudiocallDate.answer');
+
       this.allWords = objAudiocallDate.newWords! + 15;
 
       this.percentOfRightAnswers = Math.floor((this.rightAnsweredWordsStatistic!.length * 100) / this.allWords);
@@ -280,16 +278,15 @@ class Support {
         longestSeriesOfRightAnswers: this.longestSeriesOfRightAnswers as number,
         answer: this.rightAnsweredWordsStatistic,
       };
+
+      statisticsDataAudiocallShortTerm.newWords = this.allWords;
+      statisticsDataAudiocallShortTerm.percentOfRightAnswers = this.percentOfRightAnswers;
+      statisticsDataAudiocallShortTerm.longestSeriesOfRightAnswers = this.longestSeriesOfRightAnswers as number;
+
       this.checkLearnedWrds();
       localStorage.setItem('dataAudiocall', JSON.stringify(objStatisticStorage));
       this.clearLocalStorage();
       getStatisticsDataAudiocallShortTerm();
-      // const view = new ModuleModel();
-      // view.prepareStatistics();
-
-      // window.addEventListener('DOMContentLoaded', () => {
-      //   mySPA.init(initialObj);
-      // });
     }
   }
 
@@ -305,7 +302,7 @@ class Support {
   clearLocalStorage(): void {
     this.WrongAnsweredWords = [];
     this.RightAnsweredWords = [];
-    this.textbook = false;
+    // this.textbook = false;
     this.arrayWrongWords = [];
     this.round = 0;
     this.score = 0;

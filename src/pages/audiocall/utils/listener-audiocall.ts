@@ -48,10 +48,13 @@ class ListenerAudioCall {
           support.CrateNewWord(true);
           rightAnswerFunc((e.target as HTMLElement)!);
         } else {
-          support.CrateNewWord(false);
           support.WrongAnsweredWords?.push(support.wordObj!.word);
-          support.deleteWrongWordFromServer();
-          wrongAnswerFunc((e.target as HTMLElement));
+          if (support.LearnedWordsID?.includes(support.wordObj?.id as string)) {
+            support.deleteWrongWordFromServer();
+          } else {
+            support.CrateNewWord(false);
+            wrongAnswerFunc((e.target as HTMLElement));
+          }
         }
       }
 
@@ -74,6 +77,7 @@ class ListenerAudioCall {
       }
 
       if ((e.target as HTMLElement).classList.contains('level-change')) {
+        support.textbook = false;
         support.clearLocalStorage();
       }
 
