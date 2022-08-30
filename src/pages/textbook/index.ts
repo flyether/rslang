@@ -22,7 +22,6 @@ const TextbookPage: ITextbookPage = {
   learnedPages: [{ unit: 0, page: 0 }],
 
   render(): string {
-    console.log(Words.aggregatedWords);
     const locationHash = window.location.hash.split('/');
     const unit = +locationHash[1];
     const page = +locationHash[2];
@@ -36,16 +35,10 @@ const TextbookPage: ITextbookPage = {
     const controllerTextbook = new TextbookController(unitSelector, pageSelector);
     const isLearnedPage = this.learnedPages.some((learnedPage) => learnedPage.unit === unit
       && learnedPage.page === page);
-    // (async () => {
-    //   const userWords = await api.getAllUserWords(JSON.parse(localStorage.getItem('user')!).userId);
-    //   if (userWords?.length) {
-    //     Words.aggregatedWords = [];
-    //     for (let i = 0; i < userWords?.length; i += 1) {
-    //       const newWord: IWord = (await api.getWord(userWords[i].wordId))!;
-    //       Words.aggregatedWords.push(newWord);
-    //     }
-    //   }
-    // })();
+    api.getWords(1, 1)
+      .then((res) => {
+        console.log(res);
+      });
     this.isAuth = !!localStorage.getItem('user');
     if (!unit) {
       view = `<div class="textbook-units">
@@ -136,6 +129,8 @@ const TextbookPage: ITextbookPage = {
     <p class="word-name">${words[i].word} ${words[i].transcription}</p>
       <div class="audio">
         <audio src="https://rslang-learning-english-words.herokuapp.com/${words[i].audio}"></audio>
+      </div>
+      <div class="word-progress progress-done progress-no">
       </div>
     </div>
     <p class="word-pronounce translation">${words[i].wordTranslate}</p>
