@@ -32,8 +32,6 @@ class Support {
 
   public textbook?: boolean;
 
-  public CheckRight?: boolean;
-
   public arrayWrongWords?: string[];
 
   public round?: number;
@@ -64,6 +62,8 @@ class Support {
 
   public LearnedWordsID?: string [];
 
+  public AllUserWords?: string [];
+
   public WrongAnsweredWords?: string [];
 
   public rightAnsweredWordsStatistic?: string [];
@@ -77,8 +77,8 @@ class Support {
   public allWords?: number;
 
   constructor() {
+    this.AllUserWords = [];
     this.LearnedWordsID = [];
-    this.CheckRight = false;
     this.newWords = 0;
     this.allWords = 0;
     this.rightAnsweredWordsStatistic = [];
@@ -109,16 +109,19 @@ class Support {
     api.getAllUserWords(JSON.parse(localStorage.getItem('user')!).userId)
       .then((res) => {
         res!.forEach((element) => {
-          this.LearnedWordsID?.push(element.wordId as string);
-          api.getWord(element.wordId)
-            .then((ress) => {
-              if (this.textbook) {
-                this.noRepeat?.push(ress?.wordTranslate as string);
-                this.noRepeat = this.noRepeat!.filter((item, index) => this.noRepeat!.indexOf(item) === index);
-                this.noRepeatID?.push(ress?.id as string);
-                this.noRepeatID = this.noRepeatID!.filter((item, index) => this.noRepeatID!.indexOf(item) === index);
-              }
-            });
+          this.AllUserWords?.push(element.wordId as string);
+          if (element.difficulty === 'learned') {
+            this.LearnedWordsID?.push(element.wordId as string);
+            api.getWord(element.wordId)
+              .then((ress) => {
+                if (this.textbook) {
+                  this.noRepeat?.push(ress?.wordTranslate as string);
+                  this.noRepeat = this.noRepeat!.filter((item, index) => this.noRepeat!.indexOf(item) === index);
+                  this.noRepeatID?.push(ress?.id as string);
+                  this.noRepeatID = this.noRepeatID!.filter((item, index) => this.noRepeatID!.indexOf(item) === index);
+                }
+              });
+          }
         });
       });
   }
@@ -155,11 +158,11 @@ class Support {
   }
 
   // добавляем на сервер новые слова появившиеся в игре
-  async CrateNewWord() : Promise<void> {
+  async CrateNewWord(booleanPar: boolean) : Promise<void> {
     if (userId) {
-      // if (!this.LearnedWordsID!.includes(this.wordObj!.id)) {
+      if (!this.AllUserWords!.includes(this.wordObj!.id)) {
         let optional: IOptionalUserWords;
-        if (this.CheckRight) {
+        if (booleanPar) {
           optional = { wordsLearned: 'right' };
         } else {
           optional = { wordsLearned: 'wrong' };
@@ -171,7 +174,7 @@ class Support {
           await api.UpdateUserWord(userId, this.wordObj!.id,
             { difficulty: 'new', optional });
         }
-      // }
+      }
     }
   }
 
@@ -245,7 +248,6 @@ class Support {
       </div>
 
     `;
-      // console.log(this.RightAnsweredWords!, 'this.RightAnsweredWords!');
       if (this.longestSeriesOfRightAnswers! < this.RightAnsweredWords!.length) {
         this.longestSeriesOfRightAnswers = this.RightAnsweredWords!.length;
       }

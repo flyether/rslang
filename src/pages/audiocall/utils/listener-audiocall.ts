@@ -42,13 +42,13 @@ class ListenerAudioCall {
 
       if ((e.target as HTMLElement).classList.contains('btn-translation')) {
         support.round!++;
-        support.CrateNewWord();
+
         if ((e.target as HTMLElement).id === support.wordObj!.wordTranslate) {
           support.RightAnsweredWords?.push(support.wordObj!.id);
-          support.CheckRight = true;
-
+          support.CrateNewWord(true);
           rightAnswerFunc((e.target as HTMLElement)!);
         } else {
+          support.CrateNewWord(false);
           support.WrongAnsweredWords?.push(support.wordObj!.word);
           support.deleteWrongWordFromServer();
           wrongAnswerFunc((e.target as HTMLElement));
@@ -95,7 +95,9 @@ function rightAnswerFunc(el: HTMLElement) {
   el.classList.add('btn-translation-right');
   setTimeout(() => {
     const garageSection = document.querySelector('.button-container') as HTMLElement;
-    garageSection.innerHTML = '';
+    if (garageSection) {
+      garageSection.innerHTML = '';
+    }
     support.printBtnString();
     el.classList.remove('btn-translation-right');
   },
