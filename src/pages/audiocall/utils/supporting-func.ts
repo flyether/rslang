@@ -44,6 +44,8 @@ class Support {
 
   public noRepeat?: string [];
 
+  public noRepeatID?: string [];
+
   public wordObj?: IWord ;
 
   public arraySixWords?: string [];
@@ -81,6 +83,7 @@ class Support {
     this.words = [];
     this.wordsString = [];
     this.noRepeat = [];
+    this.noRepeatID = [];
     this.wordStudied = [];
     this.wordObj = {
       id: '', group: 0, page: 0, word: '', image: '', audio: '', audioMeaning: '', audioExample: '', textMeaning: '', textExample: '', transcription: '', wordTranslate: '', textMeaningTranslate: '', textExampleTranslate: '',
@@ -97,6 +100,7 @@ class Support {
           api.getWord(element.wordId)
             .then((ress) => {
               this.noRepeat?.push(ress?.wordTranslate as string);
+              this.noRepeatID?.push(ress?.id as string);
             });
         });
       });
@@ -105,8 +109,9 @@ class Support {
   // проверка слов на изученность
 
   async checkLearnedWrds() : Promise<void> {
-    const lernWordIDArr = getCountsSorted_1(this.rightAnsweredWordsStatistic!);
-
+    let lernWordIDArr = getCountsSorted_1(this.rightAnsweredWordsStatistic!);
+    lernWordIDArr = lernWordIDArr.filter((item) => !this.noRepeatID!.includes(item));
+    console.log(lernWordIDArr, 'lernWordArr 144');
     lernWordIDArr.forEach(async (element) => {
       let userId = '';
       if (localStorage.getItem('user')) {
@@ -213,7 +218,7 @@ class Support {
       } else {
         this.rightAnsweredWordsStatistic = this.RightAnsweredWords;
       }
-      console.log(this.RightAnsweredWords!, 'this.RightAnsweredWords!', objAudiocallDate.answer, 'objAudiocallDate.answer');
+      // console.log(this.RightAnsweredWords!, 'this.RightAnsweredWords!', objAudiocallDate.answer, 'objAudiocallDate.answer');
       this.allWords = objAudiocallDate.newWords! + 5;
 
       this.percentOfRightAnswers = Math.floor((this.rightAnsweredWordsStatistic!.length * 100) / this.allWords);
@@ -282,12 +287,13 @@ function getCountsSorted_1(arr: string[]):string[] {
   const counts2 = Array.from(counts);
 
   counts2.forEach((element) => {
-    if (element[1] === 3) {
+    if (element[1] > 3) {
       lernWord = element[0] as string;
       (lernWordArr as string[]).push(lernWord);
+      alert(lernWord);
     }
   });
-  // console.log(lernWord);
+
   return lernWordArr;
 }
 
