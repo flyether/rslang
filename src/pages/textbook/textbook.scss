@@ -43,6 +43,33 @@
   cursor: pointer;
 }
 
+.learned-page-menu {
+  background-color: $transparent-blue-color;
+}
+
+.learned-page-game {
+  pointer-events: none;
+  cursor: default;
+  color: $light-grey-color;
+}
+
+.learned-page {
+  background-color: $transparent-blue-color;
+  position: relative;
+
+  &::before {
+    background-image: url(../../assets/check.png);
+    width: 60px;
+    background-size: 60px 60px;
+    aspect-ratio: 1;
+    content: '';
+    z-index: 10;
+    position: absolute;
+    top: -90px;
+    left: 320px;
+  }
+}
+
 .word-list {
   display: grid;
   width: 100%;
@@ -124,6 +151,11 @@
   border: 1px solid transparent;
   font-family: $mplus-font;
   cursor: pointer;
+
+  &:disabled {
+    background-color: $dark-grey-color;
+    cursor: default;
+  }
 }
 
 .textbook-footer {

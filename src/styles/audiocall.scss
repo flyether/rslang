@@ -1,83 +1,217 @@
+@import './vars.scss';
 
-.audio-container {
-  flex: 0 0 auto;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  background: url('../pages/audiocall/img/ocean.jpg') 0 0 no-repeat;
+@mixin btn {
+  text-align: center;
+  cursor: pointer;
+  font-size: medium;
+  font-weight: 700;
+  width: 170px;
+  height: 70px;
+  border-radius: 5px;
+  border: 1px solid #224a9a;
+  margin: 0, 5px, 0, 5px;
 }
 
-.audio-container-game{
+.button-container {
+  margin: 0 5px;
+}
+
+.button-wrapper {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.audio-call__btns {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+
+.audio-container-game {
   width: 1200px;
-  height: 600px;
+  height: 400px;
   display: flex;
   justify-content: space-between;
+  gap: 50px;
   flex-direction: column;
   align-items: center;
-  flex-wrap: wrap;
-  margin: 0 auto;
-  background: url('../pages/audiocall/img/ocean1.jpg') 0 0 no-repeat;
+  margin: 100px auto 0;
+}
+
+.container {
+  background-image: url('https://www.wallpaperflare.com/static/902/419/614/ocean-sand-beach-blue-wallpaper.jpg');
+  width: 100%;
+  min-height: 100vh;
+  background-size: cover;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
 }
 
 .audio-call {
-   width: 60%;
-   height: 60%;
-   display: flex;
-   font-size: large;
-   line-height: 35px;
-   font-weight: 700;
-   justify-content: space-between;
-   align-items: center;
-   flex-wrap: wrap;
-   background: #fe8954;
-   margin: 5% auto;
-   padding: 20px;
-   border-radius: 5px;
+  line-height: 35px;
+  font-weight: 700;
+  width: 75%;
+  display: flex;
+  flex-direction: column;
+  font-size: 16px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  background: $white-color;
+  box-shadow: $shadow;
+  font-family: $mplus-font;
+  color: $light-blue-color;
+  margin: 5% auto;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.audio-call__text {
+  width: 70%;
+  margin: 0 auto 40px;
+  text-align: center;
+}
+
+.audio-call__text+p {
+  font-weight: 700;
+  margin-top: 0.8em;
+}
+
+.audio-container {
+  flex: 0 0 auto;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.link {
+  display: flex;
+  text-align: center;
+  cursor: pointer;
+  font-size: medium;
+  font-weight: 700;
+  color: #f8631d;
+  background-color: #679fe5;
+  border-radius: 5px;
+  border: 1px solid #224a9a;
+  margin: 0 auto;
+  ;
+  padding: 10px 10px;
+}
+
+.go-main {
+  @include orange-btn;
+  margin: 70px auto 0;
+  width: 200px;
+  transition: all 0.5s ease-out;
+
+  &:hover {
+    cursor: pointer;
+    background-color: $dark-orange;
+  }
+}
+
+.btn-translation {
+  color: $white-color;
+  font-size: large;
+  font-weight: 700;
+  width: 170px;
+  background-color: $light-blue-color;
+  min-width: 140px;
+  text-align: center;
+  border-radius: 5px;
+  margin: 0 5px 20px 5px;
+  cursor: pointer;
+  padding: 15px 15px;
+
+  &:hover {
+    background-color: $very-light-blue-color;
+  }
 }
 
 .btn-level {
   color: #224a9a;
   width: 80px;
   height: 50px;
-  background-color:#679fe5 ;
+  background-color: $white-color;
+  box-shadow: $shadow;
   text-align: center;
   line-height: 35px;
   border-radius: 3px;
-  cursor: pointer 
+  cursor: pointer;
+  border: none;
 }
 
-.btn-translation {
-  color: #224a9a;
-  font-size: large;
-  font-weight: 700;
-  width: 170px;
-  height: 70px;
-  background-color:#bdf5ff ;
-  text-align: center;
-  line-height: 35px;
-  border-radius: 5px;
-  border: #224a9a solid 1px;
-  margin: 0 5px 20px 5px;
-  cursor: pointer 
+.btn-translation.btn-translation-right {
+  background-color: $right-color;
 }
 
-.btn-translation:hover  {
-  background-color:#bdccff ;
+.btn-blue {
+  margin-bottom: 0 auto 10px;
+  justify-content: center;
+  align-items: center;
+  margin: 20px;
+}
+
+.btn-blue:hover {
+  background-color: #bdccff;
+}
+
+.btn-translation.btn-translation-wrong {
+  background-color: $wrong-color;
 }
 
 .btn-sound {
-  margin-top: 10%;
-  color: #224a9a;
+  color: $blue-color;
   width: 80px;
   height: 80px;
-  background: url('../pages/audiocall/img/sound.svg') 0 0 no-repeat;
-  cursor: pointer 
+  background: url('../../src/assets/volume.png') center no-repeat;
+  background-size: 70%;
+  cursor: pointer;
 }
 
 .btn-sound:hover {
   width: 90px;
   height: 90px;
 }
-// #224a9a;
+
+.game-over {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 20%;
+  left: 33%;
+  background-color: #fe8954;
+  font-size: large;
+  font-weight: 700;
+  width: 500px;
+  height: 500px;
+  text-align: center;
+  line-height: 35px;
+  border-radius: 5px;
+  border: #224a9a solid 1px;
+  margin: 0, 0, 20px, 0;
+}
+
+.btn-game-over-container {
+  display: flex;
+  justify-content: center;
+}
+
+.answer {
+  font-size: large;
+  font-weight: 700;
+  width: 400px;
+  height: 200px;
+  text-align: center;
+  line-height: 35px;
+  border-radius: 5px;
+  margin: 0, 0, 20px, 0;
+  padding: 5px;
+}
+
+.answer-img {
+  border-radius: 5px;
+  width: 250px;
+}

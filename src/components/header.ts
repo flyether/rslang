@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import showUser from '../functional/show-user';
 import { hashes } from './hashes';
 
@@ -9,7 +10,7 @@ const Header = {
     <div id="overlay"></div>
     <div id="modal-window">
       <div class="wrapper">
-       
+
       </div>
       <div id="btn-close"></div>
     </div>
@@ -29,7 +30,7 @@ const Header = {
             </li>
             <li class="menu__item"><a href="${hashes.audiocall}" class="menu__audiocall">Аудиовызов</a></li>
             <li class="menu__item"><a href="${hashes.aboutsprint}" class="menu__sprint">Спринт</a></li>
-            <li class="menu__item"><a href="${hashes.team}" class="menu__team">О команде</a></li>
+            <li class="menu__item"><a href="#team" class="menu__team">О команде</a></li>
           </ul>
         </nav>
         <div class="burger">

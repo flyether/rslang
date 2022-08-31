@@ -1,6 +1,3 @@
-/* eslint-disable linebreak-style */
-/* eslint-disable max-len */
-
 export const formLogin = ` <form class="form-signin" id="auth">       
 <h3 class="form-signin-heading">Введите свои данные</h3>
 <div class="form-signin-body">

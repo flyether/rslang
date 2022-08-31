@@ -1,6 +1,4 @@
-/* eslint-disable linebreak-style */
 /* eslint-disable @typescript-eslint/no-use-before-define */
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable class-methods-use-this */
 /* eslint-disable @typescript-eslint/no-shadow */
 
@@ -12,6 +10,14 @@ import { storage } from './storage';
 class Listener {
   open(): void {
     document.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).classList.contains('burger')) {
+        const burgerMenu = document.querySelector('.wrapper-burger');
+        burgerMenu?.classList.add('show');
+      }
+      if ((e.target as HTMLElement).classList.contains('wrapper-burger')) {
+        const burgerMenu = document.querySelector('.wrapper-burger');
+        burgerMenu?.classList.remove('show');
+      }
       if ((e.target as HTMLElement).classList.contains('authorization')) {
         const btnCloseModal = document.getElementById('btn-close');
         const overlay = document.getElementById('overlay');

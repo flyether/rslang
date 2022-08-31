@@ -32,17 +32,22 @@ class ModuleController {
 
   audiocallgame !: HTMLElement;
 
+  authorizationHeader !: HTMLElement;
+
+  statisticsConteiner !: HTMLElement;
+
   init(container: HTMLElement, model: ModuleModel): void {
     this.myModuleContainer = container;
     this.myModuleModel = model;
-    window.addEventListener('hashchange', () => {
+    window.addEventListener('hashchange', (e) => {
       changeSprintSettings();
       this.updateState();
     });
 
     // modalAuthorization.open();
     listener.open();
-    listenerAudioCall.open();
+    listenerAudioCall.clik();
+    listenerAudioCall.keyboard();
     this.updateState();
     // window.location.hash = '#main';
   }
@@ -51,6 +56,7 @@ class ModuleController {
     const hashPageName = window.location.hash.slice(1).toLowerCase();
     this.myModuleModel.updateState(hashPageName);
     this.findMenuElements(hashPageName);
+    this.findAuthorizationElements();
     switch (hashPageName) {
       case 'aboutsprint':
         this.addButtonsAboutSprintGameListeners();
@@ -59,15 +65,15 @@ class ModuleController {
     }
   }
 
-  findMenuElements(hashName:string):void {
-    const hash:string = hashName.split('/')[0];
+  findMenuElements(hashName: string): void {
+    const hash: string = hashName.split('/')[0];
     this.menuMain = document.querySelector('.menu__main') as HTMLElement;
     this.menuTextbook = document.querySelector('.menu__textbook') as HTMLElement;
     this.menuStatictics = document.querySelector('.menu__statictics') as HTMLElement;
     this.menuAudiocall = document.querySelector('.menu__audiocall') as HTMLElement;
     this.menuSprint = document.querySelector('.menu__sprint') as HTMLElement;
     this.menuTeam = document.querySelector('.menu__team') as HTMLElement;
-    const obj:MenuItems = {
+    const obj: MenuItems = {
       main: this.menuMain,
       textbook: this.menuTextbook,
       statistics: this.menuStatictics,
@@ -78,15 +84,29 @@ class ModuleController {
     };
     if (this.menuMain) {
       this.myModuleModel.highlightActiveMenuItem(obj, hash);
+      this.myModuleModel.checkUserAuthorization(this.menuStatictics);
     }
   }
 
-  addButtonsAboutSprintGameListeners():void {
+  addButtonsAboutSprintGameListeners(): void {
     this.buttonStartSprint = document.querySelector('.button__start__sprint') as HTMLButtonElement;
     this.sprintLevel = document.querySelector('.sprint__level') as HTMLInputElement;
     this.buttonStartSprint.addEventListener('click', () => {
       if (this.sprintLevel) { sprintSettings.setLevelFromSelect(this.sprintLevel.value); }
       location.hash = '#sprint';
+    });
+  }
+
+  findAuthorizationElements():void {
+    this.authorizationHeader = document.querySelector('.header__auth') as HTMLElement;
+    document.addEventListener('click', (e) => {
+      const elem = e.target as HTMLElement;
+      if (elem.closest('.exit_btn')) {
+        setTimeout(() => this.myModuleModel.checkUserAuthorization(this.menuStatictics), 500);
+      }
+      if (elem.closest('#autoriztionBtn')) {
+        setTimeout(() => this.myModuleModel.checkUserAuthorization(this.menuStatictics), 500);
+      }
     });
   }
 }

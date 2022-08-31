@@ -1,20 +1,24 @@
-/* eslint-disable import/no-cycle */
-/* eslint-disable linebreak-style */
-/* eslint-disable max-len */
 import { gameArea } from './utils/game-render';
+import { support } from './utils/supporting-func';
 
 const AudiocallGame = {
-  hashes: {
+  // hashes: {
 
-    main: '#main',
+  //   main: '#main',
 
-  },
+  // },
 
   render(): string {
+    support.printBtnString();
     return `
-       <div class = 'container'> <button  type="button"  class="go-main"><a href="${this.hashes.main}" ></a>Вернуться на главную</a></button> ${gameArea}</div>
+       <div class = 'container'> 
+       <a class="go-main " href='#main' >Вернуться на главную</a> 
+         <div class = 'game'> ${gameArea} </div>
+         
+         
+         </div>
       `;
   },
 };
 
-export default AudiocallGame;
+export { AudiocallGame };

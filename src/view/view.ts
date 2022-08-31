@@ -1,5 +1,8 @@
+/* eslint-disable class-methods-use-this */
+
 import { Routes, MenuItems } from '../types/types';
 import SprintGamePage from '../pages/sprint/index';
+import StatisticsPage from '../pages/statistics/index';
 
 class ModuleView {
   myModuleContainer!: HTMLElement;
@@ -7,6 +10,8 @@ class ModuleView {
   contentContainer!: HTMLElement;
 
   routesObj!: Routes;
+
+  menuStatictics !: HTMLElement;
 
   init(container: HTMLElement, routes: Routes): void {
     this.myModuleContainer = container;
@@ -19,6 +24,7 @@ class ModuleView {
     const route = this.routesObj[routeName as keyof Routes];
     this.myModuleContainer.innerHTML = route.render();
     if (hashPageName === 'sprint') { SprintGamePage.initMVC(); }
+    if (hashPageName === 'statistics') { StatisticsPage.initMVC(); }
   }
 
   highlightActiveMenuItem = (obj: MenuItems, hashName: string): void => {
@@ -34,6 +40,14 @@ class ModuleView {
       obj.main.classList.add('menu__item_active');
     }
   };
+
+  disableStatistics(flag:boolean, statisticMenu:HTMLElement): void {
+    if (!flag && statisticMenu) {
+      statisticMenu.classList.remove('menu__item_disable');
+    } else if (statisticMenu) {
+      statisticMenu.classList.add('menu__item_disable');
+    }
+  }
 }
 
 export default ModuleView;
