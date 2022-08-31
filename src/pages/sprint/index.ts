@@ -4,9 +4,7 @@ import Header from '../../components/header';
 import { initSprintMVC } from './initSprintMVC';
 import { Buttons } from '../../components/smallComponents/buttons';
 
-import parrots from '../../assets/parrots.jpg';
-import arrowLeft from '../../assets/arrow-left.png';
-import arrowRight from '../../assets/arrow-right.png';
+import arrowUp from '../../assets/arrow-up.png';
 
 import rightAnswerAudio from '../../assets/audio/right-answer.mp3';
 import wrongAnswerAudio from '../../assets/audio/wrong-answer.mp3';
@@ -26,7 +24,6 @@ const SprintGamePage = {
           <div class="title__text">+ 10 очков за следующее слово</div>
         </div>
         <div class="field__content">
-          <div class="content__img"><img src='${parrots}' alt="parrots"></div>
           <div class="content__question">
           <div class="content__word">
             <div class="question__word"></div>
@@ -39,8 +36,8 @@ const SprintGamePage = {
         <div class="field__buttons">${Buttons.create('Неверно', 'button__sprint__false', false)}${Buttons.create('Верно', 'button__sprint__true', false)}</div>
       </div>
       <div class="sprint__arrows">
-        <img src='${arrowLeft}' alt="arrow">
-        <img src='${arrowRight}' alt="arrow">
+        <img src='${arrowUp}' alt="arrow">
+        <img src='${arrowUp}' alt="arrow">
       </div>
       <audio id="audio__right" src="${rightAnswerAudio}"></audio>
       <audio id="audio__wrong" src="${wrongAnswerAudio}"></audio>
