@@ -1,7 +1,13 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
-import { IObjStatisticStorage } from 'types/types';
+import { api } from '../../api/api';
+import { IObjStatisticStorage, IOptionalStatisticGame } from '../../types/types';
 import StatisticsPage from '.';
 import { support } from '../audiocall/utils/supporting-func';
+
+let userId = '';
+if (localStorage.getItem('user')) {
+  userId = JSON.parse(localStorage.getItem('user')!).userId;
+}
 
 function getArrOfLast5Days() {
   let now = Date.now();
@@ -37,20 +43,22 @@ export const statisticsDataTextbookShortTerm = {
   percentOfRightAnswers: 50,
 };
 
-let objAudiocallDate: IObjStatisticStorage = {
+let objAudiocallDate: IOptionalStatisticGame = {
   date: dataNow(),
   percentOfRightAnswers: 0,
   newWords: 0,
   longestSeriesOfRightAnswers: 0,
 };
 
-  if (localStorage.getItem('dataAudiocall')) {
-    if ((objAudiocallDate.date) === JSON.parse(localStorage.getItem('dataAudiocall')!).date) {
-      objAudiocallDate = JSON.parse(localStorage.getItem('dataAudiocall')!);
-    } else {
-      localStorage.setItem('dataAudiocall', JSON.stringify(objAudiocallDate));
-    }
-  }
+async function staticGet() : Promise<void> {
+  api.GetsStatistics(userId)
+    .then((res) => {
+      if (res?.optional?.audiocall?.date === objAudiocallDate.date) {
+        objAudiocallDate = res?.optional?.audiocall as IOptionalStatisticGame;
+      }
+    });
+}
+staticGet();
 
 export const statisticsDataAudiocallShortTerm = {
   newWords: objAudiocallDate.newWords,

@@ -188,7 +188,6 @@ class Support {
     api.GetsStatistics(userId)
       .then((res) => {
         this.objStatistic = res?.optional?.audiocall as IOptionalStatisticGame;
-        console.log(this.objStatistic);
       });
   }
 
@@ -230,15 +229,16 @@ class Support {
     this.getUserWords();
 
     const btnWrapper = document.querySelector('.audio-container-game') as HTMLElement;
-    this.staticGet();
+
     //     выбор уровня и страницы для загрузки слов  ссервера
 
     this.group = this.level! - 1;
     if ((!this.textbook)) {
       this.page = Math.floor(Math.random() * (20 - 0 + 1)) + 0;
     }
-    console.log(this.group!, this.page!, 'this.group!, this.page!');
+
     const res = await api.getWords(this.group!, this.page!);
+
     const garageSection = document.querySelector('.button-container') as HTMLElement;
     if (garageSection) {
       garageSection.innerHTML = '';
@@ -264,7 +264,9 @@ class Support {
       }
 
       this.noRepeat!.push(this.wordObj!.wordTranslate);
+
       soundAudio((apiPath + support.wordObj!.audio));
+
       const button = document.querySelectorAll('.btn-translation');
       if (this.arraySixWords) {
         for (let j = 0; j < this.arraySixWords.length; j++) {
@@ -273,6 +275,7 @@ class Support {
           (button[j] as HTMLButtonElement).dataset.num = `${j + 1}`;
         }
       }
+      // отрисовка конца игры.
     } else {
       btnWrapper.innerHTML = '';
       this.wordObj!.audio = '';
@@ -295,50 +298,41 @@ class Support {
       </div>
 
     `;
+      // работа над статистикой
       if (userId) {
-        if (this.longestSeriesOfRightAnswers! < this.RightAnsweredWords!.length) {
-          this.longestSeriesOfRightAnswers = this.RightAnsweredWords!.length;
+        // берем статистику и присваиваем ее this.objStatistic
+        this.staticGet();
+
+        // если записанная в статистике серия кооче новой серии объектов то прересзаписывем
+        if (this.objStatistic.longestSeriesOfRightAnswers) {
+          if (this.objStatistic.longestSeriesOfRightAnswers < this.RightAnsweredWords!.length) {
+            this.objStatistic.longestSeriesOfRightAnswers = this.RightAnsweredWords!.length;
+          }
         }
 
-        let objAudiocallDate: IOptionalStatisticGame = {
-          percentOfRightAnswers: 0,
-          longestSeriesOfRightAnswers: 0,
-          answer: [],
-          newWords: 0,
-        };
-
-        if (localStorage.getItem('dataAudiocall')) {
-          objAudiocallDate = JSON.parse(localStorage.getItem('dataAudiocall')!);
-        }
-
-        if (objAudiocallDate.answer) {
-          this.rightAnsweredWordsStatistic = objAudiocallDate.answer!.concat(this.RightAnsweredWords!);
+        if (this.objStatistic.answer) {
+          this.objStatistic.answer = this.objStatistic.answer.concat(this.RightAnsweredWords!);
+          console.log(this.objStatistic.answer, 'this.objStatistic.answer ', this.RightAnsweredWords, 'this.RightAnsweredWords');
         } else {
-          this.rightAnsweredWordsStatistic = this.RightAnsweredWords;
+          this.objStatistic.answer = this.RightAnsweredWords;
         }
+        if (this.objStatistic.AllAnswersFromGame) {
+          this.objStatistic.AllAnswersFromGame += 15;
+        } else { this.objStatistic.AllAnswersFromGame = 15; }
 
-        this.allWords = objAudiocallDate.newWords! + 15;
+        if (this.objStatistic.percentOfRightAnswers) {
+          this.percentOfRightAnswers = Math.floor((this.objStatistic.rightAnswers! * 100) / this.objStatistic.AllAnswersFromGame);
+        } else { this.objStatistic.percentOfRightAnswers = 0; }
 
-        this.percentOfRightAnswers = Math.floor((this.rightAnsweredWordsStatistic!.length * 100) / this.allWords);
+        this.staticUpdate(this.objStatistic);
 
-        const objStatisticStorage: IOptionalStatisticGame = {
-          date: this.dataNow(),
-          percentOfRightAnswers: this.percentOfRightAnswers,
-          newWords: this.allWords,
-          longestSeriesOfRightAnswers: this.longestSeriesOfRightAnswers as number,
-          rightAnswers: this.rightAnsweredWordsStatistic?.length,
-          AllAnswersFromGame: this.rightAnsweredWordsStatistic!.length,
-        };
-
-        this.staticUpdate(objStatisticStorage);
-
-        statisticsDataAudiocallShortTerm.newWords = this.allWords;
-        statisticsDataAudiocallShortTerm.percentOfRightAnswers = this.percentOfRightAnswers;
-        statisticsDataAudiocallShortTerm.longestSeriesOfRightAnswers = this.longestSeriesOfRightAnswers as number;
+        statisticsDataAudiocallShortTerm.newWords = this.objStatistic.AllAnswersFromGame;
+        statisticsDataAudiocallShortTerm.percentOfRightAnswers = this.objStatistic.percentOfRightAnswers;
+        statisticsDataAudiocallShortTerm.longestSeriesOfRightAnswers = this.objStatistic.longestSeriesOfRightAnswers as number;
 
         this.checkLearnedWrds();
       }
-      // localStorage.setItem('dataAudiocall', JSON.stringify(objStatisticStorage));
+
       this.clearLocalStorage();
     }
   }
