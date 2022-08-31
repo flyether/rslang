@@ -104,7 +104,8 @@ export interface IGroupPageObj {
 }
 
 export interface IOptionalUserWords {
-  wordsLearned: string;
+  status: string;
+  answer?: boolean;
 }
 export interface IUserWords {
   difficulty: string;

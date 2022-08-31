@@ -150,8 +150,8 @@ class Support {
 
   async deleteWrongWordFromServer():Promise<void> {
     if (userId) {
-        alert('слово удаеляем');
-        await api.DeleteUserWord(userId, this.wordObj!.id);
+      alert('слово удаеляем');
+      await api.DeleteUserWord(userId, this.wordObj!.id);
     }
   }
 
@@ -161,9 +161,9 @@ class Support {
       if (!this.AllUserWords!.includes(this.wordObj!.id)) {
         let optional: IOptionalUserWords;
         if (booleanPar) {
-          optional = { wordsLearned: 'right' };
+          optional = { answer: true, status: 'new' };
         } else {
-          optional = { wordsLearned: 'wrong' };
+          optional = { answer: false, status: 'new' };
         }
         try {
           await api.CreateUserWord(userId, this.wordObj!.id,
