@@ -1,23 +1,18 @@
 @import './vars.scss';
 
-@mixin btn {
-  text-align: center;
-  cursor: pointer;
-  font-size: medium;
-  font-weight: 700;
-  width: 170px;
-  height: 70px;
-  border-radius: 5px;
-  border: 1px solid #224a9a;
-  margin: 0, 5px, 0, 5px;
+.button-container {
+  width: 17%;
 }
 
-.button-container {
-  margin: 0 5px;
+.button-container:first-child {
+  display: none;
 }
 
 .button-wrapper {
   display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 20px;
 }
 
@@ -28,7 +23,7 @@
 }
 
 .audio-container-game {
-  width: 1200px;
+  width: 90%;
   height: 400px;
   display: flex;
   justify-content: space-between;
@@ -64,7 +59,7 @@
   color: $light-blue-color;
   margin: 5% auto;
   padding: 20px;
-  border-radius: 5px;
+  border-radius: $border-radius-btn;
 }
 
 .audio-call__text {
@@ -93,7 +88,7 @@
   font-weight: 700;
   color: #f8631d;
   background-color: #679fe5;
-  border-radius: 5px;
+  border-radius: $border-radius-btn;
   border: 1px solid #224a9a;
   margin: 0 auto;
   ;
@@ -114,16 +109,18 @@
 
 .btn-translation {
   color: $white-color;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-size: large;
   font-weight: 700;
-  width: 170px;
+  width: 100%;
+  height: 60px;
   background-color: $light-blue-color;
-  min-width: 140px;
   text-align: center;
-  border-radius: 5px;
-  margin: 0 5px 20px 5px;
+  border-radius: $border-radius-btn;
   cursor: pointer;
-  padding: 15px 15px;
+
 
   &:hover {
     background-color: $very-light-blue-color;
@@ -145,6 +142,10 @@
 
 .btn-translation.btn-translation-right {
   background-color: $right-color;
+
+  &:hover {
+    background-color: $right-color;
+  }
 }
 
 .btn-blue {
@@ -152,14 +153,26 @@
   justify-content: center;
   align-items: center;
   margin: 20px;
+  font-size: 1em;
+  box-shadow: $shadow;
+  padding: 5px 15px;
+  transition: all 0.5s ease-in-out;
+  border-radius: $border-radius-btn;
 }
 
 .btn-blue:hover {
-  background-color: #bdccff;
+  background-color: $very-light-blue-color;
+  box-shadow: $shadow;
+  cursor: pointer;
+  font-size: 1.4em;
 }
 
 .btn-translation.btn-translation-wrong {
   background-color: $wrong-color;
+
+  &:hover {
+    background-color: $wrong-color;
+  }
 }
 
 .btn-sound {
@@ -180,18 +193,19 @@
   display: flex;
   flex-direction: column;
   position: fixed;
-  top: 20%;
-  left: 33%;
-  background-color: #fe8954;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: $white-color;
+  box-shadow: $shadow;
   font-size: large;
   font-weight: 700;
-  width: 500px;
-  height: 500px;
+  width: 50%;
   text-align: center;
   line-height: 35px;
-  border-radius: 5px;
-  border: #224a9a solid 1px;
+  border-radius: $border-radius-btn;
   margin: 0, 0, 20px, 0;
+  padding: 10px 20px;
 }
 
 .btn-game-over-container {
@@ -203,15 +217,50 @@
   font-size: large;
   font-weight: 700;
   width: 400px;
-  height: 200px;
   text-align: center;
   line-height: 35px;
-  border-radius: 5px;
-  margin: 0, 0, 20px, 0;
+  border-radius: $border-radius-btn;
   padding: 5px;
 }
 
 .answer-img {
-  border-radius: 5px;
+  border-radius: $border-radius-btn;
   width: 250px;
+}
+
+.game-text:first-child {
+  color: $right-color;
+  font-size: 2em;
+}
+
+@media (max-width:768px) {
+  .btn-game-over-container {
+    flex-direction: column;
+  }
+
+  .button-wrapper {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .button-container {
+    width: 50%;
+  }
+
+  .btn-translation {
+    height: 35px;
+    font-size: 0.7em;
+  }
+
+  .audio-container-game {
+    gap: 15px;
+  }
+
+  .go-main {
+    width: 50%;
+  }
+
+  .game-over {
+    font-size: 0.8em;
+  }
 }
