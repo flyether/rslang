@@ -158,7 +158,7 @@ class Support {
   // добавляем на сервер новые слова появившиеся в игре
   async CrateNewWord(booleanPar: boolean) : Promise<void> {
     if (userId) {
-      if (!this.AllUserWords!.includes(this.wordObj!.id)) {
+      if (!this.LearnedWordsID!.includes(this.wordObj!.id)) {
         const optional: IUserWords = { optional: { answer: booleanPar, status: 'new' } };
         try {
           await api.CreateUserWord(userId, this.wordObj!.id,
