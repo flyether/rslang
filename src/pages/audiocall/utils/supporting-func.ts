@@ -5,11 +5,11 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
 import {
-  IObjStatisticStorage, IWord, IOptionalUserWords, IUserWords,
+  IObjStatisticStorage, IWord, IUserWords, IStatistic, IOptionalStatisticGame,
 } from '../../../types/types';
 import { apiPath } from '../../../api/api-path';
 import { api } from '../../../api/api';
-import { getStatisticsDataAudiocallShortTerm, statisticsDataAudiocallShortTerm } from '../../statistics/statisticsData';
+import { statisticsDataAudiocallShortTerm } from '../../statistics/statisticsData';
 
 function shuffle(array:string[]) {
   array.sort(() => Math.random() - 0.5);
@@ -76,7 +76,10 @@ class Support {
 
   public allWords?: number;
 
+  public objStatistic: IOptionalStatisticGame;
+
   constructor() {
+    this.objStatistic = {};
     this.newAndLearnUserWords = [];
     this.LearnedWordsID = [];
     this.newWords = 0;
@@ -106,7 +109,7 @@ class Support {
 
   // метод который берет с сервера изученые слова чтобы их не выводить в игру
   async getUserWords() : Promise<void> {
-    api.getAllUserWords(JSON.parse(localStorage.getItem('user')!).userId)
+    api.getAllUserWords(userId)
       .then((res) => {
         res!.forEach((element) => {
           if (element.difficulty === 'learned' || !element.difficulty) {
@@ -178,15 +181,26 @@ class Support {
       }
     });
   }
-  // метод для заполнения статистики
-  // async staticUpdate () : Promise<void> {
-  //   if (userId) {
-  //     const value: IStatistic
-  //     try {
-  //       await api.UpsertsNewStatistics(userId, value)
-  //   }
-  // }
 
+  // метод получения статистики
+
+  async staticGet() : Promise<void> {
+    api.GetsStatistics(userId)
+      .then((res) => {
+        this.objStatistic = res?.optional?.audiocall as IOptionalStatisticGame;
+        console.log(this.objStatistic);
+      });
+  }
+
+  // метод для заполнения статистики
+  async staticUpdate(objStatistics: IOptionalStatisticGame) : Promise<void> {
+    const value: IStatistic = {
+      optional: {
+        audiocall: objStatistics,
+      },
+    };
+    await api.UpsertsNewStatistics(userId, value);
+  }
   // удалим слово в котором ошибся юзер
 
   async deleteWrongWordFromServer():Promise<void> {
@@ -216,7 +230,7 @@ class Support {
     this.getUserWords();
 
     const btnWrapper = document.querySelector('.audio-container-game') as HTMLElement;
-
+    this.staticGet();
     //     выбор уровня и страницы для загрузки слов  ссервера
 
     this.group = this.level! - 1;
@@ -281,47 +295,51 @@ class Support {
       </div>
 
     `;
-      if (this.longestSeriesOfRightAnswers! < this.RightAnsweredWords!.length) {
-        this.longestSeriesOfRightAnswers = this.RightAnsweredWords!.length;
+      if (userId) {
+        if (this.longestSeriesOfRightAnswers! < this.RightAnsweredWords!.length) {
+          this.longestSeriesOfRightAnswers = this.RightAnsweredWords!.length;
+        }
+
+        let objAudiocallDate: IOptionalStatisticGame = {
+          percentOfRightAnswers: 0,
+          longestSeriesOfRightAnswers: 0,
+          answer: [],
+          newWords: 0,
+        };
+
+        if (localStorage.getItem('dataAudiocall')) {
+          objAudiocallDate = JSON.parse(localStorage.getItem('dataAudiocall')!);
+        }
+
+        if (objAudiocallDate.answer) {
+          this.rightAnsweredWordsStatistic = objAudiocallDate.answer!.concat(this.RightAnsweredWords!);
+        } else {
+          this.rightAnsweredWordsStatistic = this.RightAnsweredWords;
+        }
+
+        this.allWords = objAudiocallDate.newWords! + 15;
+
+        this.percentOfRightAnswers = Math.floor((this.rightAnsweredWordsStatistic!.length * 100) / this.allWords);
+
+        const objStatisticStorage: IOptionalStatisticGame = {
+          date: this.dataNow(),
+          percentOfRightAnswers: this.percentOfRightAnswers,
+          newWords: this.allWords,
+          longestSeriesOfRightAnswers: this.longestSeriesOfRightAnswers as number,
+          rightAnswers: this.rightAnsweredWordsStatistic?.length,
+          AllAnswersFromGame: this.rightAnsweredWordsStatistic!.length,
+        };
+
+        this.staticUpdate(objStatisticStorage);
+
+        statisticsDataAudiocallShortTerm.newWords = this.allWords;
+        statisticsDataAudiocallShortTerm.percentOfRightAnswers = this.percentOfRightAnswers;
+        statisticsDataAudiocallShortTerm.longestSeriesOfRightAnswers = this.longestSeriesOfRightAnswers as number;
+
+        this.checkLearnedWrds();
       }
-
-      let objAudiocallDate: IObjStatisticStorage = {
-        percentOfRightAnswers: 0,
-        longestSeriesOfRightAnswers: 0,
-        answer: [],
-        newWords: 0,
-      };
-
-      if (localStorage.getItem('dataAudiocall')) {
-        objAudiocallDate = JSON.parse(localStorage.getItem('dataAudiocall')!);
-      }
-
-      if (objAudiocallDate.answer) {
-        this.rightAnsweredWordsStatistic = objAudiocallDate.answer!.concat(this.RightAnsweredWords!);
-      } else {
-        this.rightAnsweredWordsStatistic = this.RightAnsweredWords;
-      }
-
-      this.allWords = objAudiocallDate.newWords! + 15;
-
-      this.percentOfRightAnswers = Math.floor((this.rightAnsweredWordsStatistic!.length * 100) / this.allWords);
-
-      const objStatisticStorage: IObjStatisticStorage = {
-        date: this.dataNow(),
-        percentOfRightAnswers: this.percentOfRightAnswers,
-        newWords: this.allWords,
-        longestSeriesOfRightAnswers: this.longestSeriesOfRightAnswers as number,
-        answer: this.rightAnsweredWordsStatistic,
-      };
-
-      statisticsDataAudiocallShortTerm.newWords = this.allWords;
-      statisticsDataAudiocallShortTerm.percentOfRightAnswers = this.percentOfRightAnswers;
-      statisticsDataAudiocallShortTerm.longestSeriesOfRightAnswers = this.longestSeriesOfRightAnswers as number;
-
-      this.checkLearnedWrds();
-      localStorage.setItem('dataAudiocall', JSON.stringify(objStatisticStorage));
+      // localStorage.setItem('dataAudiocall', JSON.stringify(objStatisticStorage));
       this.clearLocalStorage();
-      getStatisticsDataAudiocallShortTerm();
     }
   }
 

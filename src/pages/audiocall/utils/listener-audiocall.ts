@@ -9,9 +9,7 @@ import audioPathRight from '../../../assets/audio/right-answer.mp3';
 import { soundAudio, support } from './supporting-func';
 import { gameArea } from './game-render';
 
-import { ModuleView } from '../../../view/viewStatistics';
 import { StatisticsPageAudiocallShortTeam } from '../../statistics/statisticsShortTerm';
-import { getStatisticsDataAudiocallShortTerm } from '../../statistics/statisticsData';
 
 class ListenerAudioCall {
   keyboard(): void {
@@ -32,7 +30,6 @@ class ListenerAudioCall {
     document.addEventListener('click', (e) => {
       if ((e.target as HTMLElement).classList.contains('statistics__audiocall')) {
         const div = document.querySelector('.statistics__div') as HTMLElement;
-        getStatisticsDataAudiocallShortTerm();
         div.innerHTML = StatisticsPageAudiocallShortTeam.render();
       }
 

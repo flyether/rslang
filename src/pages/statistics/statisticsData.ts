@@ -44,7 +44,6 @@ let objAudiocallDate: IObjStatisticStorage = {
   longestSeriesOfRightAnswers: 0,
 };
 
-export function getStatisticsDataAudiocallShortTerm(): void {
   if (localStorage.getItem('dataAudiocall')) {
     if ((objAudiocallDate.date) === JSON.parse(localStorage.getItem('dataAudiocall')!).date) {
       objAudiocallDate = JSON.parse(localStorage.getItem('dataAudiocall')!);
@@ -52,10 +51,7 @@ export function getStatisticsDataAudiocallShortTerm(): void {
       localStorage.setItem('dataAudiocall', JSON.stringify(objAudiocallDate));
     }
   }
-}
 
-getStatisticsDataAudiocallShortTerm();
-// StatisticsPage.render();
 export const statisticsDataAudiocallShortTerm = {
   newWords: objAudiocallDate.newWords,
   percentOfRightAnswers: objAudiocallDate.percentOfRightAnswers,
