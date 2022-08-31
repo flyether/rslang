@@ -116,9 +116,15 @@ export interface IOptionalStatistic {
   AllAnswersFromGame?: number;
 }
 
+export interface IOptionalStatisticWrapper {
+  textbook?: IOptionalStatistic;
+  sprint?: IOptionalStatistic;
+  audiocall?: IOptionalStatistic;
+}
+
 export interface IStatistic {
   learnedWords?: number;
-  optional?: IOptionalStatistic;
+  optional?: IOptionalStatisticWrapper;
 }
 
 export interface IUserWords {
