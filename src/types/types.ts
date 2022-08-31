@@ -103,11 +103,12 @@ export interface IGroupPageObj {
   page: number;
 }
 
-interface IOptionalUserWords {
-  wordsLearned: string;
+export interface IOptionalUserWords {
+  status: string;
+  answer?: boolean;
 }
 export interface IUserWords {
-  difficulty: string;
+  difficulty?: string;
   optional?: IOptionalUserWords; // надо потом написать верный тип для optional
 }
 

@@ -1,23 +1,30 @@
+/* eslint-disable no-restricted-syntax */
 /* eslint-disable class-methods-use-this */
 /* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
 import {
-  IObjStatisticStorage, IWord, IUserWords, InitialObj,
+  IObjStatisticStorage, IWord, IOptionalUserWords, IUserWords,
 } from '../../../types/types';
 import { apiPath } from '../../../api/api-path';
 import { api } from '../../../api/api';
 import { getStatisticsDataAudiocallShortTerm, statisticsDataAudiocallShortTerm } from '../../statistics/statisticsData';
-import { initialObj, mySPA } from '../../../index';
 
 function shuffle(array:string[]) {
   array.sort(() => Math.random() - 0.5);
 }
+
+// функция проигрывания аудио с путем из нашего обекта-слово
 export function soundAudio(path: string): void {
   const audioD = new Audio();
   audioD.src = `${path}`;
   audioD.autoplay = true;
+}
+
+let userId = '';
+if (localStorage.getItem('user')) {
+  userId = JSON.parse(localStorage.getItem('user')!).userId;
 }
 
 class Support {
@@ -43,6 +50,8 @@ class Support {
 
   public noRepeat?: string [];
 
+  public noRepeatID?: string [];
+
   public wordObj?: IWord ;
 
   public arraySixWords?: string [];
@@ -50,6 +59,10 @@ class Support {
   public containerBtn?: string;
 
   public RightAnsweredWords?: string [];
+
+  public LearnedWordsID?: string [];
+
+  public AllUserWords?: string [];
 
   public WrongAnsweredWords?: string [];
 
@@ -64,6 +77,8 @@ class Support {
   public allWords?: number;
 
   constructor() {
+    this.AllUserWords = [];
+    this.LearnedWordsID = [];
     this.newWords = 0;
     this.allWords = 0;
     this.rightAnsweredWordsStatistic = [];
@@ -80,6 +95,7 @@ class Support {
     this.words = [];
     this.wordsString = [];
     this.noRepeat = [];
+    this.noRepeatID = [];
     this.wordStudied = [];
     this.wordObj = {
       id: '', group: 0, page: 0, word: '', image: '', audio: '', audioMeaning: '', audioExample: '', textMeaning: '', textExample: '', transcription: '', wordTranslate: '', textMeaningTranslate: '', textExampleTranslate: '',
@@ -88,31 +104,92 @@ class Support {
     this.containerBtn = 'ggg';
   }
 
+  // метод который берет с сервера изученые слова чтобы их не выводить в игру
   async getUserWords() : Promise<void> {
     api.getAllUserWords(JSON.parse(localStorage.getItem('user')!).userId)
       .then((res) => {
         res!.forEach((element) => {
-          api.getWord(element.wordId)
-            .then((ress) => {
-              this.noRepeat?.push(ress?.word as string);
-            });
+          this.AllUserWords?.push(element.wordId as string);
+          if (element.difficulty === 'learned') {
+            this.LearnedWordsID?.push(element.wordId as string);
+            api.getWord(element.wordId)
+              .then((ress) => {
+                if (this.textbook) {
+                  this.noRepeat?.push(ress?.wordTranslate as string);
+                  this.noRepeat = this.noRepeat!.filter((item, index) => this.noRepeat!.indexOf(item) === index);
+                  this.noRepeatID?.push(ress?.id as string);
+                  this.noRepeatID = this.noRepeatID!.filter((item, index) => this.noRepeatID!.indexOf(item) === index);
+                }
+              });
+          }
         });
       });
   }
 
+  // проверка слов на изученность
+
+  async checkLearnedWrds() : Promise<void> {
+    let lernWordIDArr = getLearnedWord(this.rightAnsweredWordsStatistic!);
+
+    lernWordIDArr = lernWordIDArr.filter((item) => !this.LearnedWordsID!.includes(item));
+
+    lernWordIDArr.forEach(async (element) => {
+      if (userId) {
+        try {
+          await api.CreateUserWord(userId, element,
+            { difficulty: 'learned' });
+        } catch (_e) {
+          await api.UpdateUserWord(userId, element,
+            { difficulty: 'learned' });
+        }
+      }
+    });
+  }
+
+  // удалим слово в котором ошибся юзер
+
+  async deleteWrongWordFromServer():Promise<void> {
+    if (userId) {
+      alert('слово удаеляем');
+      await api.DeleteUserWord(userId, this.wordObj!.id);
+    }
+  }
+
+  // добавляем на сервер новые слова появившиеся в игре
+  async CrateNewWord(booleanPar: boolean) : Promise<void> {
+    if (userId) {
+      if (!this.AllUserWords!.includes(this.wordObj!.id)) {
+        const optional: IUserWords = { optional: { answer: booleanPar, status: 'new' } };
+        try {
+          await api.CreateUserWord(userId, this.wordObj!.id,
+            optional);
+        } catch (_e) {
+          await api.UpdateUserWord(userId, this.wordObj!.id,
+            optional);
+        }
+      }
+    }
+  }
+
+  // отрисовка хтмл в игре
   async printBtnString(): Promise<void> {
+    this.getUserWords();
+
     const btnWrapper = document.querySelector('.audio-container-game') as HTMLElement;
 
+    //     выбор уровня и страницы для загрузки слов  ссервера
+
     this.group = this.level! - 1;
-    if ((this.page === 0)) {
+    if ((!this.textbook)) {
       this.page = Math.floor(Math.random() * (20 - 0 + 1)) + 0;
     }
+    console.log(this.group!, this.page!, 'this.group!, this.page!');
     const res = await api.getWords(this.group!, this.page!);
     const garageSection = document.querySelector('.button-container') as HTMLElement;
     if (garageSection) {
       garageSection.innerHTML = '';
     }
-    if (this.round! < 5) {
+    if (this.round! < 15) {
       this.words = res;
       if (this.wordStudied.length > 0) {
         this.noRepeat = this.noRepeat!.concat(this.wordStudied);
@@ -131,14 +208,16 @@ class Support {
           this.wordObj = this.words![i];
         }
       }
+
       this.noRepeat!.push(this.wordObj!.wordTranslate);
       soundAudio((apiPath + support.wordObj!.audio));
       const button = document.querySelectorAll('.btn-translation');
-      console.log(this.noRepeat, 'this.noRepeat');
-      for (let j = 0; j < this.arraySixWords.length; j++) {
-        button[j].textContent = `${this.arraySixWords[j]}`;
-        button[j].id = this.arraySixWords[j];
-        (button[j] as HTMLButtonElement).dataset.num = `${j + 1}`;
+      if (this.arraySixWords) {
+        for (let j = 0; j < this.arraySixWords.length; j++) {
+          button[j].textContent = `${this.arraySixWords[j]}`;
+          button[j].id = this.arraySixWords[j];
+          (button[j] as HTMLButtonElement).dataset.num = `${j + 1}`;
+        }
       }
     } else {
       btnWrapper.innerHTML = '';
@@ -162,7 +241,6 @@ class Support {
       </div>
 
     `;
-      console.log(this.RightAnsweredWords!, 'this.RightAnsweredWords!');
       if (this.longestSeriesOfRightAnswers! < this.RightAnsweredWords!.length) {
         this.longestSeriesOfRightAnswers = this.RightAnsweredWords!.length;
       }
@@ -183,11 +261,10 @@ class Support {
       } else {
         this.rightAnsweredWordsStatistic = this.RightAnsweredWords;
       }
-      console.log(this.RightAnsweredWords!, 'this.RightAnsweredWords!', objAudiocallDate.answer, 'objAudiocallDate.answer');
-      this.allWords = objAudiocallDate.newWords! + 5;
+
+      this.allWords = objAudiocallDate.newWords! + 15;
 
       this.percentOfRightAnswers = Math.floor((this.rightAnsweredWordsStatistic!.length * 100) / this.allWords);
-      // const newWordsLocal = (new Set(this.rightAnsweredWordsStatistic!)).size;
 
       const objStatisticStorage: IObjStatisticStorage = {
         date: this.dataNow(),
@@ -197,15 +274,14 @@ class Support {
         answer: this.rightAnsweredWordsStatistic,
       };
 
+      statisticsDataAudiocallShortTerm.newWords = this.allWords;
+      statisticsDataAudiocallShortTerm.percentOfRightAnswers = this.percentOfRightAnswers;
+      statisticsDataAudiocallShortTerm.longestSeriesOfRightAnswers = this.longestSeriesOfRightAnswers as number;
+
+      this.checkLearnedWrds();
       localStorage.setItem('dataAudiocall', JSON.stringify(objStatisticStorage));
       this.clearLocalStorage();
       getStatisticsDataAudiocallShortTerm();
-      // const view = new ModuleModel();
-      // view.prepareStatistics();
-
-      // window.addEventListener('DOMContentLoaded', () => {
-      //   mySPA.init(initialObj);
-      // });
     }
   }
 
@@ -221,13 +297,11 @@ class Support {
   clearLocalStorage(): void {
     this.WrongAnsweredWords = [];
     this.RightAnsweredWords = [];
-    this.textbook = false;
+    // this.textbook = false;
     this.arrayWrongWords = [];
     this.round = 0;
     this.score = 0;
     this.group = 0;
-    this.page = 0;
-    // this.level = 1;
     this.words = [];
     this.wordsString = [];
     this.noRepeat = [];
@@ -238,7 +312,29 @@ class Support {
   }
 }
 
-// функция проигрывания аудио с путем из нашего обекта-слово
+// eslint-disable-next-line @typescript-eslint/naming-convention
+function getLearnedWord(arr: string[]):string[] {
+  const counts = new Map();
+  let lernWord = '';
+  const lernWordArr: string[] = [];
+  for (const i in arr) {
+    if (counts.has(arr[i])) {
+      counts.set(arr[i], counts.get(arr[i]) + 1);
+    } else {
+      counts.set(arr[i], 1);
+    }
+  }
+  const counts2 = Array.from(counts);
+
+  counts2.forEach((element) => {
+    if (element[1] === 3) {
+      lernWord = element[0] as string;
+      (lernWordArr as string[]).push(lernWord);
+    }
+  });
+
+  return lernWordArr;
+}
 
 const support = new Support();
 export { support };
