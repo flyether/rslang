@@ -108,7 +108,7 @@ export interface IOptionalUserWords {
   answer?: boolean;
 }
 export interface IUserWords {
-  difficulty: string;
+  difficulty?: string;
   optional?: IOptionalUserWords; // надо потом написать верный тип для optional
 }
 

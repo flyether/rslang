@@ -5,7 +5,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
 import {
-  IObjStatisticStorage, IWord, IOptionalUserWords,
+  IObjStatisticStorage, IWord, IOptionalUserWords, IUserWords,
 } from '../../../types/types';
 import { apiPath } from '../../../api/api-path';
 import { api } from '../../../api/api';
@@ -159,18 +159,13 @@ class Support {
   async CrateNewWord(booleanPar: boolean) : Promise<void> {
     if (userId) {
       if (!this.AllUserWords!.includes(this.wordObj!.id)) {
-        let optional: IOptionalUserWords;
-        if (booleanPar) {
-          optional = { answer: true, status: 'new' };
-        } else {
-          optional = { answer: false, status: 'new' };
-        }
+        const optional: IUserWords = { optional: { answer: booleanPar, status: 'new' } };
         try {
           await api.CreateUserWord(userId, this.wordObj!.id,
-            { difficulty: 'new', optional });
+            optional);
         } catch (_e) {
           await api.UpdateUserWord(userId, this.wordObj!.id,
-            { difficulty: 'new', optional });
+            optional);
         }
       }
     }
