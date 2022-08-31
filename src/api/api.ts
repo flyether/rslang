@@ -11,7 +11,7 @@ import { storage } from '../functional/storage';
 
 const api = {
 
-  async UpsertsNewStatistics(userId: string, value: IUserWords): Promise<IUserWords | undefined> {
+  async UpsertsNewStatistics(userId: string, value: IStatistic): Promise<IStatistic | undefined> {
     try {
       const response = await fetch(`${apiPath}${usersEndpoint}/${userId}/statistics`, {
         method: 'PUT',
@@ -23,7 +23,7 @@ const api = {
         body: JSON.stringify(value),
       });
       if (response.ok) {
-        return await response.json() as IUserWords;
+        return await response.json() as IStatistic;
       } else {
         return await Promise.reject(new Error(response.statusText));
       }

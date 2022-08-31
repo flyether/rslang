@@ -164,7 +164,7 @@ class Support {
   async checkLearnedWrds() : Promise<void> {
     let lernWordIDArr = this.getLearnedWord(this.rightAnsweredWordsStatistic!);
 
-    lernWordIDArr = lernWordIDArr.filter((item) => !this.newAndLearnUserWords!.includes(item));
+    lernWordIDArr = lernWordIDArr.filter((item) => !this.LearnedWordsID!.includes(item));
 
     lernWordIDArr.forEach(async (element) => {
       if (userId) {
@@ -178,6 +178,14 @@ class Support {
       }
     });
   }
+  // метод для заполнения статистики
+  // async staticUpdate () : Promise<void> {
+  //   if (userId) {
+  //     const value: IStatistic
+  //     try {
+  //       await api.UpsertsNewStatistics(userId, value)
+  //   }
+  // }
 
   // удалим слово в котором ошибся юзер
 
@@ -190,7 +198,7 @@ class Support {
   // добавляем на сервер новые слова появившиеся в игре
   async CrateNewWord(booleanPar: boolean) : Promise<void> {
     if (userId) {
-      if (!this.LearnedWordsID!.includes(this.wordObj!.id)) {
+      if (!this.newAndLearnUserWords!.includes(this.wordObj!.id)) {
         const optional: IUserWords = { optional: { answer: booleanPar, status: 'new' } };
         try {
           await api.CreateUserWord(userId, this.wordObj!.id,
@@ -343,34 +351,6 @@ class Support {
     this.arraySixWords = [];
   }
 }
-
-// eslint-disable-next-line @typescript-eslint/naming-convention
-// function getLearnedWord(arr: string[]):string[] {
-//   const count = 3;
-//   const counts = new Map();
-//   let lernWord = '';
-//   const lernWordArr: string[] = [];
-//   for (const i in arr) {
-//     if (counts.has(arr[i])) {
-//       counts.set(arr[i], counts.get(arr[i]) + 1);
-//     } else {
-//       counts.set(arr[i], 1);
-//     }
-//   }
-//   const counts2 = Array.from(counts);
-
-//   counts2.forEach((element) => {
-//     if (this.difficultWords.includes(element[0])) {
-//       count = 5;
-//     }
-//     if (element[1] === count) {
-//       lernWord = element[0] as string;
-//       (lernWordArr as string[]).push(lernWord);
-//       console.log(element[0], 'element[0]', element[1], 'element[1]');
-//     }
-//   });
-//   return lernWordArr;
-// }
 
 const support = new Support();
 export { support };
