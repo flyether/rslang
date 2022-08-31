@@ -20,6 +20,7 @@
   display: flex;
   justify-content: center;
   gap: 30px;
+  flex-wrap: wrap;
 }
 
 .audio-container-game {
@@ -262,5 +263,11 @@
 
   .game-over {
     font-size: 0.8em;
+  }
+
+  .audio-call__text {
+    text-align: center;
+    line-height: 20px;
+
   }
 }

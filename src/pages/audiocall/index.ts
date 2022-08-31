@@ -7,7 +7,7 @@ const AudiocallGamePage = {
   render(): string {
     return `
       ${Header.render()}
-      <div class = 'audio-container ${this.classname}-conteiner'> ${startScrinAudioCall.render()}</div>;
+      <div class = 'audio-container ${this.classname}-conteiner'> ${startScrinAudioCall.render()}</div>
       ${Footer.render()}
      `;
   },
