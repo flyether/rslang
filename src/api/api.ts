@@ -5,11 +5,52 @@ import {
   apiPath, usersEndpoint, wordsEndpoint, signIn, apiCategory,
 } from './api-path';
 import {
-  IUser, IWord, IUserData, IUserWords, ISettings, IUserWord,
+  IUser, IWord, IUserData, IUserWords, ISettings, IUserWord, IStatistic,
 } from '../types/types';
 import { storage } from '../functional/storage';
 
 const api = {
+
+  async UpsertsNewStatistics(userId: string, value: IUserWords): Promise<IUserWords | undefined> {
+    try {
+      const response = await fetch(`${apiPath}${usersEndpoint}/${userId}/statistics`, {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${storage.user?.token}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(value),
+      });
+      if (response.ok) {
+        return await response.json() as IUserWords;
+      } else {
+        return await Promise.reject(new Error(response.statusText));
+      }
+    } catch (error) {
+      throw new Error('Error updating user statistics');
+    }
+  },
+
+  async GetsStatistics(userId: string): Promise<IStatistic | undefined> {
+    try {
+      const response = await fetch(`${apiPath}${usersEndpoint}/${userId}/statistics`,
+        {
+          method: 'GET',
+          credentials: 'same-origin',
+          headers: {
+            Authorization: `Bearer ${storage.user?.token}`,
+          },
+        });
+      if (response.ok) {
+        return await response.json() as IStatistic;
+      } else {
+        return await Promise.reject(new Error(response.statusText));
+      }
+    } catch (error) {
+      throw new Error('Error getting statistic');
+    }
+  },
 
   async UpsertsNewSettings(userId: string): Promise<ISettings | undefined> {
     try {

@@ -28,6 +28,8 @@ if (localStorage.getItem('user')) {
 }
 
 class Support {
+  public difficultWords: string[];
+
   public wordStudied: string[];
 
   public textbook?: boolean;
@@ -50,8 +52,6 @@ class Support {
 
   public noRepeat?: string [];
 
-  public noRepeatID?: string [];
-
   public wordObj?: IWord ;
 
   public arraySixWords?: string [];
@@ -62,7 +62,7 @@ class Support {
 
   public LearnedWordsID?: string [];
 
-  public AllUserWords?: string [];
+  public newAndLearnUserWords?: string [];
 
   public WrongAnsweredWords?: string [];
 
@@ -77,7 +77,7 @@ class Support {
   public allWords?: number;
 
   constructor() {
-    this.AllUserWords = [];
+    this.newAndLearnUserWords = [];
     this.LearnedWordsID = [];
     this.newWords = 0;
     this.allWords = 0;
@@ -87,6 +87,7 @@ class Support {
     this.RightAnsweredWords = [];
     this.textbook = false;
     this.arrayWrongWords = [];
+    this.difficultWords = [];
     this.round = 0;
     this.score = 0;
     this.group = 0;
@@ -95,7 +96,6 @@ class Support {
     this.words = [];
     this.wordsString = [];
     this.noRepeat = [];
-    this.noRepeatID = [];
     this.wordStudied = [];
     this.wordObj = {
       id: '', group: 0, page: 0, word: '', image: '', audio: '', audioMeaning: '', audioExample: '', textMeaning: '', textExample: '', transcription: '', wordTranslate: '', textMeaningTranslate: '', textExampleTranslate: '',
@@ -109,16 +109,22 @@ class Support {
     api.getAllUserWords(JSON.parse(localStorage.getItem('user')!).userId)
       .then((res) => {
         res!.forEach((element) => {
-          this.AllUserWords?.push(element.wordId as string);
+          if (element.difficulty === 'learned' || !element.difficulty) {
+            this.newAndLearnUserWords?.push(element.wordId as string);
+            this.newAndLearnUserWords = this.newAndLearnUserWords!.filter((item, index) => this.newAndLearnUserWords!.indexOf(item) === index);
+          }
+          if (element.difficulty === 'aggregated') {
+            this.difficultWords?.push(element.wordId as string);
+            this.difficultWords = this.difficultWords!.filter((item, index) => this.difficultWords!.indexOf(item) === index);
+          }
           if (element.difficulty === 'learned') {
             this.LearnedWordsID?.push(element.wordId as string);
+            this.LearnedWordsID = this.LearnedWordsID!.filter((item, index) => this.LearnedWordsID!.indexOf(item) === index);
             api.getWord(element.wordId)
               .then((ress) => {
                 if (this.textbook) {
                   this.noRepeat?.push(ress?.wordTranslate as string);
                   this.noRepeat = this.noRepeat!.filter((item, index) => this.noRepeat!.indexOf(item) === index);
-                  this.noRepeatID?.push(ress?.id as string);
-                  this.noRepeatID = this.noRepeatID!.filter((item, index) => this.noRepeatID!.indexOf(item) === index);
                 }
               });
           }
@@ -128,10 +134,37 @@ class Support {
 
   // проверка слов на изученность
 
-  async checkLearnedWrds() : Promise<void> {
-    let lernWordIDArr = getLearnedWord(this.rightAnsweredWordsStatistic!);
+  getLearnedWord(arr: string[]):string[] {
+    let count = 3;
+    const counts = new Map();
+    let lernWord = '';
+    const lernWordArr: string[] = [];
+    for (const i in arr) {
+      if (counts.has(arr[i])) {
+        counts.set(arr[i], counts.get(arr[i]) + 1);
+      } else {
+        counts.set(arr[i], 1);
+      }
+    }
+    const counts2 = Array.from(counts);
 
-    lernWordIDArr = lernWordIDArr.filter((item) => !this.LearnedWordsID!.includes(item));
+    counts2.forEach((element) => {
+      if (this.difficultWords.includes(element[0])) {
+        count = 5;
+      }
+      if (element[1] === count) {
+        lernWord = element[0] as string;
+        (lernWordArr as string[]).push(lernWord);
+        console.log(element[0], 'element[0]', element[1], 'element[1]');
+      }
+    });
+    return lernWordArr;
+  }
+
+  async checkLearnedWrds() : Promise<void> {
+    let lernWordIDArr = this.getLearnedWord(this.rightAnsweredWordsStatistic!);
+
+    lernWordIDArr = lernWordIDArr.filter((item) => !this.newAndLearnUserWords!.includes(item));
 
     lernWordIDArr.forEach(async (element) => {
       if (userId) {
@@ -150,7 +183,6 @@ class Support {
 
   async deleteWrongWordFromServer():Promise<void> {
     if (userId) {
-      alert('слово удаеляем');
       await api.DeleteUserWord(userId, this.wordObj!.id);
     }
   }
@@ -189,7 +221,7 @@ class Support {
     if (garageSection) {
       garageSection.innerHTML = '';
     }
-    if (this.round! < 15) {
+    if (this.round! < 5) {
       this.words = res;
       if (this.wordStudied.length > 0) {
         this.noRepeat = this.noRepeat!.concat(this.wordStudied);
@@ -313,28 +345,32 @@ class Support {
 }
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
-function getLearnedWord(arr: string[]):string[] {
-  const counts = new Map();
-  let lernWord = '';
-  const lernWordArr: string[] = [];
-  for (const i in arr) {
-    if (counts.has(arr[i])) {
-      counts.set(arr[i], counts.get(arr[i]) + 1);
-    } else {
-      counts.set(arr[i], 1);
-    }
-  }
-  const counts2 = Array.from(counts);
+// function getLearnedWord(arr: string[]):string[] {
+//   const count = 3;
+//   const counts = new Map();
+//   let lernWord = '';
+//   const lernWordArr: string[] = [];
+//   for (const i in arr) {
+//     if (counts.has(arr[i])) {
+//       counts.set(arr[i], counts.get(arr[i]) + 1);
+//     } else {
+//       counts.set(arr[i], 1);
+//     }
+//   }
+//   const counts2 = Array.from(counts);
 
-  counts2.forEach((element) => {
-    if (element[1] === 3) {
-      lernWord = element[0] as string;
-      (lernWordArr as string[]).push(lernWord);
-    }
-  });
-
-  return lernWordArr;
-}
+//   counts2.forEach((element) => {
+//     if (this.difficultWords.includes(element[0])) {
+//       count = 5;
+//     }
+//     if (element[1] === count) {
+//       lernWord = element[0] as string;
+//       (lernWordArr as string[]).push(lernWord);
+//       console.log(element[0], 'element[0]', element[1], 'element[1]');
+//     }
+//   });
+//   return lernWordArr;
+// }
 
 const support = new Support();
 export { support };

@@ -107,9 +107,23 @@ export interface IOptionalUserWords {
   status: string;
   answer?: boolean;
 }
+export interface IOptionalStatistic {
+  date?: string;
+  newWords?: number;
+  percentOfRightAnswers?: number;
+  longestSeriesOfRightAnswers?: number;
+  rightAnswers?: number;
+  AllAnswersFromGame?: number;
+}
+
+export interface IStatistic {
+  learnedWords?: number;
+  optional?: IOptionalStatistic;
+}
+
 export interface IUserWords {
   difficulty?: string;
-  optional?: IOptionalUserWords; // надо потом написать верный тип для optional
+  optional?: IOptionalUserWords;
 }
 
 export interface ISettings {
