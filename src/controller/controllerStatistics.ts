@@ -4,6 +4,7 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 
 import { ModuleModel } from '../model/modelStatistics';
+// import { setSprintData } from '../pages/sprint/sprintData';
 
 export class ModuleController {
   myModuleContainer!: HTMLElement;

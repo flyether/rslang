@@ -14,7 +14,7 @@ function getArrOfLast5Days() {
   return arr.map((elem) => elem.toLocaleDateString()).reverse();
 }
 
-function dataNow(): string {
+export function dataNow(): string {
   const t = new Date();
   const date = (`0${t.getDate()}`).slice(-2);
   const month = (`0${t.getMonth() + 1}`).slice(-2);

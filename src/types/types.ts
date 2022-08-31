@@ -151,3 +151,13 @@ export interface IObjStatisticStorage {
   longestSeriesOfRightAnswers: number;
   answer?: string[];
 }
+
+export interface SprintDataType {
+  date: string,
+  allAnswers: number,
+  rightAnswers: number,
+  percentOfRightAnswers: number,
+  newWords: number,
+  longestSeriesOfRightAnswers: number,
+  seriesOfRightAnswers: number,
+}

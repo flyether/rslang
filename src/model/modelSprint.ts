@@ -9,6 +9,7 @@ import { apiPath } from '../api/api-path';
 import { IWord } from '../types/types';
 import { randomInteger } from '../utils/func';
 import { sprintSettings } from '../pages/sprint/sprintSettings';
+// import { increaseSeriesOfRightAnswers, resetSeriesOfRightAnswers, setAnswerToSprintData } from '../pages/sprint/sprintData';
 
 export class ModuleModel {
   myModuleView!: ModuleView;
@@ -130,10 +131,14 @@ export class ModuleModel {
       this.rightAnswerAudio.play();
       this.arrayOfAnswers.push(true);
       this.analyzeTrueAnswer();
+      // increaseSeriesOfRightAnswers();
+      // setAnswerToSprintData(true);
     } else {
       this.wrongAnswerAudio.play();
       this.arrayOfAnswers.push(false);
       this.analyzeFalseAnswer();
+      // resetSeriesOfRightAnswers();
+      // setAnswerToSprintData(false);
     }
   }
 
