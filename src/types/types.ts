@@ -107,7 +107,7 @@ export interface IOptionalUserWords {
   status: string;
   answer?: boolean;
 }
-export interface IOptionalStatistic {
+export interface IOptionalStatisticGame {
   date?: string;
   newWords?: number;
   percentOfRightAnswers?: number;
@@ -115,11 +115,17 @@ export interface IOptionalStatistic {
   rightAnswers?: number;
   AllAnswersFromGame?: number;
 }
+export interface IOptionalStatistic {
+  date?: string;
+  newWords?: number;
+  percentOfRightAnswers?: number;
+  learnedWordss?: number;
+}
 
 export interface IOptionalStatisticWrapper {
   textbook?: IOptionalStatistic;
-  sprint?: IOptionalStatistic;
-  audiocall?: IOptionalStatistic;
+  sprint?: IOptionalStatisticGame ;
+  audiocall?: IOptionalStatisticGame ;
 }
 
 export interface IStatistic {
