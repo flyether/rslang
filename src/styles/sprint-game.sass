@@ -46,6 +46,7 @@ $blue-color: #224a9a
   height: 25rem
   box-shadow: $shadow
   border-radius: 0.3rem
+  background-color: rgba(255,255,255,0.6)
 .field__content
   padding-top: 40px
 .field__title
@@ -54,7 +55,7 @@ $blue-color: #224a9a
   text-align: center
   .title__text
     font-size: 1.5em
-    color: $right-color
+    color: $blue-color
 .field__content
   display: flex
   flex-direction: column
@@ -71,8 +72,11 @@ $blue-color: #224a9a
   margin-right: 2rem
   background-color: $wrong-color
   font-weight: 500
+  font-size: 1.5em
   border: none
-  padding: 8px 15px
+  width: 40%
+  height: 60px
+  padding: 15px 30px
   display: flex
   justify-content: center
   align-items: center
@@ -81,8 +85,11 @@ $blue-color: #224a9a
   background-color: $right-color
   font-weight: 500
   border: none
-  padding: 8px 15px
   display: flex
+  height: 60px
+  font-size: 1.5em
+  width: 40%
+  padding: 15px 30px
   justify-content: center
   align-items: center
 .title__count
@@ -90,9 +97,15 @@ $blue-color: #224a9a
   padding-top: 0.5rem
 .result-conteiner
   text-align: center
+  background-color: rgba(255,255,255,0.6 )
+  width: 50%
+  padding: 10px 20px
+  border-radius: 0.3rem
 .sprint__result__score
   font-size: 2rem
   font-weight: 600
+  .sprint__result
+    color: $white-color
 .sprint__table__result
   border: 0.05rem solid
   border-collapse: collapse
@@ -102,9 +115,12 @@ $blue-color: #224a9a
   padding: 0.25rem
 
 .sprint__close__result
-  display: inline-block
+  display: flex
+  align-items: center
+  justify-content: center
+  margin: 0 auto
   width: 10rem
-  height: 1.5rem
+  height: 1.9rem
   box-sizing: border-box
   border-radius: 0.3rem
   border: 0.05rem solid $blue-color
@@ -125,7 +141,8 @@ $blue-color: #224a9a
   overflow-y: scroll
   padding: 0.3rem
   margin: 2rem auto
-  border: 0.35rem solid $blue-color
+  box-shadow: $shadow
+  background-color: rgba(255, 255,255 ,0.6 )
   border-radius: 0.5rem
   text-align: center
 .content__word
@@ -136,10 +153,12 @@ $blue-color: #224a9a
 .question__word
   margin-right: 1.5rem
 .word__sound
-  width: 40px
-  height: 40px
-  background: url('../assets/sound.png') 0 0 no-repeat
+  width: 64px
+  height: 64px
+  background: url('../assets/audio.png') 0 0 no-repeat
   cursor: pointer
+  padding-left: 20px
+  padding-bottom: 10px
 .sprint__arrows img:first-child
   transform: rotate(90deg) scaleY(-1)
   width: 45px
