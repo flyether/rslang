@@ -315,8 +315,6 @@ class Support {
 
           this.objStatistic.answer = this.objStatistic.answer!.concat(this.RightAnsweredWords!);
 
-          console.log(this.objStatistic.answer, ' - this.objStatistic.answer', this.objStatistic.longestSeriesOfRightAnswers, '- this.objStatistic.longestSeriesOfRightAnswers');
-
           this.objStatistic.AllAnswersFromGame! += 5;
           this.objStatistic.rightAnswers! += this.RightAnsweredWords!.length;
 
@@ -365,31 +363,6 @@ class Support {
       id: '', group: 0, page: 0, word: '', image: '', audio: '', audioMeaning: '', audioExample: '', textMeaning: '', textExample: '', transcription: '', wordTranslate: '', textMeaningTranslate: '', textExampleTranslate: '',
     };
     this.arraySixWords = [];
-    // this.objStatistic = {};
-    // this.newAndLearnUserWords = [];
-    // this.LearnedWordsID = [];
-    // this.newWords = 0;
-    // this.allWords = 0;
-    // this.rightAnsweredWordsStatistic = [];
-    // this.longestSeriesOfRightAnswers = this.rightAnsweredWordsStatistic?.length;
-    // this.WrongAnsweredWords = [];
-    // this.RightAnsweredWords = [];
-    // this.textbook = false;
-    // this.arrayWrongWords = [];
-    // this.difficultWords = [];
-    // this.round = 0;
-    // this.score = 0;
-    // this.group = 0;
-    // this.page = 0;
-    // this.level = 1;
-    // this.words = [];
-    // this.wordsString = [];
-    // this.noRepeat = [];
-    // this.wordStudied = [];
-    // this.wordObj = {
-    //   id: '', group: 0, page: 0, word: '', image: '', audio: '', audioMeaning: '', audioExample: '', textMeaning: '', textExample: '', transcription: '', wordTranslate: '', textMeaningTranslate: '', textExampleTranslate: '',
-    // };
-    // this.arraySixWords = [];
   }
 }
 

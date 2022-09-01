@@ -30,7 +30,6 @@ export class ModuleController {
       if (el.closest('.statistics__audiocall')) {
         staticGet().then(() => {
           this.myModuleModel.switchStatictics('audiocall');
-          console.log(statisticsDataAudiocallShortTerm, 'statisticsDataAudiocallShortTerm');
         });
       }
       if (el.closest('.statistics__sprint')) {

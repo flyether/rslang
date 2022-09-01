@@ -29,12 +29,6 @@ class ListenerAudioCall {
 
   clik(): void {
     document.addEventListener('click', async (e) => {
-      // if ((e.target as HTMLElement).classList.contains('statistics__audiocall')) {
-      //   await staticGet();
-      //   const div = document.querySelector('.statistics__div') as HTMLElement;
-      //    div.innerHTML = StatisticsPageAudiocallShortTeam.render();
-      // }
-
       if ((e.target as HTMLElement).classList.contains('btn-sound')) {
         soundAudio((apiPath + support.wordObj!.audio));
       }
