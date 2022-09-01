@@ -10,6 +10,7 @@ import { soundAudio, support } from './supporting-func';
 import { gameArea } from './game-render';
 
 import { StatisticsPageAudiocallShortTeam } from '../../statistics/statisticsShortTerm';
+import { staticGet } from '../../statistics/statisticsData';
 
 class ListenerAudioCall {
   keyboard(): void {
@@ -27,11 +28,12 @@ class ListenerAudioCall {
   }
 
   clik(): void {
-    document.addEventListener('click', (e) => {
-      if ((e.target as HTMLElement).classList.contains('statistics__audiocall')) {
-        const div = document.querySelector('.statistics__div') as HTMLElement;
-        div.innerHTML = StatisticsPageAudiocallShortTeam.render();
-      }
+    document.addEventListener('click', async (e) => {
+      // if ((e.target as HTMLElement).classList.contains('statistics__audiocall')) {
+      //   await staticGet();
+      //   const div = document.querySelector('.statistics__div') as HTMLElement;
+      //    div.innerHTML = StatisticsPageAudiocallShortTeam.render();
+      // }
 
       if ((e.target as HTMLElement).classList.contains('btn-sound')) {
         soundAudio((apiPath + support.wordObj!.audio));

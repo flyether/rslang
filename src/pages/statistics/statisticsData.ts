@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import { api } from '../../api/api';
-import { IObjStatisticStorage, IOptionalStatisticGame } from '../../types/types';
+import { IObjStatisticStorage, IOptionalStatisticGame, IStatistic } from '../../types/types';
 import StatisticsPage from '.';
 import { support } from '../audiocall/utils/supporting-func';
 
@@ -45,21 +45,27 @@ export const statisticsDataTextbookShortTerm = {
 
 let objAudiocallDate: IOptionalStatisticGame = {
   date: dataNow(),
-  percentOfRightAnswers: 0,
-  newWords: 0,
-  longestSeriesOfRightAnswers: 0,
+  percentOfRightAnswers: 999,
+  newWords: 999,
+  longestSeriesOfRightAnswers: 999,
+};
+const valueStatisticsAudiocall:IStatistic = {
+  optional: {
+    audiocall: objAudiocallDate,
+  },
 };
 
-async function staticGet() : Promise<void> {
+export async function staticGet() : Promise<void> {
   api.GetsStatistics(userId)
     .then((res) => {
-      if (res?.optional?.audiocall?.date === objAudiocallDate.date) {
+      if (objAudiocallDate.date === res?.optional?.audiocall?.date) {
         objAudiocallDate = res?.optional?.audiocall as IOptionalStatisticGame;
-      }
+        // console.log(res?.optional?.audiocall, 'res?.optional', objAudiocallDate, 'objAudiocallDate');
+      } else { api.UpsertsNewStatistics(userId, valueStatisticsAudiocall); }
     });
 }
-staticGet();
 
+console.log(objAudiocallDate, 'objAudiocallDate');
 export const statisticsDataAudiocallShortTerm = {
   newWords: objAudiocallDate.newWords,
   percentOfRightAnswers: objAudiocallDate.percentOfRightAnswers,

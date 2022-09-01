@@ -1,6 +1,7 @@
 import {
   statisticsDataTextbookShortTerm, statisticsDataAudiocallShortTerm,
   statisticsDataSprintShortTerm,
+  staticGet,
 } from './statisticsData';
 
 export const StatisticsPageTextbookShortTeam = {
