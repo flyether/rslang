@@ -195,7 +195,7 @@ class Support {
 
   // метод для заполнения статистики
   async staticUpdate(objStatistics: IOptionalStatisticGame) : Promise<void> {
-   const value: IStatistic = {
+    const value: IStatistic = {
       optional: {
         audiocall: objStatistics,
       },
@@ -332,10 +332,12 @@ class Support {
           statisticsDataAudiocallShortTerm.longestSeriesOfRightAnswers = this.objStatistic.longestSeriesOfRightAnswers as number;
 
           this.checkLearnedWrds();
+          this.clearLocalStorage();
         });
       }
-
-      this.clearLocalStorage();
+      if (!userId) {
+        this.clearLocalStorage();
+      }
     }
   }
 

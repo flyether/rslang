@@ -43,35 +43,38 @@ export const statisticsDataTextbookShortTerm = {
   percentOfRightAnswers: 50,
 };
 
-let objAudiocallDate: IOptionalStatisticGame = {
+export const objAudiocallDate: IOptionalStatisticGame = {
   date: dataNow(),
-  percentOfRightAnswers: 999,
-  newWords: 999,
-  longestSeriesOfRightAnswers: 999,
+  percentOfRightAnswers: 0,
+  newWords: 0,
+  longestSeriesOfRightAnswers: 0,
 };
+
 const valueStatisticsAudiocall:IStatistic = {
   optional: {
     audiocall: objAudiocallDate,
   },
 };
 
-export async function staticGet() : Promise<void> {
-  api.GetsStatistics(userId)
-    .then((res) => {
-      if (objAudiocallDate.date === res?.optional?.audiocall?.date) {
-        objAudiocallDate = res?.optional?.audiocall as IOptionalStatisticGame;
-        // console.log(res?.optional?.audiocall, 'res?.optional', objAudiocallDate, 'objAudiocallDate');
-      } else { api.UpsertsNewStatistics(userId, valueStatisticsAudiocall); }
-    });
-}
-
-console.log(objAudiocallDate, 'objAudiocallDate');
-staticGet();
 export const statisticsDataAudiocallShortTerm = {
   newWords: objAudiocallDate.newWords,
   percentOfRightAnswers: objAudiocallDate.percentOfRightAnswers,
   longestSeriesOfRightAnswers: objAudiocallDate.longestSeriesOfRightAnswers,
 };
+
+export async function staticGet() : Promise<void> {
+  api.GetsStatistics(userId)
+    .then((res) => {
+      if (objAudiocallDate.date === res?.optional?.audiocall?.date) {
+        objAudiocallDate.percentOfRightAnswers = res?.optional?.audiocall?.percentOfRightAnswers;
+        objAudiocallDate.newWords = res?.optional?.audiocall?.newWords;
+        objAudiocallDate.longestSeriesOfRightAnswers = res?.optional?.audiocall?.newWords;
+        statisticsDataAudiocallShortTerm.percentOfRightAnswers = objAudiocallDate.percentOfRightAnswers;
+        statisticsDataAudiocallShortTerm.newWords = objAudiocallDate.newWords;
+        statisticsDataAudiocallShortTerm.longestSeriesOfRightAnswers = objAudiocallDate.longestSeriesOfRightAnswers;
+      } else { api.UpsertsNewStatistics(userId, valueStatisticsAudiocall); }
+    });
+}
 
 export const statisticsDataSprintShortTerm = {
   newWords: 100,

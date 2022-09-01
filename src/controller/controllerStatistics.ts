@@ -3,7 +3,7 @@
 /* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 
-import { staticGet } from '../pages/statistics/statisticsData';
+import { staticGet, statisticsDataAudiocallShortTerm } from '../pages/statistics/statisticsData';
 import { ModuleModel } from '../model/modelStatistics';
 
 export class ModuleController {
@@ -28,7 +28,10 @@ export class ModuleController {
         this.myModuleModel.switchStatictics('textbook');
       }
       if (el.closest('.statistics__audiocall')) {
-        await staticGet().then(() => this.myModuleModel.switchStatictics('audiocall'));
+        staticGet().then(() => {
+          this.myModuleModel.switchStatictics('audiocall');
+          console.log(statisticsDataAudiocallShortTerm, 'statisticsDataAudiocallShortTerm');
+        });
       }
       if (el.closest('.statistics__sprint')) {
         this.myModuleModel.switchStatictics('sprint');
