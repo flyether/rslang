@@ -5,11 +5,11 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
 import {
-  IObjStatisticStorage, IWord, IOptionalUserWords, IUserWords,
+  IWord, IUserWords, IStatistic, IOptionalStatisticGame,
 } from '../../../types/types';
 import { apiPath } from '../../../api/api-path';
 import { api } from '../../../api/api';
-import { getStatisticsDataAudiocallShortTerm, statisticsDataAudiocallShortTerm } from '../../statistics/statisticsData';
+import { statisticsDataAudiocallShortTerm } from '../../statistics/statisticsData';
 
 function shuffle(array:string[]) {
   array.sort(() => Math.random() - 0.5);
@@ -66,23 +66,28 @@ class Support {
 
   public WrongAnsweredWords?: string [];
 
-  public rightAnsweredWordsStatistic?: string [];
-
   public newWords?: number;
 
-  public percentOfRightAnswers?: number;
-
-  public longestSeriesOfRightAnswers?: number;
+  public countNewWords?: number;
 
   public allWords?: number;
 
+  public objStatistic: IOptionalStatisticGame;
+
   constructor() {
+    this.objStatistic = {
+      longestSeriesOfRightAnswers: 0,
+      newWords: 0,
+      percentOfRightAnswers: 0,
+      rightAnswers: 0,
+      AllAnswersFromGame: 0,
+      answer: [],
+    };
+    this.countNewWords = 0;
     this.newAndLearnUserWords = [];
     this.LearnedWordsID = [];
     this.newWords = 0;
     this.allWords = 0;
-    this.rightAnsweredWordsStatistic = [];
-    this.longestSeriesOfRightAnswers = this.rightAnsweredWordsStatistic?.length;
     this.WrongAnsweredWords = [];
     this.RightAnsweredWords = [];
     this.textbook = false;
@@ -106,7 +111,7 @@ class Support {
 
   // метод который берет с сервера изученые слова чтобы их не выводить в игру
   async getUserWords() : Promise<void> {
-    api.getAllUserWords(JSON.parse(localStorage.getItem('user')!).userId)
+    api.getAllUserWords(userId)
       .then((res) => {
         res!.forEach((element) => {
           if (element.difficulty === 'learned' || !element.difficulty) {
@@ -162,7 +167,7 @@ class Support {
   }
 
   async checkLearnedWrds() : Promise<void> {
-    let lernWordIDArr = this.getLearnedWord(this.rightAnsweredWordsStatistic!);
+    let lernWordIDArr = this.getLearnedWord(this.objStatistic.answer!);
 
     lernWordIDArr = lernWordIDArr.filter((item) => !this.LearnedWordsID!.includes(item));
 
@@ -178,15 +183,25 @@ class Support {
       }
     });
   }
-  // метод для заполнения статистики
-  // async staticUpdate () : Promise<void> {
-  //   if (userId) {
-  //     const value: IStatistic
-  //     try {
-  //       await api.UpsertsNewStatistics(userId, value)
-  //   }
-  // }
 
+  // метод получения статистики
+
+  async staticGet() : Promise<void> {
+    return api.GetsStatistics(userId)
+      .then((res) => {
+        this.objStatistic = res?.optional?.audiocall as IOptionalStatisticGame;
+      });
+  }
+
+  // метод для заполнения статистики
+  async staticUpdate(objStatistics: IOptionalStatisticGame) : Promise<void> {
+    const value: IStatistic = {
+      optional: {
+        audiocall: objStatistics,
+      },
+    };
+    await api.UpsertsNewStatistics(userId, value);
+  }
   // удалим слово в котором ошибся юзер
 
   async deleteWrongWordFromServer():Promise<void> {
@@ -203,6 +218,7 @@ class Support {
         try {
           await api.CreateUserWord(userId, this.wordObj!.id,
             optional);
+          this.countNewWords!++;
         } catch (_e) {
           await api.UpdateUserWord(userId, this.wordObj!.id,
             optional);
@@ -223,8 +239,9 @@ class Support {
     if ((!this.textbook)) {
       this.page = Math.floor(Math.random() * (20 - 0 + 1)) + 0;
     }
-    console.log(this.group!, this.page!, 'this.group!, this.page!');
+
     const res = await api.getWords(this.group!, this.page!);
+
     const garageSection = document.querySelector('.button-container') as HTMLElement;
     if (garageSection) {
       garageSection.innerHTML = '';
@@ -250,7 +267,9 @@ class Support {
       }
 
       this.noRepeat!.push(this.wordObj!.wordTranslate);
+
       soundAudio((apiPath + support.wordObj!.audio));
+
       const button = document.querySelectorAll('.btn-translation');
       if (this.arraySixWords) {
         for (let j = 0; j < this.arraySixWords.length; j++) {
@@ -259,6 +278,7 @@ class Support {
           (button[j] as HTMLButtonElement).dataset.num = `${j + 1}`;
         }
       }
+      // отрисовка конца игры.
     } else {
       btnWrapper.innerHTML = '';
       this.wordObj!.audio = '';
@@ -281,47 +301,41 @@ class Support {
       </div>
 
     `;
-      if (this.longestSeriesOfRightAnswers! < this.RightAnsweredWords!.length) {
-        this.longestSeriesOfRightAnswers = this.RightAnsweredWords!.length;
+      // работа над статистикой
+      if (userId) {
+        // берем статистику и присваиваем ее this.objStatistic
+        this.staticGet().then(() => {
+          // если записанная в статистике серия короче новой серии объектов то прересзаписывем
+
+          if (this.objStatistic.longestSeriesOfRightAnswers! < this.RightAnsweredWords!.length) {
+            this.objStatistic.longestSeriesOfRightAnswers = this.RightAnsweredWords!.length;
+          }
+          this.objStatistic.date = this.dataNow();
+          this.objStatistic.newWords! = this.countNewWords!;
+
+          this.objStatistic.answer = this.objStatistic.answer!.concat(this.RightAnsweredWords!);
+
+          this.objStatistic.AllAnswersFromGame! += 5;
+          this.objStatistic.rightAnswers! += this.RightAnsweredWords!.length;
+
+          if (this.objStatistic.rightAnswers !== 0) {
+            this.objStatistic.percentOfRightAnswers = Math.floor((this.objStatistic.rightAnswers! * 100) / this.objStatistic.AllAnswersFromGame!);
+          }
+
+          this.staticUpdate(this.objStatistic);
+          console.log(this.objStatistic, ' - this.objStatistic ');
+
+          statisticsDataAudiocallShortTerm.newWords = this.objStatistic.newWords!;
+          statisticsDataAudiocallShortTerm.percentOfRightAnswers = this.objStatistic.percentOfRightAnswers;
+          statisticsDataAudiocallShortTerm.longestSeriesOfRightAnswers = this.objStatistic.longestSeriesOfRightAnswers as number;
+
+          this.checkLearnedWrds();
+          this.clearLocalStorage();
+        });
       }
-
-      let objAudiocallDate: IObjStatisticStorage = {
-        percentOfRightAnswers: 0,
-        longestSeriesOfRightAnswers: 0,
-        answer: [],
-        newWords: 0,
-      };
-
-      if (localStorage.getItem('dataAudiocall')) {
-        objAudiocallDate = JSON.parse(localStorage.getItem('dataAudiocall')!);
+      if (!userId) {
+        this.clearLocalStorage();
       }
-
-      if (objAudiocallDate.answer) {
-        this.rightAnsweredWordsStatistic = objAudiocallDate.answer!.concat(this.RightAnsweredWords!);
-      } else {
-        this.rightAnsweredWordsStatistic = this.RightAnsweredWords;
-      }
-
-      this.allWords = objAudiocallDate.newWords! + 15;
-
-      this.percentOfRightAnswers = Math.floor((this.rightAnsweredWordsStatistic!.length * 100) / this.allWords);
-
-      const objStatisticStorage: IObjStatisticStorage = {
-        date: this.dataNow(),
-        percentOfRightAnswers: this.percentOfRightAnswers,
-        newWords: this.allWords,
-        longestSeriesOfRightAnswers: this.longestSeriesOfRightAnswers as number,
-        answer: this.rightAnsweredWordsStatistic,
-      };
-
-      statisticsDataAudiocallShortTerm.newWords = this.allWords;
-      statisticsDataAudiocallShortTerm.percentOfRightAnswers = this.percentOfRightAnswers;
-      statisticsDataAudiocallShortTerm.longestSeriesOfRightAnswers = this.longestSeriesOfRightAnswers as number;
-
-      this.checkLearnedWrds();
-      localStorage.setItem('dataAudiocall', JSON.stringify(objStatisticStorage));
-      this.clearLocalStorage();
-      getStatisticsDataAudiocallShortTerm();
     }
   }
 

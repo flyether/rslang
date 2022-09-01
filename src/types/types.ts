@@ -114,6 +114,7 @@ export interface IOptionalStatisticGame {
   longestSeriesOfRightAnswers?: number;
   rightAnswers?: number;
   AllAnswersFromGame?: number;
+  answer?: string[];
 }
 export interface IOptionalStatistic {
   date?: string;
