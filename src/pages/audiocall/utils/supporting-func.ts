@@ -5,7 +5,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
 import {
-  IObjStatisticStorage, IWord, IUserWords, IStatistic, IOptionalStatisticGame,
+  IWord, IUserWords, IStatistic, IOptionalStatisticGame,
 } from '../../../types/types';
 import { apiPath } from '../../../api/api-path';
 import { api } from '../../../api/api';
@@ -66,13 +66,9 @@ class Support {
 
   public WrongAnsweredWords?: string [];
 
-  public rightAnsweredWordsStatistic?: string [];
-
   public newWords?: number;
 
   public countNewWords?: number;
-
-  public longestSeriesOfRightAnswers?: number;
 
   public allWords?: number;
 
@@ -92,8 +88,6 @@ class Support {
     this.LearnedWordsID = [];
     this.newWords = 0;
     this.allWords = 0;
-    this.rightAnsweredWordsStatistic = [];
-    this.longestSeriesOfRightAnswers = this.rightAnsweredWordsStatistic?.length;
     this.WrongAnsweredWords = [];
     this.RightAnsweredWords = [];
     this.textbook = false;
@@ -173,7 +167,7 @@ class Support {
   }
 
   async checkLearnedWrds() : Promise<void> {
-    let lernWordIDArr = this.getLearnedWord(this.rightAnsweredWordsStatistic!);
+    let lernWordIDArr = this.getLearnedWord(this.objStatistic.answer!);
 
     lernWordIDArr = lernWordIDArr.filter((item) => !this.LearnedWordsID!.includes(item));
 
@@ -193,7 +187,7 @@ class Support {
   // метод получения статистики
 
   async staticGet() : Promise<void> {
-    api.GetsStatistics(userId)
+    return api.GetsStatistics(userId)
       .then((res) => {
         this.objStatistic = res?.optional?.audiocall as IOptionalStatisticGame;
       });
@@ -201,7 +195,7 @@ class Support {
 
   // метод для заполнения статистики
   async staticUpdate(objStatistics: IOptionalStatisticGame) : Promise<void> {
-    const value: IStatistic = {
+   const value: IStatistic = {
       optional: {
         audiocall: objStatistics,
       },
@@ -310,35 +304,35 @@ class Support {
       // работа над статистикой
       if (userId) {
         // берем статистику и присваиваем ее this.objStatistic
-        this.staticGet();
+        this.staticGet().then(() => {
+          // если записанная в статистике серия короче новой серии объектов то прересзаписывем
 
-        // если записанная в статистике серия кооче новой серии объектов то прересзаписывем
+          if (this.objStatistic.longestSeriesOfRightAnswers! < this.RightAnsweredWords!.length) {
+            this.objStatistic.longestSeriesOfRightAnswers = this.RightAnsweredWords!.length;
+          }
+          this.objStatistic.date = this.dataNow();
+          this.objStatistic.newWords! = this.countNewWords!;
 
-        if (this.objStatistic.longestSeriesOfRightAnswers! < this.RightAnsweredWords!.length) {
-          this.objStatistic.longestSeriesOfRightAnswers = this.RightAnsweredWords!.length;
-        }
-        this.objStatistic.date = this.dataNow();
-        this.objStatistic.newWords! = this.countNewWords!;
+          this.objStatistic.answer = this.objStatistic.answer!.concat(this.RightAnsweredWords!);
 
-        this.objStatistic.answer = this.objStatistic.answer!.concat(this.RightAnsweredWords!);
+          console.log(this.objStatistic.answer, ' - this.objStatistic.answer', this.objStatistic.longestSeriesOfRightAnswers, '- this.objStatistic.longestSeriesOfRightAnswers');
 
-        console.log(this.RightAnsweredWords, ' - this.RightAnsweredWords', this.objStatistic.longestSeriesOfRightAnswers, '- this.objStatistic.longestSeriesOfRightAnswers');
+          this.objStatistic.AllAnswersFromGame! += 5;
+          this.objStatistic.rightAnswers! += this.RightAnsweredWords!.length;
 
-        this.objStatistic.AllAnswersFromGame! += 5;
-        this.objStatistic.rightAnswers = this.RightAnsweredWords?.length;
+          if (this.objStatistic.rightAnswers !== 0) {
+            this.objStatistic.percentOfRightAnswers = Math.floor((this.objStatistic.rightAnswers! * 100) / this.objStatistic.AllAnswersFromGame!);
+          }
 
-        if (this.objStatistic.rightAnswers !== 0) {
-          this.objStatistic.percentOfRightAnswers = Math.floor((this.objStatistic.rightAnswers! * 100) / this.objStatistic.AllAnswersFromGame!);
-        }
+          this.staticUpdate(this.objStatistic);
+          console.log(this.objStatistic, ' - this.objStatistic ');
 
-        this.staticUpdate(this.objStatistic);
+          statisticsDataAudiocallShortTerm.newWords = this.objStatistic.newWords!;
+          statisticsDataAudiocallShortTerm.percentOfRightAnswers = this.objStatistic.percentOfRightAnswers;
+          statisticsDataAudiocallShortTerm.longestSeriesOfRightAnswers = this.objStatistic.longestSeriesOfRightAnswers as number;
 
-        statisticsDataAudiocallShortTerm.newWords = this.objStatistic.AllAnswersFromGame;
-        statisticsDataAudiocallShortTerm.percentOfRightAnswers = this.objStatistic.percentOfRightAnswers;
-        statisticsDataAudiocallShortTerm.longestSeriesOfRightAnswers = this.objStatistic.longestSeriesOfRightAnswers as number;
-
-        this.checkLearnedWrds();
-        console.log(this.objStatistic, ' - this.objStatistic ');
+          this.checkLearnedWrds();
+        });
       }
 
       this.clearLocalStorage();

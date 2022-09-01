@@ -66,6 +66,7 @@ export async function staticGet() : Promise<void> {
 }
 
 console.log(objAudiocallDate, 'objAudiocallDate');
+staticGet();
 export const statisticsDataAudiocallShortTerm = {
   newWords: objAudiocallDate.newWords,
   percentOfRightAnswers: objAudiocallDate.percentOfRightAnswers,
