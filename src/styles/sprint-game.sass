@@ -1,17 +1,30 @@
+@import './vars.scss'
 $blue-color: #224a9a
 
 .sprint-conteiner
   position: relative
+  width: 100%
+  margin: 0 auto
   padding: 2rem
   display: flex
+  gap: 20px
   justify-content: flex-start
   align-items: center
   flex-direction: column
+  background-image: url(https://wallpaperaccess.com/full/1089778.jpg)
+  background-size: cover
+  background-repeat: no-repeat
+
 .sprint__score
-  font-size: 2rem
+  position: absolute
+  font-size: 4rem
   font-weight: 900
+  top: 5%
+  right: 15%
+  color: $right-color
 .sprint__timer
-  border: 0.5rem solid orange
+  border: 0.5rem solid $orange-color
+  color: $right-color
   border-radius: 50%
   box-sizing: border-box
   padding: 0.5rem
@@ -23,7 +36,7 @@ $blue-color: #224a9a
   font-size: 1.2rem
   position: absolute
   top: 5%
-  left: 5%
+  left: 15%
 .sprint__field
   display: flex
   flex-direction: column
@@ -31,30 +44,47 @@ $blue-color: #224a9a
   align-items: center
   width: 30rem
   height: 25rem
-  border: 0.1rem solid green
+  box-shadow: $shadow
   border-radius: 0.3rem
+.field__content
+  padding-top: 40px
 .field__title
   height: 20%
-  background: url(../assets/sprint-bg.jpg) 0 0 repeat-x
   align-self: stretch
   text-align: center
+  .title__text
+    font-size: 1.5em
+    color: $right-color
 .field__content
   display: flex
   flex-direction: column
   align-items: center
   justify-content: flex-start
   height: 60%
-.content__img img
-  height: 5rem
 .field__buttons
   margin-bottom: 1.5rem
-.button__sprint__false
+  display: flex
+  justify-content: center
+  gap: 30px
+
+.button.button__sprint__false
   margin-right: 2rem
-  background-color: #ff423c
+  background-color: $wrong-color
   font-weight: 500
-.button__sprint__true
-  background-color: #3ec100
+  border: none
+  padding: 8px 15px
+  display: flex
+  justify-content: center
+  align-items: center
+
+.button.button__sprint__true
+  background-color: $right-color
   font-weight: 500
+  border: none
+  padding: 8px 15px
+  display: flex
+  justify-content: center
+  align-items: center
 .title__count
   box-sizing: border-box
   padding-top: 0.5rem
@@ -110,3 +140,14 @@ $blue-color: #224a9a
   height: 40px
   background: url('../assets/sound.png') 0 0 no-repeat
   cursor: pointer
+.sprint__arrows img:first-child
+  transform: rotate(90deg) scaleY(-1)
+  width: 45px
+  aspect-ratio: 1
+.sprint__arrows img:last-child
+  transform: rotate(90deg)
+  width: 45px
+  aspect-ratio: 1
+.sprint__arrows
+  display: flex
+  gap: 20px
