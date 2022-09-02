@@ -3,7 +3,6 @@ import { api } from '../../api/api';
 import { IObjStatisticStorage, IOptionalStatisticGame, IStatistic } from '../../types/types';
 import StatisticsPage from '.';
 import { support } from '../audiocall/utils/supporting-func';
-import { checkUserAuthorization } from '../../utils/func';
 
 let userId = '';
 if (localStorage.getItem('user')) {
@@ -21,7 +20,7 @@ function getArrOfLast5Days() {
   return arr.map((elem) => elem.toLocaleDateString()).reverse();
 }
 
-export function dataNow(): string {
+function dataNow(): string {
   const t = new Date();
   const date = (`0${t.getDate()}`).slice(-2);
   const month = (`0${t.getMonth() + 1}`).slice(-2);
@@ -77,15 +76,8 @@ export async function staticGet() : Promise<void> {
     });
 }
 
-const sprintData: IOptionalStatisticGame = {
-  date: dataNow(),
-  newWords: 0,
-  percentOfRightAnswers: 0,
-  longestSeriesOfRightAnswers: 0,
-};
-
 export const statisticsDataSprintShortTerm = {
-  newWords: sprintData.newWords,
-  percentOfRightAnswers: sprintData.percentOfRightAnswers,
-  longestSeriesOfRightAnswers: sprintData.percentOfRightAnswers,
-}
+  newWords: 100,
+  percentOfRightAnswers: 50,
+  longestSeriesOfRightAnswers: 15,
+};

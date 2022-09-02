@@ -9,10 +9,6 @@ import { apiPath } from '../api/api-path';
 import { IWord } from '../types/types';
 import { randomInteger, checkUserAuthorization } from '../utils/func';
 import { sprintSettings } from '../pages/sprint/sprintSettings';
-import {
-  getSprintDataFromStatistics, increaseSeriesOfRightAnswers, resetSeriesOfRightAnswers,
-  setAnswerToSprintData,
-} from '../pages/sprint/sprintData';
 
 export class ModuleModel {
   myModuleView!: ModuleView;
@@ -55,23 +51,10 @@ export class ModuleModel {
 
   timeoverAudio!:HTMLAudioElement;
 
-  user!: boolean;
-
   init(view: ModuleView):void {
     this.myModuleView = view;
     this.fillAndSortPages();
     this.getWordsFromApi();
-    this.checkUserData();
-  }
-
-  checkUserData(): void {
-    const userID = checkUserAuthorization();
-    if (userID) {
-      getSprintDataFromStatistics(userID);
-      this.user = true;
-    } else {
-      this.user = false;
-    }
   }
 
   sayWord(audio:HTMLAudioElement):void {
@@ -147,14 +130,10 @@ export class ModuleModel {
       this.rightAnswerAudio.play();
       this.arrayOfAnswers.push(true);
       this.analyzeTrueAnswer();
-      if (this.user) { increaseSeriesOfRightAnswers(); }
-      setAnswerToSprintData(true);
     } else {
       this.wrongAnswerAudio.play();
       this.arrayOfAnswers.push(false);
       this.analyzeFalseAnswer();
-      if (this.user) { resetSeriesOfRightAnswers(); }
-      setAnswerToSprintData(false);
     }
   }
 

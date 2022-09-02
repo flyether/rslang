@@ -34,7 +34,7 @@ export class ModuleController {
         });
       }
       if (el.closest('.statistics__sprint')) {
-        this.myModuleModel.switchStatictics('sprint');
+         this.myModuleModel.switchStatictics('sprint');
       }
       if (el.closest('.statistics__day')) {
         this.myModuleModel.switchStaticticsKind('day');
