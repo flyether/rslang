@@ -89,7 +89,7 @@ export const statisticsDataAudiocallShortTerm = {
 };
 
 export async function staticGet() : Promise<void> {
-  api.GetsStatistics(userId)
+  return api.GetsStatistics(userId)
     .then((res) => {
       if (objAudiocallDate.date === res?.optional?.games?.date) {
         objAudiocallDate.newWords = res?.optional?.games?.newWords;
