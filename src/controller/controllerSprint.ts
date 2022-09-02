@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-globals */
 /* eslint-disable import/no-cycle */
 import { ModuleModel } from '../model/modelSprint';
-// import { getSprintData, setSprintData } from '../pages/sprint/sprintData';
+import { setSprintDataToStatistics } from '../pages/sprint/sprintData';
 
 export class ModuleController {
   myModuleContainer!: HTMLElement;
@@ -23,7 +23,7 @@ export class ModuleController {
     this.setTimer();
     window.addEventListener('hashchange', () => {
       this.hashchangeEventRemove();
-      // setSprintData();
+      setSprintDataToStatistics();
     });
     document.addEventListener('keyup', this.setButtonEventListeners);
     document.addEventListener('click', this.setEventListeners);

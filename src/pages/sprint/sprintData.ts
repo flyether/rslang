@@ -1,60 +1,70 @@
 /* eslint-disable import/no-mutable-exports */
 import { dataNow } from '../statistics/statisticsData';
-import { SprintDataType } from '../../types/types';
-
-export let sprintData: SprintDataType = {
-  date: dataNow(),
-  allAnswers: 0,
-  rightAnswers: 0,
-  percentOfRightAnswers: 0,
-  newWords: 0,
-  longestSeriesOfRightAnswers: 0,
-  seriesOfRightAnswers: 0,
-};
+import { IOptionalStatisticGame, IStatistic } from '../../types/types';
+import { api } from '../../api/api';
 
 let sprintDataAnswers:boolean[] = [];
+let seriesOfRightAnswers = 0;
+let userID = '';
+
+export let sprintData: IOptionalStatisticGame = {
+  date: dataNow(),
+  newWords: 0,
+  percentOfRightAnswers: 0,
+  longestSeriesOfRightAnswers: 0,
+  rightAnswers: 0,
+  AllAnswersFromGame: 0,
+};
 
 export function increaseSeriesOfRightAnswers(): void {
-  sprintData.seriesOfRightAnswers += 1;
+  seriesOfRightAnswers += 1;
 }
 export function resetSeriesOfRightAnswers(): void {
-  if (sprintData.longestSeriesOfRightAnswers < sprintData.seriesOfRightAnswers) {
-    sprintData.longestSeriesOfRightAnswers = sprintData.seriesOfRightAnswers;
+  sprintData.longestSeriesOfRightAnswers = sprintData.longestSeriesOfRightAnswers || 0;
+  if (seriesOfRightAnswers > sprintData.longestSeriesOfRightAnswers) {
+    sprintData.longestSeriesOfRightAnswers = seriesOfRightAnswers;
   }
-  sprintData.seriesOfRightAnswers = 0;
 }
 
-export function getSprintData(): void {
-  console.log('date', sprintData.date);
-  console.log('storage', localStorage.getItem('$sprintData'));
-  if (localStorage.getItem('$sprintData')) {
-    if ((sprintData.date) === JSON.parse(localStorage.getItem('$sprintData')!).date) {
-      console.log('this day');
-      sprintData = JSON.parse(localStorage.getItem('$sprintData')!);
-    } else {
-      localStorage.setItem('$sprintData', JSON.stringify(sprintData));
-      sprintDataAnswers = [];
+export async function setSprintData(userId: string): Promise<void> {
+  const value = {
+    learnedWords: 0,
+    optional: { sprint: sprintData },
+  };
+  const stat = await api.UpsertsNewStatistics(userId, value);
+  // console.log(stat);
+}
+
+export async function getSprintDataFromStatistics(userId: string) {
+  try {
+    userID = userId;
+    console.log('date', sprintData.date);
+    const res = await api.GetsStatistics(userId);
+    // console.log(res);
+    if (res?.optional?.sprint?.date === sprintData.date) {
+      sprintData = res?.optional?.sprint as IOptionalStatisticGame;
+      console.log(sprintData);
     }
-  } else {
-    localStorage.setItem('$sprintData', JSON.stringify(sprintData));
+  } catch (err) {
+    setSprintData(userId);
   }
-}
-
-function countPercentOfRightAnswers(): number {
-  const allAnswers = sprintDataAnswers.length;
-  const trueAnswers = sprintDataAnswers.filter((item) => item).length;
-  console.log(allAnswers, trueAnswers, Math.round((trueAnswers * 100) / allAnswers));
-  return Math.round((trueAnswers * 100) / allAnswers);
-}
-
-export function setSprintData(): void {
-  sprintData.seriesOfRightAnswers = 0;
-  countPercentOfRightAnswers();
-  console.log(sprintData);
-  localStorage.setItem('$sprintData', JSON.stringify(sprintData));
 }
 
 export function setAnswerToSprintData(answer:boolean): void {
   sprintDataAnswers.push(answer);
   console.log(sprintDataAnswers);
+}
+
+function countPercentOfRightAnswers(): void {
+  sprintData.AllAnswersFromGame = sprintData.AllAnswersFromGame || 0;
+  sprintData.rightAnswers = sprintData.rightAnswers || 0;
+  sprintData.AllAnswersFromGame += sprintDataAnswers.length;
+  sprintData.rightAnswers += sprintDataAnswers.filter((item) => item).length;
+  sprintData.percentOfRightAnswers = Math.round((sprintData.rightAnswers * 100) / sprintData.AllAnswersFromGame);
+}
+
+export function setSprintDataToStatistics() {
+  countPercentOfRightAnswers();
+  setSprintData(userID);
+  sprintDataAnswers = [];
 }

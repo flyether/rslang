@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
-import { IObjStatisticStorage } from 'types/types';
+import { IObjStatisticStorage, IOptionalStatisticGame } from 'types/types';
 import StatisticsPage from '.';
 import { support } from '../audiocall/utils/supporting-func';
+import { checkUserAuthorization } from '../../utils/func';
+import { api } from '../../api/api';
 
 function getArrOfLast5Days() {
   let now = Date.now();
@@ -62,8 +64,15 @@ export const statisticsDataAudiocallShortTerm = {
   longestSeriesOfRightAnswers: objAudiocallDate.longestSeriesOfRightAnswers,
 };
 
+const sprintData: IOptionalStatisticGame = {
+  date: dataNow(),
+  newWords: 0,
+  percentOfRightAnswers: 0,
+  longestSeriesOfRightAnswers: 0,
+};
+
 export const statisticsDataSprintShortTerm = {
-  newWords: 100,
-  percentOfRightAnswers: 50,
-  longestSeriesOfRightAnswers: 15,
+  newWords: sprintData.newWords,
+  percentOfRightAnswers: sprintData.percentOfRightAnswers,
+  longestSeriesOfRightAnswers: sprintData.percentOfRightAnswers,
 };
