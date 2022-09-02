@@ -114,6 +114,11 @@ export interface IOptionalStatisticGame {
   longestSeriesOfRightAnswers?: number;
   rightAnswers?: number;
   AllAnswersFromGame?: number;
+  newWordsSprint?: number;
+  percentOfRightAnswersSprint?: number;
+  longestSeriesOfRightAnswersSprint?: number;
+  rightAnswersSprint?: number;
+  AllAnswersFromGameSprint?: number;
   answer?: string[];
 }
 export interface IOptionalStatistic {
@@ -125,8 +130,7 @@ export interface IOptionalStatistic {
 
 export interface IOptionalStatisticWrapper {
   textbook?: IOptionalStatistic;
-  sprint?: IOptionalStatisticGame ;
-  audiocall?: IOptionalStatisticGame ;
+  games?: IOptionalStatisticGame ;
 }
 
 export interface IStatistic {
