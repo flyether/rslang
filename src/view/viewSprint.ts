@@ -4,14 +4,14 @@
 
 import { Routes } from '../types/types';
 import SprintResult from '../components/sprintresults';
-import trueImg from '../assets/true.png';
+import trueImg from '../assets/accept.png';
 
 export class ModuleView {
-  myModuleContainer!:HTMLElement;
+  myModuleContainer!: HTMLElement;
 
-  contentContainer!:HTMLElement;
+  contentContainer!: HTMLElement;
 
-  routesObj!:Routes;
+  routesObj!: Routes;
 
   sprintTimer: HTMLElement = document.querySelector('.sprint__timer') as HTMLElement;
 
@@ -21,27 +21,27 @@ export class ModuleView {
 
   sprintCountText: HTMLElement = document.querySelector('.title__text') as HTMLElement;
 
-  questionWord:HTMLElement = document.querySelector('.question__word') as HTMLElement;
+  questionWord: HTMLElement = document.querySelector('.question__word') as HTMLElement;
 
-  questionTranslation:HTMLElement = document.querySelector('.question__translation') as HTMLElement;
+  questionTranslation: HTMLElement = document.querySelector('.question__translation') as HTMLElement;
 
-  sprintConteiner:HTMLElement = document.querySelector('.sprint-conteiner') as HTMLElement;
+  sprintConteiner: HTMLElement = document.querySelector('.sprint-conteiner') as HTMLElement;
 
-  init(container: HTMLElement):void {
+  init(container: HTMLElement): void {
     this.myModuleContainer = container;
     // this.routesObj = routes;
   }
 
-  renderWord(word: string, translation: string):void {
+  renderWord(word: string, translation: string): void {
     this.questionWord.textContent = word;
     this.questionTranslation.textContent = translation;
   }
 
-  renderTimer(timer:number, timerElem:HTMLElement):void {
+  renderTimer(timer: number, timerElem: HTMLElement): void {
     timerElem.textContent = String(timer);
   }
 
-  renderScore(score:string, maxScore?:boolean):void {
+  renderScore(score: string, maxScore?: boolean): void {
     this.sprintScore.textContent = score;
     if (maxScore) {
       this.sprintCount.innerHTML = `<img src="${trueImg}" alt="img">`;
@@ -50,19 +50,19 @@ export class ModuleView {
     }
   }
 
-  clearSprintCount():void {
+  clearSprintCount(): void {
     this.sprintCount.innerHTML = '';
   }
 
-  returnToOneSprintCount():void {
+  returnToOneSprintCount(): void {
     this.sprintCount.innerHTML = `<img src="${trueImg}" alt="img">`;
   }
 
-  renderCountText(n:number):void {
+  renderCountText(n: number): void {
     this.sprintCountText.innerHTML = `+ ${n} очков за следующее слово`;
   }
 
-  renderResults(questions:string[], answers:boolean[], rightAnswers:number, wrongAnswers:number, score:number):void {
+  renderResults(questions: string[], answers: boolean[], rightAnswers: number, wrongAnswers: number, score: number): void {
     this.sprintConteiner.innerHTML = '';
     this.sprintConteiner.innerHTML = `${SprintResult.render(questions, answers, rightAnswers, wrongAnswers, score)}`;
   }
