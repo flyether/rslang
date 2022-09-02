@@ -211,7 +211,9 @@ var Support = /** @class */ (function () {
                         api_1.api.GetsStatistics(userId)
                             .then(function (res) {
                             var _a;
-                            _this.objStatistic = (_a = res === null || res === void 0 ? void 0 : res.optional) === null || _a === void 0 ? void 0 : _a.games;
+                            if (res) {
+                                _this.objStatistic = (_a = res === null || res === void 0 ? void 0 : res.optional) === null || _a === void 0 ? void 0 : _a.games;
+                            }
                             resolve();
                         })["catch"](function () {
                             _this.objStatistic = {
@@ -363,12 +365,8 @@ var Support = /** @class */ (function () {
                                 // берем статистику и присваиваем ее this.objStatistic
                                 this.staticGet().then(function () {
                                     // если записанная в статистике серия короче новой серии объектов то прересзаписывем
-                                    if (_this.objStatistic.longestSeriesOfRightAnswers) {
-                                        if (_this.objStatistic.longestSeriesOfRightAnswers < _this.RightAnsweredWords.length) {
-                                            _this.objStatistic.longestSeriesOfRightAnswers = _this.RightAnsweredWords.length;
-                                        }
-                                    }
-                                    else {
+                                    console.log(_this.objStatistic, 'this.objStatistic');
+                                    if (_this.objStatistic.longestSeriesOfRightAnswers < _this.RightAnsweredWords.length) {
                                         _this.objStatistic.longestSeriesOfRightAnswers = _this.RightAnsweredWords.length;
                                     }
                                     _this.objStatistic.date = _this.dataNow();
@@ -380,7 +378,12 @@ var Support = /** @class */ (function () {
                                         _this.objStatistic.answer = _this.RightAnsweredWords;
                                     }
                                     _this.objStatistic.AllAnswersFromGame += countWord;
-                                    _this.objStatistic.rightAnswers += _this.RightAnsweredWords.length;
+                                    if (_this.objStatistic.rightAnswers) {
+                                        _this.objStatistic.rightAnswers += _this.RightAnsweredWords.length;
+                                    }
+                                    else {
+                                        _this.objStatistic.rightAnswers = _this.RightAnsweredWords.length;
+                                    }
                                     if (_this.objStatistic.rightAnswers) {
                                         _this.objStatistic.percentOfRightAnswers = Math.floor((_this.objStatistic.rightAnswers * 100) / _this.objStatistic.AllAnswersFromGame);
                                     }

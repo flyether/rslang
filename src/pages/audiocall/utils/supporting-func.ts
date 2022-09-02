@@ -200,7 +200,9 @@ class Support {
     return new Promise((resolve, reject) => {
       api.GetsStatistics(userId)
         .then((res) => {
-          this.objStatistic = res?.optional?.games as IOptionalStatisticGame;
+          if (res) {
+            this.objStatistic = res?.optional?.games as IOptionalStatisticGame;
+          }
           resolve();
         }).catch(() => {
           this.objStatistic = {
@@ -330,11 +332,12 @@ class Support {
         // берем статистику и присваиваем ее this.objStatistic
         this.staticGet().then(() => {
           // если записанная в статистике серия короче новой серии объектов то прересзаписывем
-          if (this.objStatistic.longestSeriesOfRightAnswers) {
-            if (this.objStatistic.longestSeriesOfRightAnswers! < this.RightAnsweredWords!.length) {
-              this.objStatistic.longestSeriesOfRightAnswers = this.RightAnsweredWords!.length;
-            }
-          } else { this.objStatistic.longestSeriesOfRightAnswers = this.RightAnsweredWords!.length; }
+
+          console.log(this.objStatistic, 'this.objStatistic');
+          if (this.objStatistic.longestSeriesOfRightAnswers! < this.RightAnsweredWords!.length) {
+            this.objStatistic.longestSeriesOfRightAnswers = this.RightAnsweredWords!.length;
+          }
+
           this.objStatistic.date = this.dataNow();
           this.objStatistic.newWords! = this.countNewWords!;
 
@@ -343,7 +346,9 @@ class Support {
           } else { this.objStatistic.answer = this.RightAnsweredWords; }
 
           this.objStatistic.AllAnswersFromGame! += countWord;
-          this.objStatistic.rightAnswers! += this.RightAnsweredWords!.length;
+          if (this.objStatistic.rightAnswers) {
+            this.objStatistic.rightAnswers! += this.RightAnsweredWords!.length;
+          } else { this.objStatistic.rightAnswers! = this.RightAnsweredWords!.length; }
 
           if (this.objStatistic.rightAnswers) {
             this.objStatistic.percentOfRightAnswers = Math.floor((this.objStatistic.rightAnswers! * 100) / this.objStatistic.AllAnswersFromGame!);
