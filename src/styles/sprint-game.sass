@@ -1,11 +1,10 @@
 @import './vars.scss'
-$blue-color: #224a9a
 
 .sprint-conteiner
   position: relative
   width: 100%
   margin: 0 auto
-  padding: 2rem
+  padding: 2rem 0
   display: flex
   gap: 20px
   justify-content: flex-start
@@ -20,23 +19,25 @@ $blue-color: #224a9a
   font-size: 4rem
   font-weight: 900
   top: 5%
-  right: 15%
+  right: 10%
   color: $right-color
 .sprint__timer
   border: 0.5rem solid $orange-color
-  color: $right-color
+  color: $blue-color
+  background-color: white
   border-radius: 50%
   box-sizing: border-box
   padding: 0.5rem
-  width: 4rem
-  height: 4rem
+  width: 3.8rem
+  height: 3.8rem
   text-align: center
   line-height: 2rem
   font-weight: 600
   font-size: 1.2rem
   position: absolute
   top: 5%
-  left: 15%
+  left: 10%
+
 .sprint__field
   display: flex
   flex-direction: column
@@ -46,6 +47,7 @@ $blue-color: #224a9a
   height: 25rem
   box-shadow: $shadow
   border-radius: 0.3rem
+  background-color: rgba(255,255,255,0.6)
 .field__content
   padding-top: 40px
 .field__title
@@ -54,7 +56,7 @@ $blue-color: #224a9a
   text-align: center
   .title__text
     font-size: 1.5em
-    color: $right-color
+    color: $blue-color
 .field__content
   display: flex
   flex-direction: column
@@ -71,8 +73,11 @@ $blue-color: #224a9a
   margin-right: 2rem
   background-color: $wrong-color
   font-weight: 500
+  font-size: 1.5em
   border: none
-  padding: 8px 15px
+  width: 40%
+  height: 60px
+  padding: 15px 30px
   display: flex
   justify-content: center
   align-items: center
@@ -81,8 +86,11 @@ $blue-color: #224a9a
   background-color: $right-color
   font-weight: 500
   border: none
-  padding: 8px 15px
   display: flex
+  height: 60px
+  font-size: 1.5em
+  width: 40%
+  padding: 15px 30px
   justify-content: center
   align-items: center
 .title__count
@@ -90,9 +98,15 @@ $blue-color: #224a9a
   padding-top: 0.5rem
 .result-conteiner
   text-align: center
+  background-color: rgba(255,255,255,0.6 )
+  width: 50%
+  padding: 10px 20px
+  border-radius: 0.3rem
 .sprint__result__score
   font-size: 2rem
   font-weight: 600
+  .sprint__result
+    color: $white-color
 .sprint__table__result
   border: 0.05rem solid
   border-collapse: collapse
@@ -102,9 +116,12 @@ $blue-color: #224a9a
   padding: 0.25rem
 
 .sprint__close__result
-  display: inline-block
+  display: flex
+  align-items: center
+  justify-content: center
+  margin: 0 auto
   width: 10rem
-  height: 1.5rem
+  height: 1.9rem
   box-sizing: border-box
   border-radius: 0.3rem
   border: 0.05rem solid $blue-color
@@ -125,7 +142,8 @@ $blue-color: #224a9a
   overflow-y: scroll
   padding: 0.3rem
   margin: 2rem auto
-  border: 0.35rem solid $blue-color
+  box-shadow: $shadow
+  background-color: rgba(255, 255,255 ,0.6 )
   border-radius: 0.5rem
   text-align: center
 .content__word
@@ -136,10 +154,12 @@ $blue-color: #224a9a
 .question__word
   margin-right: 1.5rem
 .word__sound
-  width: 40px
-  height: 40px
-  background: url('../assets/sound.png') 0 0 no-repeat
+  width: 64px
+  height: 64px
+  background: url('../assets/audio.png') 0 0 no-repeat
   cursor: pointer
+  padding-left: 20px
+  padding-bottom: 10px
 .sprint__arrows img:first-child
   transform: rotate(90deg) scaleY(-1)
   width: 45px
@@ -151,3 +171,42 @@ $blue-color: #224a9a
 .sprint__arrows
   display: flex
   gap: 20px
+
+@media screen and (max-width: 1024px)
+  .sprint__timer
+    position: static
+  .sprint__score
+    position: static
+@media screen and (max-width: 768px)
+  .field__buttons
+    flex-direction: column
+    align-items: center
+  .sprint__arrows
+    display: none
+  .button.button__sprint__false
+    margin-right: 0
+    width: 170px
+  .sprint__field
+    width: 85%
+    height: auto
+  .button.button__sprint__true
+    width: 170px
+    margin-bottom: 20px
+  .result__conteiner
+    width: 90%
+  .sprint__result__score
+    font-size: 24px
+  .table-conteiner
+    width: 95%
+  div.question__word
+    font-size: 24px
+    margin-right: 10px
+  .question__translation
+    font-size: 24px
+  .table
+    width: 95%
+    margin: 0 auto
+  .word__sound
+    width: 40px
+    height: 40px
+    background-size: 40px 40px
