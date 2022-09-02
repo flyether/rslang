@@ -3,7 +3,7 @@
 .textbook {
   width: 90%;
   padding-top: 30px auto;
-  margin: 0 auto;
+  margin: 40px auto 0;
   box-sizing: border-box;
 
   p {
@@ -16,6 +16,10 @@
     align-items: center;
     gap: 15px;
     margin-bottom: 30px;
+  }
+
+  &-navigation.unit-navigation {
+    margin-top: 40px;
   }
 
   .unit-name {
@@ -41,6 +45,7 @@
   border-radius: 50%;
   border: none;
   cursor: pointer;
+  margin-left: 5%;
 }
 
 .learned-page-menu {
@@ -66,7 +71,7 @@
     z-index: 10;
     position: absolute;
     top: -90px;
-    left: 320px;
+    right: 15%;
   }
 }
 
@@ -267,6 +272,13 @@
     }
   }
 
+  .learned-page::before {
+    width: 30px;
+    background-size: 30px 30px;
+    top: -20px;
+    right: -15px;
+  }
+
   .unit-navigation {
     width: 90%;
     margin: 0 auto 30px
@@ -293,7 +305,7 @@
     font-size: 20px;
   }
 
-  .unit-name {
+  .textbook p.unit-name {
     font-size: 25px;
   }
 

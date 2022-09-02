@@ -102,9 +102,45 @@ export interface IGroupPageObj {
   group: number;
   page: number;
 }
+
+export interface IOptionalUserWords {
+  status: string;
+  answer?: boolean;
+}
+export interface IOptionalStatisticGame {
+  date?: string;
+  newWords?: number;
+  percentOfRightAnswers?: number;
+  longestSeriesOfRightAnswers?: number;
+  rightAnswers?: number;
+  AllAnswersFromGame?: number;
+  newWordsSprint?: number;
+  percentOfRightAnswersSprint?: number;
+  longestSeriesOfRightAnswersSprint?: number;
+  rightAnswersSprint?: number;
+  AllAnswersFromGameSprint?: number;
+  answer?: string[];
+}
+export interface IOptionalStatistic {
+  date?: string;
+  newWords?: number;
+  percentOfRightAnswers?: number;
+  learnedWordss?: number;
+}
+
+export interface IOptionalStatisticWrapper {
+  textbook?: IOptionalStatistic;
+  games?: IOptionalStatisticGame ;
+}
+
+export interface IStatistic {
+  learnedWords?: number;
+  optional?: IOptionalStatisticWrapper;
+}
+
 export interface IUserWords {
-  difficulty: string;
-  optional?: string; // надо потом написать верный тип для optional
+  difficulty?: string;
+  optional?: IOptionalUserWords;
 }
 
 export interface ISettings {
@@ -139,4 +175,11 @@ export interface ITextbookPage {
   render(): string;
   renderPages(unit: number): string;
   getCards(unit: number, page: number): void;
+}
+export interface IObjStatisticStorage {
+  date?: string;
+  percentOfRightAnswers: number;
+  newWords?: number;
+  longestSeriesOfRightAnswers: number;
+  answer?: string[];
 }

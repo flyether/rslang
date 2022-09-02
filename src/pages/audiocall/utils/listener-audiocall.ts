@@ -1,20 +1,16 @@
+/* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable class-methods-use-this */
 
 import { apiPath } from '../../../api/api-path';
-// import {
-//   clearLocalStorage, soundAudio, wordObj, storageAudiocall,
-// } from './supporting-func';
 import audioPathWrong from '../../../assets/audio/wrong-answer.mp3';
 import audioPathRight from '../../../assets/audio/right-answer.mp3';
 import { soundAudio, support } from './supporting-func';
 import { gameArea } from './game-render';
-import { api } from '../../../api/api';
-import { IWord } from '../../../types/types';
-import Words from '../../../words/words';
 
-// console.log(support, 'support в листнере');
+import { StatisticsPageAudiocallShortTeam } from '../../statistics/statisticsShortTerm';
+import { staticGet } from '../../statistics/statisticsData';
 
 class ListenerAudioCall {
   keyboard(): void {
@@ -32,44 +28,35 @@ class ListenerAudioCall {
   }
 
   clik(): void {
-    document.addEventListener('click', (e) => {
+    document.addEventListener('click', async (e) => {
       if ((e.target as HTMLElement).classList.contains('btn-sound')) {
         soundAudio((apiPath + support.wordObj!.audio));
       }
-      const target = e.target as HTMLElement;
-      if ((target).classList.contains('save')) {
-        (async () => {
-          api.getAllUserWords(JSON.parse(localStorage.getItem('user')!).userId);
-          await api.getWord('5e9f5ee35eb9e72bc21af4a0')
-            .then((res) => {
-              console.log(res, 'res  ');
-            });
-        })();
-const userWordq = {
-  difficulty: 'нужный уровень',
-  optional: 'конь в польто',
-};
-        (async () => {
-          api.CreateUserWord(JSON.parse(localStorage.getItem('user')!).userId, '5e9f5ee35eb9e72bc21af4a0', userWordq);
-          await api.getWord('5e9f5ee35eb9e72bc21af4a0')
-            .then((res) => {
-              console.log(res, 'res CreateUserWord');
-            });
-        })();
-      }
+
       if ((e.target as HTMLElement).classList.contains('btn-translation')) {
         support.round!++;
+
         if ((e.target as HTMLElement).id === support.wordObj!.wordTranslate) {
+          support.RightAnsweredWords?.push(support.wordObj!.id);
+          support.CrateNewWord(true);
           rightAnswerFunc((e.target as HTMLElement)!);
         } else {
-          wrongAnswerFunc((e.target as HTMLElement));
+          support.WrongAnsweredWords?.push(support.wordObj!.word);
+          if (support.LearnedWordsID?.includes(support.wordObj?.id as string)) {
+            support.deleteWrongWordFromServer();
+          } else {
+            support.CrateNewWord(false);
+            wrongAnswerFunc((e.target as HTMLElement));
+          }
         }
       }
 
       if ((e.target as HTMLElement).classList.contains('restart')) {
         support.clearLocalStorage();
-        const audioSection = document.querySelector('.audio-container-game') as HTMLElement;
-        audioSection.innerHTML += gameArea;
+        // const audioSection = document.querySelector('.audio-container-game') as HTMLElement;
+
+        // audioSection.outerHTML = gameArea;
+        document.querySelector('.game')!.innerHTML = gameArea;
         support.printBtnString();
       }
 
@@ -77,8 +64,8 @@ const userWordq = {
         const locationHash = window.location.hash.split('/');
         const unit = +locationHash[1];
         const page = +locationHash[2];
-        support.level = unit + 1;
-        support.page = page;
+        support.level = unit;
+        support.page = page - 1;
         support.textbook = true;
       }
 
@@ -105,11 +92,13 @@ function rightAnswerFunc(el: HTMLElement) {
   el.classList.add('btn-translation-right');
   setTimeout(() => {
     const garageSection = document.querySelector('.button-container') as HTMLElement;
-    garageSection.innerHTML = '';
+    if (garageSection) {
+      garageSection.innerHTML = '';
+    }
     support.printBtnString();
     el.classList.remove('btn-translation-right');
   },
-  1200);
+  1000);
 }
 
 function wrongAnswerFunc(el: HTMLElement) {
@@ -122,7 +111,9 @@ function wrongAnswerFunc(el: HTMLElement) {
     setTimeout(() => {
       const garageSection = document.querySelector('.button-container') as HTMLElement;
       rightAnswer.innerHTML = '';
-      garageSection.innerHTML = '';
+      if (garageSection) {
+        garageSection.innerHTML = '';
+      }
       support.printBtnString();
       el.classList.remove('btn-translation-wrong');
     },

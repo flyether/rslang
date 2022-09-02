@@ -1,64 +1,84 @@
-@mixin btn {
-  text-align: center;
-  cursor: pointer;
-  font-size: medium;
-  font-weight: 700;
-  width: 170px;
-  height: 70px; 
-  border-radius: 5px;
-  border: 1px solid #224a9a;
-  margin: 0, 5px, 0, 5px;
+@import './vars.scss';
+
+.button-container {
+  width: 17%;
 }
 
-@mixin button-blue {
-  @include btn;
-  color: #f57520;
-  background-color:#679fe5;
+.button-container:first-child {
+  display: none;
 }
 
-@mixin button-orange {
-  @include btn;
-  color: #224a9a;
-  background-color: #fe8954;
-}
-
-.button-container{
-  margin:0 5px;
-}
-
-.button-wrapper{
+.button-wrapper {
   display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 20px;
 }
 
-.audio-container-game{
-  position: relative;
-  border-radius: 5px;
-  width: 1200px;
-  height: 700px;
+.audio-call__btns {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.audio-container-game {
+  width: 90%;
+  height: 400px;
   display: flex;
   justify-content: space-between;
+  gap: 50px;
   flex-direction: column;
   align-items: center;
-  flex-wrap: wrap;
-  margin:  auto;
-  background-color: #679fe5;
+  margin: 100px auto 0;
+}
+
+.container {
+  background-image: url('https://www.wallpaperflare.com/static/902/419/614/ocean-sand-beach-blue-wallpaper.jpg');
+  width: 100%;
+  min-height: 100vh;
+  background-size: cover;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
 }
 
 .audio-call {
-   width: 60%;
-   height: 43%;
-   display: flex;
-   font-size: large;
-   line-height: 35px;
-   font-weight: 700;
-   justify-content: space-between;
-   align-items: center;
-   flex-wrap: wrap;
-   background: #fe8954;
-   margin: auto ;
-   padding: 20px;
-   border-radius: 5px;
+  line-height: 35px;
+  font-weight: 700;
+  width: 75%;
+  display: flex;
+  flex-direction: column;
+  font-size: 16px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  background: $white-color;
+  box-shadow: $shadow;
+  font-family: $mplus-font;
+  color: $light-blue-color;
+  margin: 5% auto;
+  padding: 20px;
+  border-radius: $border-radius-btn;
+}
+
+.audio-call__text {
+  width: 70%;
+  margin: 0 auto 40px;
+  text-align: center;
+}
+
+.audio-call__text+p {
+  font-weight: 700;
+  margin-top: 0.8em;
+}
+
+.audio-container {
+  flex: 0 0 auto;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .link {
@@ -69,87 +89,100 @@
   font-weight: 700;
   color: #f8631d;
   background-color: #679fe5;
-  border-radius: 5px;
+  border-radius: $border-radius-btn;
   border: 1px solid #224a9a;
-  margin: 0 auto; ;
+  margin: 0 auto;
+  ;
   padding: 10px 10px;
 }
 
-.go-main{
-  display: flex;
-  position: fixed;
-  left: 15%;
-  text-align: center;
-  cursor: pointer;
-  font-size: medium;
-  font-weight: 700;
-  color: #224a9a;
-  background-color: #fe8954;
-  border-radius: 5px;
-  border: 1px solid #224a9a;
-  margin: 0 5px 0 5px;
-  margin: 10px 0px 0 30px;
-  z-index: 2;
-  padding: 15px 20px;
-}
+.go-main {
+  @include orange-btn;
+  margin: 70px auto 0;
+  width: 200px;
+  transition: all 0.5s ease-out;
 
-.go-main:hover{
-  background-color: #679fe5;
-  color: #f8631d;
+  &:hover {
+    cursor: pointer;
+    background-color: $dark-orange;
+  }
 }
 
 .btn-translation {
+  color: $white-color;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #fe8954;
-  text-align: center;
-  cursor: pointer;
   font-size: large;
   font-weight: 700;
-  width: 170px;
-  height: 70px; 
-  border-radius: 5px;
-  border: 1px solid #224a9a;
-  margin: 0, 5px, 0, 5px;
+  width: 100%;
+  height: 60px;
+  background-color: $light-blue-color;
+  text-align: center;
+  border-radius: $border-radius-btn;
+  cursor: pointer;
+
+
+  &:hover {
+    background-color: $very-light-blue-color;
+  }
 }
 
-.btn-translation:hover  {
-  background-color:#bdccff ;
+.btn-level {
+  color: #224a9a;
+  width: 80px;
+  height: 50px;
+  background-color: $white-color;
+  box-shadow: $shadow;
+  text-align: center;
+  line-height: 35px;
+  border-radius: 3px;
+  cursor: pointer;
+  border: none;
 }
 
-.btn-translation-right{
-  @include button-blue;
-  background-color:#8d0bf7 ;
-  border: #580488 solid 1px;
+.btn-translation.btn-translation-right {
+  background-color: $right-color;
+
+  &:hover {
+    background-color: $right-color;
+  }
 }
 
 .btn-blue {
-  @include button-blue;
-  margin-bottom:0 auto 10px;
+  margin-bottom: 0 auto 10px;
   justify-content: center;
   align-items: center;
   margin: 20px;
+  font-size: 1em;
+  box-shadow: $shadow;
+  padding: 5px 15px;
+  transition: all 0.5s ease-in-out;
+  border-radius: $border-radius-btn;
 }
 
-.btn-bluen:hover  {
-  background-color:#bdccff ;
+.btn-blue:hover {
+  background-color: $very-light-blue-color;
+  box-shadow: $shadow;
+  cursor: pointer;
+  font-size: 1.4em;
 }
 
-.btn-translation-wrong{
-  color:#679fe5;
-  @include button-blue;
-  background-color:#d11554 ;
-  border: #5f0713 solid 1px;
+.btn-translation.btn-translation-wrong {
+  background-color: $wrong-color;
+
+  &:hover {
+    background-color: $wrong-color;
+  }
 }
 
 .btn-sound {
-  margin-top: 5%;
-  color: #224a9a;
+  color: $blue-color;
   width: 80px;
   height: 80px;
-  background: url('../pages/audiocall/img/sound.svg') 0 0 no-repeat;
-  cursor: pointer 
+  background: url('../../src/assets/volume.png') center no-repeat;
+  background-size: 70%;
+  cursor: pointer;
 }
 
 .btn-sound:hover {
@@ -157,43 +190,85 @@
   height: 90px;
 }
 
-.game-over{
+.game-over {
   display: flex;
   flex-direction: column;
   position: fixed;
-  top: 20%;
-  left: 33%;
-  background-color:#fe8954;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: $white-color;
+  box-shadow: $shadow;
   font-size: large;
   font-weight: 700;
-  width: 500px;
-  height: 500px;
+  width: 50%;
   text-align: center;
   line-height: 35px;
-  border-radius: 5px;
-  border: #224a9a solid 1px;
+  border-radius: $border-radius-btn;
   margin: 0, 0, 20px, 0;
+  padding: 10px 20px;
 }
 
-.btn-game-over-container{
+.btn-game-over-container {
   display: flex;
   justify-content: center;
 }
 
-.answer{
-  background-color:#fe8954;
+.answer {
   font-size: large;
   font-weight: 700;
   width: 400px;
-  height: 300px;
   text-align: center;
   line-height: 35px;
-  border-radius: 5px;
-  border: #224a9a solid 1px;
-  margin: 0, 0, 20px, 0;
+  border-radius: $border-radius-btn;
   padding: 5px;
 }
 
-.answer-img{
-  border-radius: 5px;
+.answer-img {
+  border-radius: $border-radius-btn;
+  width: 250px;
+}
+
+.game-text:first-child {
+  color: $right-color;
+  font-size: 2em;
+}
+
+@media (max-width:768px) {
+  .btn-game-over-container {
+    flex-direction: column;
+  }
+
+  .button-wrapper {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .button-container {
+    width: 50%;
+  }
+
+  .btn-translation {
+    height: 35px;
+    font-size: 0.7em;
+  }
+
+  .audio-container-game {
+    gap: 15px;
+  }
+
+  .go-main {
+    width: 50%;
+  }
+
+  .game-over {
+    font-size: 0.8em;
+    line-height: 170%;
+  }
+
+  .audio-call__text {
+    text-align: center;
+    line-height: 20px;
+
+  }
 }

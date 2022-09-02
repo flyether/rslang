@@ -1,3 +1,14 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
+import { api } from '../../api/api';
+import { IObjStatisticStorage, IOptionalStatisticGame, IStatistic } from '../../types/types';
+import StatisticsPage from '.';
+import { support } from '../audiocall/utils/supporting-func';
+
+let userId = '';
+if (localStorage.getItem('user')) {
+  userId = JSON.parse(localStorage.getItem('user')!).userId;
+}
+
 function getArrOfLast5Days() {
   let now = Date.now();
   const oneDay = 86400000;
@@ -7,6 +18,15 @@ function getArrOfLast5Days() {
     now -= oneDay;
   }
   return arr.map((elem) => elem.toLocaleDateString()).reverse();
+}
+
+function dataNow(): string {
+  const t = new Date();
+  const date = (`0${t.getDate()}`).slice(-2);
+  const month = (`0${t.getMonth() + 1}`).slice(-2);
+  const year = t.getFullYear();
+  const dateCurr = `${date}/${month}/${year}`;
+  return dateCurr;
 }
 
 export const statisticsDataLongTerm = {
@@ -23,11 +43,44 @@ export const statisticsDataTextbookShortTerm = {
   percentOfRightAnswers: 50,
 };
 
-export const statisticsDataAudiocallShortTerm = {
-  newWords: 30,
-  percentOfRightAnswers: 70,
-  longestSeriesOfRightAnswers: 60,
+const objAudiocallDate: IOptionalStatisticGame = {
+  date: dataNow(),
+  percentOfRightAnswers: 0,
+  newWords: 0,
+  longestSeriesOfRightAnswers: 0,
+  newWordsSprint: 0,
+  percentOfRightAnswersSprint: 0,
+  longestSeriesOfRightAnswersSprint: 0,
+  rightAnswersSprint: 0,
+  AllAnswersFromGameSprint: 0,
 };
+
+const valueStatisticsAudiocall:IStatistic = {
+  optional: {
+    games: objAudiocallDate,
+  },
+};
+
+export const statisticsDataAudiocallShortTerm = {
+  newWords: objAudiocallDate.newWords,
+  percentOfRightAnswers: objAudiocallDate.percentOfRightAnswers,
+  longestSeriesOfRightAnswers: objAudiocallDate.longestSeriesOfRightAnswers,
+};
+
+export async function staticGet() : Promise<void> {
+  api.GetsStatistics(userId)
+    .then((res) => {
+      if (objAudiocallDate.date === res?.optional?.games?.date) {
+        objAudiocallDate.percentOfRightAnswers = res?.optional?.games?.percentOfRightAnswers;
+        objAudiocallDate.newWords = res?.optional?.games?.newWords;
+        objAudiocallDate.longestSeriesOfRightAnswers = res?.optional?.games?.newWords;
+
+        statisticsDataAudiocallShortTerm.percentOfRightAnswers = objAudiocallDate.percentOfRightAnswers;
+        statisticsDataAudiocallShortTerm.newWords = objAudiocallDate.newWords;
+        statisticsDataAudiocallShortTerm.longestSeriesOfRightAnswers = objAudiocallDate.longestSeriesOfRightAnswers;
+      } else { api.UpsertsNewStatistics(userId, valueStatisticsAudiocall); }
+    });
+}
 
 export const statisticsDataSprintShortTerm = {
   newWords: 100,

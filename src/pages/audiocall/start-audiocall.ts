@@ -13,26 +13,26 @@ export const startScrinAudioCall = {
       html = /* html */` 
 
       <div class="audio-call"> 
-        <p class="audio-call__text">В игре аудиовызов вамнужно выбрать правильный перевод слова. <br>
-        Для того чтобы прослушать слово еще раз нажмите пробел или на иконку звука.<br>
+        <p class="audio-call__text">В игре аудиовызов вам нужно выбрать правильный перевод слова. 
+        Для того чтобы прослушать слово еще раз нажмите пробел или на иконку звука.
         Для игры с помощью клавиатуры, использте клавиши
         1, 2, 3, 4, 5  чтобы дать ответ,
         space - для воспроизведения звука.
         </p>
        <a id="leveltextbook" class="btn-level link" href="${this.hashes.audiocallGame}" >Играть</a>
-   >
+   </div>
       `;
     } else {
       html = /* html */` 
 
 <div class="audio-call"> 
-  <p class="audio-call__text">В игре аудиовызов вамнужно выбрать правильный перевод слова. <br>
-  Для того чтобы прослушать слово еще раз нажмите пробел или на иконку звука.<br>
+  <p class="audio-call__text">В игре аудиовызов вам нужно выбрать правильный перевод слова. 
+  Для того чтобы прослушать слово еще раз нажмите пробел или на иконку звука.
   Для игры с помощью клавиатуры, использте клавиши
   1, 2, 3, 4, 5  чтобы дать ответ,
   space - для воспроизведения звука.
-  <br> <br>
   Выбери уровень сложности:</p>
+  <div class="audio-call__btns">
  <a id="level1" class="btn-level link" href="${this.hashes.audiocallGame}" >Уровень 1</a>
  
  <a id="level2" class="btn-level link" href="${this.hashes.audiocallGame}" >Уровень 2</a>
@@ -44,6 +44,8 @@ export const startScrinAudioCall = {
  <a id="level5" class="btn-level link" href="${this.hashes.audiocallGame}" >Уровень 5</a>
 
  <a id="level6" class="btn-level link" href="${this.hashes.audiocallGame}" >Уровень 6</a>
+ </div>
+ </div>
 `;
     }
     return html;
