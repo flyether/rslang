@@ -22,7 +22,6 @@ const TextbookPage: ITextbookPage = {
   learnedPages: [{ unit: 0, page: 0 }],
 
   render(): string {
-    console.log(Words.aggregatedWords);
     const locationHash = window.location.hash.split('/');
     const unit = +locationHash[1];
     const page = +locationHash[2];

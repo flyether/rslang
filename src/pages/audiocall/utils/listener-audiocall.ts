@@ -9,6 +9,9 @@ import audioPathRight from '../../../assets/audio/right-answer.mp3';
 import { soundAudio, support } from './supporting-func';
 import { gameArea } from './game-render';
 
+import { StatisticsPageAudiocallShortTeam } from '../../statistics/statisticsShortTerm';
+import { staticGet } from '../../statistics/statisticsData';
+
 class ListenerAudioCall {
   keyboard(): void {
     document.addEventListener('keydown', (e) => {
@@ -25,26 +28,35 @@ class ListenerAudioCall {
   }
 
   clik(): void {
-    document.addEventListener('click', (e) => {
+    document.addEventListener('click', async (e) => {
       if ((e.target as HTMLElement).classList.contains('btn-sound')) {
         soundAudio((apiPath + support.wordObj!.audio));
       }
 
       if ((e.target as HTMLElement).classList.contains('btn-translation')) {
         support.round!++;
+
         if ((e.target as HTMLElement).id === support.wordObj!.wordTranslate) {
-          support.RightAnsweredWords?.push(support.wordObj!.word);
+          support.RightAnsweredWords?.push(support.wordObj!.id);
+          support.CrateNewWord(true);
           rightAnswerFunc((e.target as HTMLElement)!);
         } else {
           support.WrongAnsweredWords?.push(support.wordObj!.word);
-          wrongAnswerFunc((e.target as HTMLElement));
+          if (support.LearnedWordsID?.includes(support.wordObj?.id as string)) {
+            support.deleteWrongWordFromServer();
+          } else {
+            support.CrateNewWord(false);
+            wrongAnswerFunc((e.target as HTMLElement));
+          }
         }
       }
 
       if ((e.target as HTMLElement).classList.contains('restart')) {
         support.clearLocalStorage();
-        const audioSection = document.querySelector('.audio-container-game') as HTMLElement;
-        audioSection.innerHTML += gameArea;
+        // const audioSection = document.querySelector('.audio-container-game') as HTMLElement;
+
+        // audioSection.outerHTML = gameArea;
+        document.querySelector('.game')!.innerHTML = gameArea;
         support.printBtnString();
       }
 
@@ -52,12 +64,13 @@ class ListenerAudioCall {
         const locationHash = window.location.hash.split('/');
         const unit = +locationHash[1];
         const page = +locationHash[2];
-        support.level = unit + 1;
-        support.page = page;
+        support.level = unit;
+        support.page = page - 1;
         support.textbook = true;
       }
 
       if ((e.target as HTMLElement).classList.contains('level-change')) {
+        support.textbook = false;
         support.clearLocalStorage();
       }
 
@@ -79,7 +92,9 @@ function rightAnswerFunc(el: HTMLElement) {
   el.classList.add('btn-translation-right');
   setTimeout(() => {
     const garageSection = document.querySelector('.button-container') as HTMLElement;
-    garageSection.innerHTML = '';
+    if (garageSection) {
+      garageSection.innerHTML = '';
+    }
     support.printBtnString();
     el.classList.remove('btn-translation-right');
   },
@@ -96,7 +111,9 @@ function wrongAnswerFunc(el: HTMLElement) {
     setTimeout(() => {
       const garageSection = document.querySelector('.button-container') as HTMLElement;
       rightAnswer.innerHTML = '';
-      garageSection.innerHTML = '';
+      if (garageSection) {
+        garageSection.innerHTML = '';
+      }
       support.printBtnString();
       el.classList.remove('btn-translation-wrong');
     },

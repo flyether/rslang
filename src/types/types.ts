@@ -103,12 +103,40 @@ export interface IGroupPageObj {
   page: number;
 }
 
-interface IOptionalUserWords {
-  wordsLearned: string;
+export interface IOptionalUserWords {
+  status: string;
+  answer?: boolean;
 }
+export interface IOptionalStatisticGame {
+  date?: string;
+  newWords?: number;
+  percentOfRightAnswers?: number;
+  longestSeriesOfRightAnswers?: number;
+  rightAnswers?: number;
+  AllAnswersFromGame?: number;
+  answer?: string[];
+}
+export interface IOptionalStatistic {
+  date?: string;
+  newWords?: number;
+  percentOfRightAnswers?: number;
+  learnedWordss?: number;
+}
+
+export interface IOptionalStatisticWrapper {
+  textbook?: IOptionalStatistic;
+  sprint?: IOptionalStatisticGame ;
+  audiocall?: IOptionalStatisticGame ;
+}
+
+export interface IStatistic {
+  learnedWords?: number;
+  optional?: IOptionalStatisticWrapper;
+}
+
 export interface IUserWords {
-  difficulty: string;
-  optional?: IOptionalUserWords; // надо потом написать верный тип для optional
+  difficulty?: string;
+  optional?: IOptionalUserWords;
 }
 
 export interface ISettings {

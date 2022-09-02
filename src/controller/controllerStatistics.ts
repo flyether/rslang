@@ -3,6 +3,7 @@
 /* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 
+import { staticGet, statisticsDataAudiocallShortTerm } from '../pages/statistics/statisticsData';
 import { ModuleModel } from '../model/modelStatistics';
 
 export class ModuleController {
@@ -21,13 +22,15 @@ export class ModuleController {
   findStatisticsElements(): void {
     this.myModuleModel.prepareStatistics();
     this.statisticsConteiner = document.querySelector('.statistics-conteiner') as HTMLElement;
-    this.statisticsConteiner.addEventListener('click', (e: Event) => {
+    this.statisticsConteiner.addEventListener('click', async (e: Event) => {
       const el = e.target as HTMLElement;
       if (el.closest('.statistics__textbook')) {
         this.myModuleModel.switchStatictics('textbook');
       }
       if (el.closest('.statistics__audiocall')) {
-        this.myModuleModel.switchStatictics('audiocall');
+        staticGet().then(() => {
+          this.myModuleModel.switchStatictics('audiocall');
+        });
       }
       if (el.closest('.statistics__sprint')) {
         this.myModuleModel.switchStatictics('sprint');

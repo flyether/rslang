@@ -1,26 +1,35 @@
+/* eslint-disable no-restricted-syntax */
 /* eslint-disable class-methods-use-this */
 /* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
 import {
-  IObjStatisticStorage, IWord, IUserWords, InitialObj,
+  IWord, IUserWords, IStatistic, IOptionalStatisticGame,
 } from '../../../types/types';
 import { apiPath } from '../../../api/api-path';
 import { api } from '../../../api/api';
-import { getStatisticsDataAudiocallShortTerm, statisticsDataAudiocallShortTerm } from '../../statistics/statisticsData';
-import { initialObj, mySPA } from '../../../index';
+import { statisticsDataAudiocallShortTerm } from '../../statistics/statisticsData';
 
 function shuffle(array:string[]) {
   array.sort(() => Math.random() - 0.5);
 }
+
+// функция проигрывания аудио с путем из нашего обекта-слово
 export function soundAudio(path: string): void {
   const audioD = new Audio();
   audioD.src = `${path}`;
   audioD.autoplay = true;
 }
 
+let userId = '';
+if (localStorage.getItem('user')) {
+  userId = JSON.parse(localStorage.getItem('user')!).userId;
+}
+
 class Support {
+  public difficultWords: string[];
+
   public wordStudied: string[];
 
   public textbook?: boolean;
@@ -51,27 +60,39 @@ class Support {
 
   public RightAnsweredWords?: string [];
 
-  public WrongAnsweredWords?: string [];
+  public LearnedWordsID?: string [];
 
-  public rightAnsweredWordsStatistic?: string [];
+  public newAndLearnUserWords?: string [];
+
+  public WrongAnsweredWords?: string [];
 
   public newWords?: number;
 
-  public percentOfRightAnswers?: number;
-
-  public longestSeriesOfRightAnswers?: number;
+  public countNewWords?: number;
 
   public allWords?: number;
 
+  public objStatistic: IOptionalStatisticGame;
+
   constructor() {
+    this.objStatistic = {
+      longestSeriesOfRightAnswers: 0,
+      newWords: 0,
+      percentOfRightAnswers: 0,
+      rightAnswers: 0,
+      AllAnswersFromGame: 0,
+      answer: [],
+    };
+    this.countNewWords = 0;
+    this.newAndLearnUserWords = [];
+    this.LearnedWordsID = [];
     this.newWords = 0;
     this.allWords = 0;
-    this.rightAnsweredWordsStatistic = [];
-    this.longestSeriesOfRightAnswers = this.rightAnsweredWordsStatistic?.length;
     this.WrongAnsweredWords = [];
     this.RightAnsweredWords = [];
     this.textbook = false;
     this.arrayWrongWords = [];
+    this.difficultWords = [];
     this.round = 0;
     this.score = 0;
     this.group = 0;
@@ -88,26 +109,139 @@ class Support {
     this.containerBtn = 'ggg';
   }
 
+  // метод который берет с сервера изученые слова чтобы их не выводить в игру
   async getUserWords() : Promise<void> {
-    api.getAllUserWords(JSON.parse(localStorage.getItem('user')!).userId)
+    api.getAllUserWords(userId)
       .then((res) => {
         res!.forEach((element) => {
-          api.getWord(element.wordId)
-            .then((ress) => {
-              this.noRepeat?.push(ress?.word as string);
-            });
+          if (element.difficulty === 'learned' || !element.difficulty) {
+            this.newAndLearnUserWords?.push(element.wordId as string);
+            this.newAndLearnUserWords = this.newAndLearnUserWords!.filter((item, index) => this.newAndLearnUserWords!.indexOf(item) === index);
+          }
+          if (element.difficulty === 'aggregated') {
+            this.difficultWords?.push(element.wordId as string);
+            this.difficultWords = this.difficultWords!.filter((item, index) => this.difficultWords!.indexOf(item) === index);
+          }
+          if (element.difficulty === 'learned') {
+            this.LearnedWordsID?.push(element.wordId as string);
+            this.LearnedWordsID = this.LearnedWordsID!.filter((item, index) => this.LearnedWordsID!.indexOf(item) === index);
+            api.getWord(element.wordId)
+              .then((ress) => {
+                if (this.textbook) {
+                  this.noRepeat?.push(ress?.wordTranslate as string);
+                  this.noRepeat = this.noRepeat!.filter((item, index) => this.noRepeat!.indexOf(item) === index);
+                }
+              });
+          }
         });
       });
   }
 
+  // проверка слов на изученность
+
+  getLearnedWord(arr: string[]):string[] {
+    let count = 3;
+    const counts = new Map();
+    let lernWord = '';
+    const lernWordArr: string[] = [];
+    for (const i in arr) {
+      if (counts.has(arr[i])) {
+        counts.set(arr[i], counts.get(arr[i]) + 1);
+      } else {
+        counts.set(arr[i], 1);
+      }
+    }
+    const counts2 = Array.from(counts);
+
+    counts2.forEach((element) => {
+      if (this.difficultWords.includes(element[0])) {
+        count = 5;
+      }
+      if (element[1] === count) {
+        lernWord = element[0] as string;
+        (lernWordArr as string[]).push(lernWord);
+        console.log(element[0], 'element[0]', element[1], 'element[1]');
+      }
+    });
+    return lernWordArr;
+  }
+
+  async checkLearnedWrds() : Promise<void> {
+    let lernWordIDArr = this.getLearnedWord(this.objStatistic.answer!);
+
+    lernWordIDArr = lernWordIDArr.filter((item) => !this.LearnedWordsID!.includes(item));
+
+    lernWordIDArr.forEach(async (element) => {
+      if (userId) {
+        try {
+          await api.CreateUserWord(userId, element,
+            { difficulty: 'learned' });
+        } catch (_e) {
+          await api.UpdateUserWord(userId, element,
+            { difficulty: 'learned' });
+        }
+      }
+    });
+  }
+
+  // метод получения статистики
+
+  async staticGet() : Promise<void> {
+    return api.GetsStatistics(userId)
+      .then((res) => {
+        this.objStatistic = res?.optional?.audiocall as IOptionalStatisticGame;
+      });
+  }
+
+  // метод для заполнения статистики
+  async staticUpdate(objStatistics: IOptionalStatisticGame) : Promise<void> {
+    const value: IStatistic = {
+      optional: {
+        audiocall: objStatistics,
+      },
+    };
+    await api.UpsertsNewStatistics(userId, value);
+  }
+  // удалим слово в котором ошибся юзер
+
+  async deleteWrongWordFromServer():Promise<void> {
+    if (userId) {
+      await api.DeleteUserWord(userId, this.wordObj!.id);
+    }
+  }
+
+  // добавляем на сервер новые слова появившиеся в игре
+  async CrateNewWord(booleanPar: boolean) : Promise<void> {
+    if (userId) {
+      if (!this.newAndLearnUserWords!.includes(this.wordObj!.id)) {
+        const optional: IUserWords = { optional: { answer: booleanPar, status: 'new' } };
+        try {
+          await api.CreateUserWord(userId, this.wordObj!.id,
+            optional);
+          this.countNewWords!++;
+        } catch (_e) {
+          await api.UpdateUserWord(userId, this.wordObj!.id,
+            optional);
+        }
+      }
+    }
+  }
+
+  // отрисовка хтмл в игре
   async printBtnString(): Promise<void> {
+    this.getUserWords();
+
     const btnWrapper = document.querySelector('.audio-container-game') as HTMLElement;
 
+    //     выбор уровня и страницы для загрузки слов  ссервера
+
     this.group = this.level! - 1;
-    if ((this.page === 0)) {
+    if ((!this.textbook)) {
       this.page = Math.floor(Math.random() * (20 - 0 + 1)) + 0;
     }
+
     const res = await api.getWords(this.group!, this.page!);
+
     const garageSection = document.querySelector('.button-container') as HTMLElement;
     if (garageSection) {
       garageSection.innerHTML = '';
@@ -131,15 +265,20 @@ class Support {
           this.wordObj = this.words![i];
         }
       }
+
       this.noRepeat!.push(this.wordObj!.wordTranslate);
+
       soundAudio((apiPath + support.wordObj!.audio));
+
       const button = document.querySelectorAll('.btn-translation');
-      console.log(this.noRepeat, 'this.noRepeat');
-      for (let j = 0; j < this.arraySixWords.length; j++) {
-        button[j].textContent = `${this.arraySixWords[j]}`;
-        button[j].id = this.arraySixWords[j];
-        (button[j] as HTMLButtonElement).dataset.num = `${j + 1}`;
+      if (this.arraySixWords) {
+        for (let j = 0; j < this.arraySixWords.length; j++) {
+          button[j].textContent = `${this.arraySixWords[j]}`;
+          button[j].id = this.arraySixWords[j];
+          (button[j] as HTMLButtonElement).dataset.num = `${j + 1}`;
+        }
       }
+      // отрисовка конца игры.
     } else {
       btnWrapper.innerHTML = '';
       this.wordObj!.audio = '';
@@ -162,50 +301,41 @@ class Support {
       </div>
 
     `;
-      console.log(this.RightAnsweredWords!, 'this.RightAnsweredWords!');
-      if (this.longestSeriesOfRightAnswers! < this.RightAnsweredWords!.length) {
-        this.longestSeriesOfRightAnswers = this.RightAnsweredWords!.length;
+      // работа над статистикой
+      if (userId) {
+        // берем статистику и присваиваем ее this.objStatistic
+        this.staticGet().then(() => {
+          // если записанная в статистике серия короче новой серии объектов то прересзаписывем
+
+          if (this.objStatistic.longestSeriesOfRightAnswers! < this.RightAnsweredWords!.length) {
+            this.objStatistic.longestSeriesOfRightAnswers = this.RightAnsweredWords!.length;
+          }
+          this.objStatistic.date = this.dataNow();
+          this.objStatistic.newWords! = this.countNewWords!;
+
+          this.objStatistic.answer = this.objStatistic.answer!.concat(this.RightAnsweredWords!);
+
+          this.objStatistic.AllAnswersFromGame! += 5;
+          this.objStatistic.rightAnswers! += this.RightAnsweredWords!.length;
+
+          if (this.objStatistic.rightAnswers !== 0) {
+            this.objStatistic.percentOfRightAnswers = Math.floor((this.objStatistic.rightAnswers! * 100) / this.objStatistic.AllAnswersFromGame!);
+          }
+
+          this.staticUpdate(this.objStatistic);
+          console.log(this.objStatistic, ' - this.objStatistic ');
+
+          statisticsDataAudiocallShortTerm.newWords = this.objStatistic.newWords!;
+          statisticsDataAudiocallShortTerm.percentOfRightAnswers = this.objStatistic.percentOfRightAnswers;
+          statisticsDataAudiocallShortTerm.longestSeriesOfRightAnswers = this.objStatistic.longestSeriesOfRightAnswers as number;
+
+          this.checkLearnedWrds();
+          this.clearLocalStorage();
+        });
       }
-
-      let objAudiocallDate: IObjStatisticStorage = {
-        percentOfRightAnswers: 0,
-        longestSeriesOfRightAnswers: 0,
-        answer: [],
-        newWords: 0,
-      };
-
-      if (localStorage.getItem('dataAudiocall')) {
-        objAudiocallDate = JSON.parse(localStorage.getItem('dataAudiocall')!);
+      if (!userId) {
+        this.clearLocalStorage();
       }
-
-      if (objAudiocallDate.answer) {
-        this.rightAnsweredWordsStatistic = objAudiocallDate.answer!.concat(this.RightAnsweredWords!);
-      } else {
-        this.rightAnsweredWordsStatistic = this.RightAnsweredWords;
-      }
-      console.log(this.RightAnsweredWords!, 'this.RightAnsweredWords!', objAudiocallDate.answer, 'objAudiocallDate.answer');
-      this.allWords = objAudiocallDate.newWords! + 5;
-
-      this.percentOfRightAnswers = Math.floor((this.rightAnsweredWordsStatistic!.length * 100) / this.allWords);
-      // const newWordsLocal = (new Set(this.rightAnsweredWordsStatistic!)).size;
-
-      const objStatisticStorage: IObjStatisticStorage = {
-        date: this.dataNow(),
-        percentOfRightAnswers: this.percentOfRightAnswers,
-        newWords: this.allWords,
-        longestSeriesOfRightAnswers: this.longestSeriesOfRightAnswers as number,
-        answer: this.rightAnsweredWordsStatistic,
-      };
-
-      localStorage.setItem('dataAudiocall', JSON.stringify(objStatisticStorage));
-      this.clearLocalStorage();
-      getStatisticsDataAudiocallShortTerm();
-      // const view = new ModuleModel();
-      // view.prepareStatistics();
-
-      // window.addEventListener('DOMContentLoaded', () => {
-      //   mySPA.init(initialObj);
-      // });
     }
   }
 
@@ -221,13 +351,11 @@ class Support {
   clearLocalStorage(): void {
     this.WrongAnsweredWords = [];
     this.RightAnsweredWords = [];
-    this.textbook = false;
+    // this.textbook = false;
     this.arrayWrongWords = [];
     this.round = 0;
     this.score = 0;
     this.group = 0;
-    this.page = 0;
-    // this.level = 1;
     this.words = [];
     this.wordsString = [];
     this.noRepeat = [];
@@ -237,8 +365,6 @@ class Support {
     this.arraySixWords = [];
   }
 }
-
-// функция проигрывания аудио с путем из нашего обекта-слово
 
 const support = new Support();
 export { support };
