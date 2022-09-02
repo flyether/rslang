@@ -43,16 +43,21 @@ export const statisticsDataTextbookShortTerm = {
   percentOfRightAnswers: 50,
 };
 
-export const objAudiocallDate: IOptionalStatisticGame = {
+const objAudiocallDate: IOptionalStatisticGame = {
   date: dataNow(),
   percentOfRightAnswers: 0,
   newWords: 0,
   longestSeriesOfRightAnswers: 0,
+  newWordsSprint: 0,
+  percentOfRightAnswersSprint: 0,
+  longestSeriesOfRightAnswersSprint: 0,
+  rightAnswersSprint: 0,
+  AllAnswersFromGameSprint: 0,
 };
 
 const valueStatisticsAudiocall:IStatistic = {
   optional: {
-    audiocall: objAudiocallDate,
+    games: objAudiocallDate,
   },
 };
 
@@ -65,10 +70,11 @@ export const statisticsDataAudiocallShortTerm = {
 export async function staticGet() : Promise<void> {
   api.GetsStatistics(userId)
     .then((res) => {
-      if (objAudiocallDate.date === res?.optional?.audiocall?.date) {
-        objAudiocallDate.percentOfRightAnswers = res?.optional?.audiocall?.percentOfRightAnswers;
-        objAudiocallDate.newWords = res?.optional?.audiocall?.newWords;
-        objAudiocallDate.longestSeriesOfRightAnswers = res?.optional?.audiocall?.newWords;
+      if (objAudiocallDate.date === res?.optional?.games?.date) {
+        objAudiocallDate.percentOfRightAnswers = res?.optional?.games?.percentOfRightAnswers;
+        objAudiocallDate.newWords = res?.optional?.games?.newWords;
+        objAudiocallDate.longestSeriesOfRightAnswers = res?.optional?.games?.newWords;
+
         statisticsDataAudiocallShortTerm.percentOfRightAnswers = objAudiocallDate.percentOfRightAnswers;
         statisticsDataAudiocallShortTerm.newWords = objAudiocallDate.newWords;
         statisticsDataAudiocallShortTerm.longestSeriesOfRightAnswers = objAudiocallDate.longestSeriesOfRightAnswers;

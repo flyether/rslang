@@ -131,28 +131,41 @@ var Support = /** @class */ (function () {
     };
     // проверка слов на изученность
     Support.prototype.getLearnedWord = function (arr) {
+        var _this = this;
         var count = 3;
         var counts = new Map();
         var lernWord = '';
-        var lernWordArr = [];
-        for (var i in arr) {
-            if (counts.has(arr[i])) {
-                counts.set(arr[i], counts.get(arr[i]) + 1);
+        var learnWordArr = [];
+        var learnWordArrNormal = [];
+        var learnWordArrDifficult = [];
+        console.log(arr, 'arr');
+        arr.forEach(function (element) {
+            console.log(element, 'element');
+            if (_this.difficultWords.includes(element)) {
+                learnWordArrDifficult.push(element);
             }
             else {
-                counts.set(arr[i], 1);
+                learnWordArrNormal.push(element);
+            }
+        });
+        console.log(learnWordArrDifficult, 'learnWordArrDifficult', learnWordArrDifficult, 'learnWordArrDifficult');
+        for (var i in learnWordArrNormal) {
+            if (counts.has(learnWordArrNormal[i])) {
+                counts.set(learnWordArrNormal[i], counts.get(learnWordArrNormal[i]) + 1);
+            }
+            else {
+                counts.set(learnWordArrNormal[i], 1);
             }
         }
         var counts2 = Array.from(counts);
         counts2.forEach(function (element) {
             if (element[1] > 2) {
-                // console.log(count, 'count');
                 lernWord = element[0];
-                lernWordArr.push(lernWord);
+                learnWordArr.push(lernWord);
             }
         });
-        console.log(lernWordArr);
-        return lernWordArr;
+        console.log(learnWordArr, 'lernWordArr');
+        return learnWordArr;
     };
     Support.prototype.checkLearnedWrds = function () {
         return __awaiter(this, void 0, Promise, function () {
@@ -194,10 +207,23 @@ var Support = /** @class */ (function () {
         return __awaiter(this, void 0, Promise, function () {
             var _this = this;
             return __generator(this, function (_a) {
-                return [2 /*return*/, api_1.api.GetsStatistics(userId)
-                        .then(function (res) {
-                        var _a;
-                        _this.objStatistic = (_a = res === null || res === void 0 ? void 0 : res.optional) === null || _a === void 0 ? void 0 : _a.audiocall;
+                return [2 /*return*/, new Promise(function (resolve, reject) {
+                        api_1.api.GetsStatistics(userId)
+                            .then(function (res) {
+                            var _a;
+                            _this.objStatistic = (_a = res === null || res === void 0 ? void 0 : res.optional) === null || _a === void 0 ? void 0 : _a.games;
+                            resolve();
+                        })["catch"](function () {
+                            _this.objStatistic = {
+                                longestSeriesOfRightAnswers: 0,
+                                newWords: 0,
+                                percentOfRightAnswers: 0,
+                                rightAnswers: 0,
+                                AllAnswersFromGame: 0,
+                                answer: []
+                            };
+                            resolve();
+                        });
                     })];
             });
         });
@@ -211,7 +237,7 @@ var Support = /** @class */ (function () {
                     case 0:
                         value = {
                             optional: {
-                                audiocall: objStatistics
+                                games: objStatistics
                             }
                         };
                         return [4 /*yield*/, api_1.api.UpsertsNewStatistics(userId, value)];
@@ -337,10 +363,14 @@ var Support = /** @class */ (function () {
                                 // берем статистику и присваиваем ее this.objStatistic
                                 this.staticGet().then(function () {
                                     // если записанная в статистике серия короче новой серии объектов то прересзаписывем
-                                    if (_this.objStatistic.longestSeriesOfRightAnswers < _this.RightAnsweredWords.length) {
+                                    if (_this.objStatistic.longestSeriesOfRightAnswers) {
+                                        if (_this.objStatistic.longestSeriesOfRightAnswers < _this.RightAnsweredWords.length) {
+                                            _this.objStatistic.longestSeriesOfRightAnswers = _this.RightAnsweredWords.length;
+                                        }
+                                    }
+                                    else {
                                         _this.objStatistic.longestSeriesOfRightAnswers = _this.RightAnsweredWords.length;
                                     }
-                                    console.log(_this.RightAnsweredWords.length, 'this.RightAnsweredWords!.length', _this.objStatistic.longestSeriesOfRightAnswers, 'this.objStatistic.longestSeriesOfRightAnswers!');
                                     _this.objStatistic.date = _this.dataNow();
                                     _this.objStatistic.newWords = _this.countNewWords;
                                     if (_this.objStatistic.answer) {
@@ -363,7 +393,6 @@ var Support = /** @class */ (function () {
                                     statisticsData_1.statisticsDataAudiocallShortTerm.longestSeriesOfRightAnswers = _this.objStatistic.longestSeriesOfRightAnswers;
                                     _this.checkLearnedWrds();
                                     _this.clearLocalStorage();
-                                    console.log(_this.objStatistic);
                                 });
                             }
                             if (!userId) {

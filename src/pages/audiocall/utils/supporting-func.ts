@@ -141,27 +141,39 @@ class Support {
 
   getLearnedWord(arr: string[]):string[] {
     const count = 3;
+
     const counts = new Map();
     let lernWord = '';
-    const lernWordArr: string[] = [];
-    for (const i in arr) {
-      if (counts.has(arr[i])) {
-        counts.set(arr[i], counts.get(arr[i]) + 1);
+    const learnWordArr: string[] = [];
+    const learnWordArrNormal: string[] = [];
+    const learnWordArrDifficult: string[] = [];
+    console.log(arr, 'arr');
+    arr.forEach((element) => {
+      console.log(element, 'element');
+      if (this.difficultWords.includes(element)) {
+        learnWordArrDifficult.push(element);
       } else {
-        counts.set(arr[i], 1);
+        learnWordArrNormal.push(element);
+      }
+    });
+    console.log(learnWordArrDifficult, 'learnWordArrDifficult', learnWordArrDifficult, 'learnWordArrDifficult');
+    for (const i in learnWordArrNormal) {
+      if (counts.has(learnWordArrNormal[i])) {
+        counts.set(learnWordArrNormal[i], counts.get(learnWordArrNormal[i]) + 1);
+      } else {
+        counts.set(learnWordArrNormal[i], 1);
       }
     }
     const counts2 = Array.from(counts);
 
     counts2.forEach((element) => {
       if (element[1] > 2) {
-        // console.log(count, 'count');
         lernWord = element[0] as string;
-        lernWordArr.push(lernWord);
+        learnWordArr.push(lernWord);
       }
     });
-    console.log(lernWordArr);
-    return lernWordArr;
+    console.log(learnWordArr, 'lernWordArr');
+    return learnWordArr;
   }
 
   async checkLearnedWrds() : Promise<void> {
@@ -185,17 +197,30 @@ class Support {
   // метод получения статистики
 
   async staticGet() : Promise<void> {
-    return api.GetsStatistics(userId)
-      .then((res) => {
-        this.objStatistic = res?.optional?.audiocall as IOptionalStatisticGame;
-      });
+    return new Promise((resolve, reject) => {
+      api.GetsStatistics(userId)
+        .then((res) => {
+          this.objStatistic = res?.optional?.games as IOptionalStatisticGame;
+          resolve();
+        }).catch(() => {
+          this.objStatistic = {
+            longestSeriesOfRightAnswers: 0,
+            newWords: 0,
+            percentOfRightAnswers: 0,
+            rightAnswers: 0,
+            AllAnswersFromGame: 0,
+            answer: [],
+          };
+          resolve();
+        });
+    });
   }
 
   // метод для заполнения статистики
   async staticUpdate(objStatistics: IOptionalStatisticGame) : Promise<void> {
     const value: IStatistic = {
       optional: {
-        audiocall: objStatistics,
+        games: objStatistics,
       },
     };
     await api.UpsertsNewStatistics(userId, value);
@@ -305,11 +330,11 @@ class Support {
         // берем статистику и присваиваем ее this.objStatistic
         this.staticGet().then(() => {
           // если записанная в статистике серия короче новой серии объектов то прересзаписывем
-
-          if (this.objStatistic.longestSeriesOfRightAnswers! < this.RightAnsweredWords!.length) {
-            this.objStatistic.longestSeriesOfRightAnswers = this.RightAnsweredWords!.length;
-          }
-          console.log(this.RightAnsweredWords!.length, 'this.RightAnsweredWords!.length', this.objStatistic.longestSeriesOfRightAnswers!, 'this.objStatistic.longestSeriesOfRightAnswers!');
+          if (this.objStatistic.longestSeriesOfRightAnswers) {
+            if (this.objStatistic.longestSeriesOfRightAnswers! < this.RightAnsweredWords!.length) {
+              this.objStatistic.longestSeriesOfRightAnswers = this.RightAnsweredWords!.length;
+            }
+          } else { this.objStatistic.longestSeriesOfRightAnswers = this.RightAnsweredWords!.length; }
           this.objStatistic.date = this.dataNow();
           this.objStatistic.newWords! = this.countNewWords!;
 
@@ -334,7 +359,6 @@ class Support {
 
           this.checkLearnedWrds();
           this.clearLocalStorage();
-          console.log(this.objStatistic);
         });
       }
       if (!userId) {
