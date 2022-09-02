@@ -9,7 +9,7 @@ import Header from '../../components/header';
 import Footer from '../../components/footer';
 import { TextbookController } from '../../controller/controllerTextbook';
 import Words from '../../words/words';
-import { difficulties } from '../../words/difficulties';
+import { difficulties, statuses } from '../../words/difficulties';
 
 const TextbookPage: ITextbookPage = {
   classname: 'textbook',
@@ -22,6 +22,8 @@ const TextbookPage: ITextbookPage = {
   learnedPages: [{ unit: 0, page: 0 }],
 
   render(): string {
+    api.getWord('5e9f5ee35eb9e72bc21af50e')
+      .then((response) => console.log(response));
     const locationHash = window.location.hash.split('/');
     const unit = +locationHash[1];
     const page = +locationHash[2];
@@ -35,10 +37,6 @@ const TextbookPage: ITextbookPage = {
     const controllerTextbook = new TextbookController(unitSelector, pageSelector);
     const isLearnedPage = this.learnedPages.some((learnedPage) => learnedPage.unit === unit
       && learnedPage.page === page);
-    api.getWords(1, 1)
-      .then((res) => {
-        console.log(res);
-      });
     this.isAuth = !!localStorage.getItem('user');
     if (!unit) {
       view = `<div class="textbook-units">
@@ -106,17 +104,24 @@ const TextbookPage: ITextbookPage = {
       userId = JSON.parse(localStorage.getItem('user')!).userId;
     }
     function renderCards(words: IWord[], userWords?: IUserWord[] | undefined) {
+      console.log(userWords);
       const wordContainer = document.querySelector(`.${wordlist}`);
       if (wordContainer) {
         wordContainer.innerHTML = '';
         for (let i = 0; i < words.length; i += 1) {
           let isWordInDifficult = Words.aggregatedWords.some((word) => words[i].id === word);
           let isWordLearned = Words.learnedWords.some((word) => words[i].id === word);
+          let isWordNew = false;
+          let isWordGuessed = false;
           if (userWords) {
             isWordInDifficult = userWords.some((word) => words[i].id === word.wordId
               && word.difficulty === difficulties.aggregated);
             isWordLearned = userWords.some((word) => words[i].id === word.wordId
               && word.difficulty === difficulties.learned);
+            isWordNew = userWords.some((word) => words[i].id === word.wordId
+              && word?.optional.status === statuses.new);
+            isWordGuessed = userWords.some((word) => words[i].id === word.wordId
+              && word?.optional.answer === true);
           }
           const card = document.createElement('li');
           card.classList.add('word-item');
@@ -130,8 +135,7 @@ const TextbookPage: ITextbookPage = {
       <div class="audio">
         <audio src="https://rslang-learning-english-words.herokuapp.com/${words[i].audio}"></audio>
       </div>
-      <div class="word-progress progress-done progress-no">
-      </div>
+      ${isWordNew ? `<div class="word-progress ${isWordGuessed ? 'progress-done' : 'progress-no'}"></div>` : ''}
     </div>
     <p class="word-pronounce translation">${words[i].wordTranslate}</p>
     <p class="word-example">${words[i].textMeaning}</p>

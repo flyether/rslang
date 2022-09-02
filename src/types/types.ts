@@ -58,6 +58,7 @@ export interface IUserWord {
   id: string,
   wordId: string,
   difficulty: string,
+  optional: IOptionalUserWords,
 }
 
 export interface IWord {
@@ -130,7 +131,7 @@ export interface IOptionalStatistic {
 
 export interface IOptionalStatisticWrapper {
   textbook?: IOptionalStatistic;
-  games?: IOptionalStatisticGame ;
+  games?: IOptionalStatisticGame;
 }
 
 export interface IStatistic {
