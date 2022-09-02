@@ -24,6 +24,8 @@ export class ModuleView {
 
   chart2 !: Chart;
 
+  chart3!: Chart;
+
   init(container: HTMLElement):void {
     this.myModuleContainer = container;
   }
@@ -58,9 +60,27 @@ export class ModuleView {
     this.chart2 = new Chart(ctx1, {
       type: 'line',
       data: {
-        labels: statisticsDataLongTerm.labels,
+        labels: statisticsDataLongTerm.labels1,
         datasets: [{
           data: statisticsDataLongTerm.data2,
+          label: statisticsDataLongTerm.label2,
+          borderColor: '#3e95cd',
+          fill: false,
+        }],
+      },
+    });
+  }
+
+  renderLineChartNew(chart3: HTMLCanvasElement): void {
+    if (this.chart3) { this.chart3.destroy(); }
+    const ctx1 = chart3.getContext('2d') as CanvasRenderingContext2D;
+    ctx1.clearRect(0, 0, chart3.width, chart3.height);
+    this.chart3 = new Chart(ctx1, {
+      type: 'line',
+      data: {
+        labels: statisticsDataLongTerm.labels1,
+        datasets: [{
+          data: statisticsDataLongTerm.data3,
           label: statisticsDataLongTerm.label2,
           borderColor: '#3e95cd',
           fill: false,
@@ -133,5 +153,7 @@ export class ModuleView {
     this.renderBarChart(chartCanvas1);
     const chartCanvas2 = document.getElementById('chart2') as HTMLCanvasElement;
     this.renderLineChart(chartCanvas2);
+    const chartCanvas3 = document.getElementById('chart3') as HTMLCanvasElement;
+    this.renderLineChartNew(chartCanvas3);
   }
 }

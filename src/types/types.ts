@@ -130,9 +130,14 @@ export interface IOptionalStatistic {
 
 export interface IOptionalStatisticWrapper {
   textbook?: IOptionalStatistic;
-  games?: IOptionalStatisticGame ;
+  games?: IOptionalStatisticGame;
+  long?: ILongStatisticsStore;
 }
-
+export interface ILongStatisticsStore {
+  learnedWords?: number [];
+  NewWords?: number [];
+  date?: string [];
+}
 export interface IStatistic {
   learnedWords?: number;
   optional?: IOptionalStatisticWrapper;
@@ -175,11 +180,4 @@ export interface ITextbookPage {
   render(): string;
   renderPages(unit: number): string;
   getCards(unit: number, page: number): void;
-}
-export interface IObjStatisticStorage {
-  date?: string;
-  percentOfRightAnswers: number;
-  newWords?: number;
-  longestSeriesOfRightAnswers: number;
-  answer?: string[];
 }

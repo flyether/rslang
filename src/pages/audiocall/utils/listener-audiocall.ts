@@ -44,6 +44,7 @@ class ListenerAudioCall {
           support.WrongAnsweredWords?.push(support.wordObj!.word);
           if (support.LearnedWordsID?.includes(support.wordObj?.id as string)) {
             support.deleteWrongWordFromServer();
+            wrongAnswerFunc((e.target as HTMLElement));
           } else {
             support.CrateNewWord(false);
             wrongAnswerFunc((e.target as HTMLElement));

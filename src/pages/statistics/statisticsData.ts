@@ -1,6 +1,9 @@
+/* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import { api } from '../../api/api';
-import { IObjStatisticStorage, IOptionalStatisticGame, IStatistic } from '../../types/types';
+import {
+  ILongStatisticsStore, IOptionalStatisticGame, IStatistic,
+} from '../../types/types';
 import StatisticsPage from '.';
 import { support } from '../audiocall/utils/supporting-func';
 
@@ -11,6 +14,7 @@ if (localStorage.getItem('user')) {
 
 function getArrOfLast5Days() {
   let now = Date.now();
+  console.log(now, '16');
   const oneDay = 86400000;
   const arr = [];
   for (let i = 0; i < 5; i += 1) {
@@ -31,10 +35,13 @@ function dataNow(): string {
 
 export const statisticsDataLongTerm = {
   labels: getArrOfLast5Days(),
+  labels1: getArrOfLast5Days(),
   label1: 'Количество новых слов за день',
-  data1: [13, 19, 32, 2, 11],
+  data1: [0],
   label2: 'Количество изученных слов',
-  data2: [130, 150, 175, 200, 215],
+  data2: [0],
+  label3: 'Количество новых слов все время',
+  data3: [0],
 };
 
 export const statisticsDataTextbookShortTerm = {
@@ -55,11 +62,25 @@ const objAudiocallDate: IOptionalStatisticGame = {
   AllAnswersFromGameSprint: 0,
 };
 
+const longStatisticsStore: ILongStatisticsStore = {
+  learnedWords: [0],
+  NewWords: [0],
+  date: ['0'],
+};
+
+for (let i = 0; i < 5; i++) {
+  if (longStatisticsStore.NewWords![longStatisticsStore.learnedWords!.length - i]) { statisticsDataLongTerm.data1[i] = longStatisticsStore.NewWords![longStatisticsStore.learnedWords!.length - i]; } else { statisticsDataLongTerm.data1[i] = 0; }
+}
+statisticsDataLongTerm.data1 = statisticsDataLongTerm.data1.reverse();
+
 const valueStatisticsAudiocall:IStatistic = {
   optional: {
     games: objAudiocallDate,
+    long: longStatisticsStore,
   },
 };
+
+console.log(valueStatisticsAudiocall, 'valueStatisticsAudiocall');
 
 export const statisticsDataAudiocallShortTerm = {
   newWords: objAudiocallDate.newWords,
@@ -71,14 +92,40 @@ export async function staticGet() : Promise<void> {
   api.GetsStatistics(userId)
     .then((res) => {
       if (objAudiocallDate.date === res?.optional?.games?.date) {
-        objAudiocallDate.percentOfRightAnswers = res?.optional?.games?.percentOfRightAnswers;
         objAudiocallDate.newWords = res?.optional?.games?.newWords;
         objAudiocallDate.longestSeriesOfRightAnswers = res?.optional?.games?.newWords;
 
         statisticsDataAudiocallShortTerm.percentOfRightAnswers = objAudiocallDate.percentOfRightAnswers;
         statisticsDataAudiocallShortTerm.newWords = objAudiocallDate.newWords;
         statisticsDataAudiocallShortTerm.longestSeriesOfRightAnswers = objAudiocallDate.longestSeriesOfRightAnswers;
-      } else { api.UpsertsNewStatistics(userId, valueStatisticsAudiocall); }
+        // if (res?.optional?.games?.newWords) {
+        //   longStatisticsStore.NewWords?.push(res?.optional?.games?.newWords);
+        //   statisticsDataLongTerm.data3 = longStatisticsStore.NewWords as number[];
+        // }
+        // if (res?.optional?.textbook?.learnedWordss) {
+        //   longStatisticsStore.learnedWords?.push(res?.optional?.textbook.learnedWordss);
+        //   statisticsDataLongTerm.data2 = longStatisticsStore.learnedWords as number[];
+        // }
+        // if (res?.optional?.games?.date) {
+        //   longStatisticsStore.date?.push(res?.optional?.games?.date);
+        //   statisticsDataLongTerm.labels1 = longStatisticsStore.date as string[];
+        // }
+      } else {
+        if (res?.optional?.games?.newWords) {
+          longStatisticsStore.NewWords?.push(res?.optional?.games?.newWords);
+          statisticsDataLongTerm.data3 = longStatisticsStore.NewWords as number[];
+        }
+        if (res?.optional?.textbook?.learnedWordss) {
+          longStatisticsStore.learnedWords?.push(res?.optional?.textbook.learnedWordss);
+          statisticsDataLongTerm.data2 = longStatisticsStore.learnedWords as number[];
+        }
+        if (res?.optional?.games?.date) {
+          longStatisticsStore.date?.push(res?.optional?.games?.date);
+          statisticsDataLongTerm.labels1 = longStatisticsStore.date as string[];
+        }
+
+        api.UpsertsNewStatistics(userId, valueStatisticsAudiocall);
+      }
     });
 }
 

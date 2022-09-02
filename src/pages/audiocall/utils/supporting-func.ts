@@ -9,12 +9,31 @@ import {
 } from '../../../types/types';
 import { apiPath } from '../../../api/api-path';
 import { api } from '../../../api/api';
-import { statisticsDataAudiocallShortTerm } from '../../statistics/statisticsData';
+import { statisticsDataAudiocallShortTerm, statisticsDataLongTerm } from '../../statistics/statisticsData';
 
 function shuffle(array:string[]) {
   array.sort(() => Math.random() - 0.5);
 }
+function maping(arr:string[], num: number, learn:string[]) {
+  const counts = new Map();
+  let lernWord = '';
+  for (const i in arr) {
+    if (counts.has(arr[i])) {
+      counts.set(arr[i], counts.get(arr[i]) + 1);
+    } else {
+      counts.set(arr[i], 1);
+    }
+  }
 
+  const counts2 = Array.from(counts);
+  console.log(counts2, 'counts2');
+  counts2.forEach((element) => {
+    if (element[1] > num) {
+      lernWord = element[0] as string;
+      learn.push(lernWord);
+    }
+  });
+}
 // функция проигрывания аудио с путем из нашего обекта-слово
 export function soundAudio(path: string): void {
   const audioD = new Audio();
@@ -27,7 +46,6 @@ if (localStorage.getItem('user')) {
   userId = JSON.parse(localStorage.getItem('user')!).userId;
 }
 
-console.log(userId);
 class Support {
   public difficultWords: string[];
 
@@ -141,38 +159,35 @@ class Support {
   // проверка слов на изученность
 
   getLearnedWord(arr: string[]):string[] {
-    const count = 3;
-
-    const counts = new Map();
-    let lernWord = '';
     const learnWordArr: string[] = [];
     const learnWordArrNormal: string[] = [];
     const learnWordArrDifficult: string[] = [];
-    console.log(arr, 'arr');
     arr.forEach((element) => {
-      console.log(element, 'element');
       if (this.difficultWords.includes(element)) {
         learnWordArrDifficult.push(element);
       } else {
         learnWordArrNormal.push(element);
       }
     });
-    console.log(learnWordArrDifficult, 'learnWordArrDifficult', learnWordArrDifficult, 'learnWordArrDifficult');
-    for (const i in learnWordArrNormal) {
-      if (counts.has(learnWordArrNormal[i])) {
-        counts.set(learnWordArrNormal[i], counts.get(learnWordArrNormal[i]) + 1);
-      } else {
-        counts.set(learnWordArrNormal[i], 1);
-      }
-    }
-    const counts2 = Array.from(counts);
+    maping(learnWordArrDifficult, 2, learnWordArr);
+    maping(learnWordArrDifficult, 5, learnWordArr);
+    // console.log(learnWordArrDifficult, 'learnWordArrDifficult', learnWordArrNormal, 'learnWordArrNormal');
+    // for (const i in learnWordArrNormal) {
+    //   if (counts.has(learnWordArrNormal[i])) {
+    //     counts.set(learnWordArrNormal[i], counts.get(learnWordArrNormal[i]) + 1);
+    //   } else {
+    //     counts.set(learnWordArrNormal[i], 1);
+    //   }
+    // }
 
-    counts2.forEach((element) => {
-      if (element[1] > 2) {
-        lernWord = element[0] as string;
-        learnWordArr.push(lernWord);
-      }
-    });
+    // const counts2 = Array.from(counts);
+    // console.log(counts2, 'counts2');
+    // counts2.forEach((element) => {
+    //   if (element[1] > count) {
+    //     lernWord = element[0] as string;
+    //     learnWordArr.push(lernWord);
+    //   }
+    // });
     console.log(learnWordArr, 'lernWordArr');
     return learnWordArr;
   }
