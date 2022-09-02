@@ -59,6 +59,7 @@ var userId = '';
 if (localStorage.getItem('user')) {
     userId = JSON.parse(localStorage.getItem('user')).userId;
 }
+console.log(userId);
 var Support = /** @class */ (function () {
     function Support() {
         this.objStatistic = {
