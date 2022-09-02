@@ -140,7 +140,7 @@ class Support {
   // проверка слов на изученность
 
   getLearnedWord(arr: string[]):string[] {
-    let count = 3;
+    const count = 3;
     const counts = new Map();
     let lernWord = '';
     const lernWordArr: string[] = [];
@@ -154,23 +154,21 @@ class Support {
     const counts2 = Array.from(counts);
 
     counts2.forEach((element) => {
-      if (this.difficultWords.includes(element[0])) {
-        count = 5;
-      }
-      if (element[1] === count) {
+      if (element[1] > 2) {
+        // console.log(count, 'count');
         lernWord = element[0] as string;
-        (lernWordArr as string[]).push(lernWord);
-        console.log(element[0], 'element[0]', element[1], 'element[1]');
+        lernWordArr.push(lernWord);
       }
     });
+    console.log(lernWordArr);
     return lernWordArr;
   }
 
   async checkLearnedWrds() : Promise<void> {
-    let lernWordIDArr = this.getLearnedWord(this.objStatistic.answer!);
+    const lernWordIDArr = this.getLearnedWord(this.objStatistic.answer!);
 
-    lernWordIDArr = lernWordIDArr.filter((item) => !this.LearnedWordsID!.includes(item));
-
+    // lernWordIDArr = lernWordIDArr.filter((item) => !this.LearnedWordsID!.includes(item));
+    // console.log(lernWordIDArr, 'lernWordIDArr послефильтра');
     lernWordIDArr.forEach(async (element) => {
       if (userId) {
         try {
@@ -207,6 +205,7 @@ class Support {
   async deleteWrongWordFromServer():Promise<void> {
     if (userId) {
       await api.DeleteUserWord(userId, this.wordObj!.id);
+      console.log('удаляем ', this.wordObj?.word);
     }
   }
 
@@ -230,9 +229,8 @@ class Support {
   // отрисовка хтмл в игре
   async printBtnString(): Promise<void> {
     this.getUserWords();
-
     const btnWrapper = document.querySelector('.audio-container-game') as HTMLElement;
-
+    const countWord = 5;
     //     выбор уровня и страницы для загрузки слов  ссервера
 
     this.group = this.level! - 1;
@@ -246,7 +244,7 @@ class Support {
     if (garageSection) {
       garageSection.innerHTML = '';
     }
-    if (this.round! < 5) {
+    if (this.round! < countWord) {
       this.words = res;
       if (this.wordStudied.length > 0) {
         this.noRepeat = this.noRepeat!.concat(this.wordStudied);
@@ -301,6 +299,7 @@ class Support {
       </div>
 
     `;
+
       // работа над статистикой
       if (userId) {
         // берем статистику и присваиваем ее this.objStatistic
@@ -310,20 +309,24 @@ class Support {
           if (this.objStatistic.longestSeriesOfRightAnswers! < this.RightAnsweredWords!.length) {
             this.objStatistic.longestSeriesOfRightAnswers = this.RightAnsweredWords!.length;
           }
+          console.log(this.RightAnsweredWords!.length, 'this.RightAnsweredWords!.length', this.objStatistic.longestSeriesOfRightAnswers!, 'this.objStatistic.longestSeriesOfRightAnswers!');
           this.objStatistic.date = this.dataNow();
           this.objStatistic.newWords! = this.countNewWords!;
 
-          this.objStatistic.answer = this.objStatistic.answer!.concat(this.RightAnsweredWords!);
+          if (this.objStatistic.answer) {
+            this.objStatistic.answer = this.objStatistic.answer!.concat(this.RightAnsweredWords!);
+          } else { this.objStatistic.answer = this.RightAnsweredWords; }
 
-          this.objStatistic.AllAnswersFromGame! += 5;
+          this.objStatistic.AllAnswersFromGame! += countWord;
           this.objStatistic.rightAnswers! += this.RightAnsweredWords!.length;
 
-          if (this.objStatistic.rightAnswers !== 0) {
+          if (this.objStatistic.rightAnswers) {
             this.objStatistic.percentOfRightAnswers = Math.floor((this.objStatistic.rightAnswers! * 100) / this.objStatistic.AllAnswersFromGame!);
+          } else {
+            Math.floor((this.RightAnsweredWords!.length * 100) / countWord);
           }
 
           this.staticUpdate(this.objStatistic);
-          console.log(this.objStatistic, ' - this.objStatistic ');
 
           statisticsDataAudiocallShortTerm.newWords = this.objStatistic.newWords!;
           statisticsDataAudiocallShortTerm.percentOfRightAnswers = this.objStatistic.percentOfRightAnswers;
@@ -331,6 +334,7 @@ class Support {
 
           this.checkLearnedWrds();
           this.clearLocalStorage();
+          console.log(this.objStatistic);
         });
       }
       if (!userId) {
