@@ -67,6 +67,7 @@ const longStatisticsStore: ILongStatisticsStore = {
   NewWords: [0],
   date: ['0'],
 };
+console.log(longStatisticsStore, 'longStatisticsStore');
 
 for (let i = 0; i < 5; i++) {
   if (longStatisticsStore.NewWords![longStatisticsStore.learnedWords!.length - i]) { statisticsDataLongTerm.data1[i] = longStatisticsStore.NewWords![longStatisticsStore.learnedWords!.length - i]; } else { statisticsDataLongTerm.data1[i] = 0; }
@@ -94,7 +95,8 @@ export async function staticGet() : Promise<void> {
       if (objAudiocallDate.date === res?.optional?.games?.date) {
         objAudiocallDate.newWords = res?.optional?.games?.newWords;
         objAudiocallDate.longestSeriesOfRightAnswers = res?.optional?.games?.newWords;
-
+        console.log(valueStatisticsAudiocall, 'valueStatisticsAudiocall в статистик гет');
+console.log(res!.optional!.games, 'res!.optional!.games');
         statisticsDataAudiocallShortTerm.percentOfRightAnswers = objAudiocallDate.percentOfRightAnswers;
         statisticsDataAudiocallShortTerm.newWords = objAudiocallDate.newWords;
         statisticsDataAudiocallShortTerm.longestSeriesOfRightAnswers = objAudiocallDate.longestSeriesOfRightAnswers;

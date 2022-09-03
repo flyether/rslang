@@ -58,6 +58,7 @@ export interface IUserWord {
   id: string,
   wordId: string,
   difficulty: string,
+  optional: IOptionalUserWords,
 }
 
 export interface IWord {
@@ -180,4 +181,11 @@ export interface ITextbookPage {
   render(): string;
   renderPages(unit: number): string;
   getCards(unit: number, page: number): void;
+}
+export interface IObjStatisticStorage {
+  date?: string;
+  percentOfRightAnswers: number;
+  newWords?: number;
+  longestSeriesOfRightAnswers: number;
+  answer?: string[];
 }

@@ -94,6 +94,7 @@ var longStatisticsStore = {
     NewWords: [0],
     date: ['0']
 };
+console.log(longStatisticsStore, 'longStatisticsStore');
 for (var i = 0; i < 5; i++) {
     if (longStatisticsStore.NewWords[longStatisticsStore.learnedWords.length - i]) {
         exports.statisticsDataLongTerm.data1[i] = longStatisticsStore.NewWords[longStatisticsStore.learnedWords.length - i];
@@ -124,6 +125,8 @@ function staticGet() {
                     if (objAudiocallDate.date === ((_b = (_a = res === null || res === void 0 ? void 0 : res.optional) === null || _a === void 0 ? void 0 : _a.games) === null || _b === void 0 ? void 0 : _b.date)) {
                         objAudiocallDate.newWords = (_d = (_c = res === null || res === void 0 ? void 0 : res.optional) === null || _c === void 0 ? void 0 : _c.games) === null || _d === void 0 ? void 0 : _d.newWords;
                         objAudiocallDate.longestSeriesOfRightAnswers = (_f = (_e = res === null || res === void 0 ? void 0 : res.optional) === null || _e === void 0 ? void 0 : _e.games) === null || _f === void 0 ? void 0 : _f.newWords;
+                        console.log(valueStatisticsAudiocall, 'valueStatisticsAudiocall в статистик гет');
+                        console.log(res.optional.games, 'res!.optional!.games');
                         exports.statisticsDataAudiocallShortTerm.percentOfRightAnswers = objAudiocallDate.percentOfRightAnswers;
                         exports.statisticsDataAudiocallShortTerm.newWords = objAudiocallDate.newWords;
                         exports.statisticsDataAudiocallShortTerm.longestSeriesOfRightAnswers = objAudiocallDate.longestSeriesOfRightAnswers;
