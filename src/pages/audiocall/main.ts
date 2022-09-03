@@ -16,7 +16,7 @@ const AudiocallGame = {
        <div class = 'container'> 
        <a class="go-main " href='#main' >Вернуться на главную</a> 
          <div class = 'game'> ${gameArea} </div>
-         
+
          
          </div>
       `;

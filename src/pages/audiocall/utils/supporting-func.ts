@@ -9,12 +9,31 @@ import {
 } from '../../../types/types';
 import { apiPath } from '../../../api/api-path';
 import { api } from '../../../api/api';
-import { statisticsDataAudiocallShortTerm } from '../../statistics/statisticsData';
+import { statisticsDataAudiocallShortTerm, statisticsDataLongTerm } from '../../statistics/statisticsData';
 
 function shuffle(array:string[]) {
   array.sort(() => Math.random() - 0.5);
 }
+function maping(arr:string[], num: number, learn:string[]) {
+  const counts = new Map();
+  let lernWord = '';
+  for (const i in arr) {
+    if (counts.has(arr[i])) {
+      counts.set(arr[i], counts.get(arr[i]) + 1);
+    } else {
+      counts.set(arr[i], 1);
+    }
+  }
 
+  const counts2 = Array.from(counts);
+  counts2.forEach((element) => {
+    if (element[1] > num) {
+      lernWord = element[0] as string;
+      learn.push(lernWord);
+      console.log(learn, 'learn');
+    }
+  });
+}
 // функция проигрывания аудио с путем из нашего обекта-слово
 export function soundAudio(path: string): void {
   const audioD = new Audio();
@@ -27,7 +46,6 @@ if (localStorage.getItem('user')) {
   userId = JSON.parse(localStorage.getItem('user')!).userId;
 }
 
-console.log(userId);
 class Support {
   public difficultWords: string[];
 
@@ -135,53 +153,41 @@ class Support {
               });
           }
         });
+      }).catch((error) => {
+        this.objStatistic = {
+          percentOfRightAnswers: 0,
+          newWords: 0,
+          longestSeriesOfRightAnswers: 0,
+          newWordsSprint: 0,
+          percentOfRightAnswersSprint: 0,
+          longestSeriesOfRightAnswersSprint: 0,
+          rightAnswersSprint: 0,
+          AllAnswersFromGameSprint: 0,
+        };
       });
   }
 
   // проверка слов на изученность
 
   getLearnedWord(arr: string[]):string[] {
-    const count = 3;
-
-    const counts = new Map();
-    let lernWord = '';
     const learnWordArr: string[] = [];
     const learnWordArrNormal: string[] = [];
     const learnWordArrDifficult: string[] = [];
-    console.log(arr, 'arr');
     arr.forEach((element) => {
-      console.log(element, 'element');
       if (this.difficultWords.includes(element)) {
         learnWordArrDifficult.push(element);
       } else {
         learnWordArrNormal.push(element);
       }
     });
-    console.log(learnWordArrDifficult, 'learnWordArrDifficult', learnWordArrDifficult, 'learnWordArrDifficult');
-    for (const i in learnWordArrNormal) {
-      if (counts.has(learnWordArrNormal[i])) {
-        counts.set(learnWordArrNormal[i], counts.get(learnWordArrNormal[i]) + 1);
-      } else {
-        counts.set(learnWordArrNormal[i], 1);
-      }
-    }
-    const counts2 = Array.from(counts);
-
-    counts2.forEach((element) => {
-      if (element[1] > 2) {
-        lernWord = element[0] as string;
-        learnWordArr.push(lernWord);
-      }
-    });
-    console.log(learnWordArr, 'lernWordArr');
+    maping(learnWordArrNormal, 2, learnWordArr);
+    maping(learnWordArrDifficult, 4, learnWordArr);
     return learnWordArr;
   }
 
   async checkLearnedWrds() : Promise<void> {
     const lernWordIDArr = this.getLearnedWord(this.objStatistic.answer!);
 
-    // lernWordIDArr = lernWordIDArr.filter((item) => !this.LearnedWordsID!.includes(item));
-    // console.log(lernWordIDArr, 'lernWordIDArr послефильтра');
     lernWordIDArr.forEach(async (element) => {
       if (userId) {
         try {
@@ -334,13 +340,12 @@ class Support {
         this.staticGet().then(() => {
           // если записанная в статистике серия короче новой серии объектов то прересзаписывем
 
-          console.log(this.objStatistic, 'this.objStatistic');
           if (this.objStatistic.longestSeriesOfRightAnswers! < this.RightAnsweredWords!.length) {
             this.objStatistic.longestSeriesOfRightAnswers = this.RightAnsweredWords!.length;
           }
 
           this.objStatistic.date = this.dataNow();
-          this.objStatistic.newWords! = this.countNewWords!;
+          this.objStatistic.newWords! += this.countNewWords!;
 
           if (this.objStatistic.answer) {
             this.objStatistic.answer = this.objStatistic.answer!.concat(this.RightAnsweredWords!);
@@ -351,17 +356,17 @@ class Support {
             this.objStatistic.rightAnswers! += this.RightAnsweredWords!.length;
           } else { this.objStatistic.rightAnswers! = this.RightAnsweredWords!.length; }
 
-          if (this.objStatistic.rightAnswers) {
+          if (this.objStatistic.rightAnswers && this.objStatistic.rightAnswers !== 0) {
             this.objStatistic.percentOfRightAnswers = Math.floor((this.objStatistic.rightAnswers! * 100) / this.objStatistic.AllAnswersFromGame!);
           } else {
-            Math.floor((this.RightAnsweredWords!.length * 100) / countWord);
+            this.objStatistic.percentOfRightAnswers = Math.floor((this.RightAnsweredWords!.length * 100) / countWord);
           }
-
+          console.log(this.objStatistic.percentOfRightAnswers, 'this.objStatistic.percentOfRightAnswers');
           this.staticUpdate(this.objStatistic);
 
           statisticsDataAudiocallShortTerm.newWords = this.objStatistic.newWords!;
           statisticsDataAudiocallShortTerm.percentOfRightAnswers = this.objStatistic.percentOfRightAnswers;
-          statisticsDataAudiocallShortTerm.longestSeriesOfRightAnswers = this.objStatistic.longestSeriesOfRightAnswers as number;
+          statisticsDataAudiocallShortTerm.longestSeriesOfRightAnswers = this.objStatistic.longestSeriesOfRightAnswers;
 
           this.checkLearnedWrds();
           this.clearLocalStorage();
@@ -385,7 +390,7 @@ class Support {
   clearLocalStorage(): void {
     this.WrongAnsweredWords = [];
     this.RightAnsweredWords = [];
-    // this.textbook = false;
+    this.countNewWords = 0;
     this.arrayWrongWords = [];
     this.round = 0;
     this.score = 0;
