@@ -81,8 +81,6 @@ const valueStatisticsAudiocall:IStatistic = {
   },
 };
 
-console.log(valueStatisticsAudiocall, 'valueStatisticsAudiocall');
-
 export const statisticsDataAudiocallShortTerm = {
   newWords: objAudiocallDate.newWords,
   percentOfRightAnswers: objAudiocallDate.percentOfRightAnswers,
@@ -95,37 +93,25 @@ export async function staticGet() : Promise<void> {
       if (objAudiocallDate.date === res?.optional?.games?.date) {
         objAudiocallDate.newWords = res?.optional?.games?.newWords;
         objAudiocallDate.longestSeriesOfRightAnswers = res?.optional?.games?.newWords;
-        console.log(valueStatisticsAudiocall, 'valueStatisticsAudiocall в статистик гет');
-console.log(res!.optional!.games, 'res!.optional!.games');
+        objAudiocallDate.percentOfRightAnswers = res?.optional?.games?.percentOfRightAnswers;
+        console.log(longStatisticsStore, 'longStatisticsStore в статистик гет', res?.optional?.games, 'res?.optional?.games');
+
         statisticsDataAudiocallShortTerm.percentOfRightAnswers = objAudiocallDate.percentOfRightAnswers;
         statisticsDataAudiocallShortTerm.newWords = objAudiocallDate.newWords;
         statisticsDataAudiocallShortTerm.longestSeriesOfRightAnswers = objAudiocallDate.longestSeriesOfRightAnswers;
-        // if (res?.optional?.games?.newWords) {
-        //   longStatisticsStore.NewWords?.push(res?.optional?.games?.newWords);
-        //   statisticsDataLongTerm.data3 = longStatisticsStore.NewWords as number[];
-        // }
-        // if (res?.optional?.textbook?.learnedWordss) {
-        //   longStatisticsStore.learnedWords?.push(res?.optional?.textbook.learnedWordss);
-        //   statisticsDataLongTerm.data2 = longStatisticsStore.learnedWords as number[];
-        // }
-        // if (res?.optional?.games?.date) {
-        //   longStatisticsStore.date?.push(res?.optional?.games?.date);
-        //   statisticsDataLongTerm.labels1 = longStatisticsStore.date as string[];
-        // }
-      } else {
         if (res?.optional?.games?.newWords) {
           longStatisticsStore.NewWords?.push(res?.optional?.games?.newWords);
           statisticsDataLongTerm.data3 = longStatisticsStore.NewWords as number[];
-        }
+        } else { longStatisticsStore.NewWords?.push(0); }
         if (res?.optional?.textbook?.learnedWordss) {
           longStatisticsStore.learnedWords?.push(res?.optional?.textbook.learnedWordss);
           statisticsDataLongTerm.data2 = longStatisticsStore.learnedWords as number[];
-        }
+        } else { longStatisticsStore.learnedWords?.push(0); }
         if (res?.optional?.games?.date) {
           longStatisticsStore.date?.push(res?.optional?.games?.date);
           statisticsDataLongTerm.labels1 = longStatisticsStore.date as string[];
-        }
-
+        } else { longStatisticsStore.date?.push('нет даты'); }
+      } else {
         api.UpsertsNewStatistics(userId, valueStatisticsAudiocall);
       }
     });

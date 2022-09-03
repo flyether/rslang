@@ -377,7 +377,7 @@ class Support {
           statisticsDataAudiocallShortTerm.newWords = this.objStatistic.newWords!;
           statisticsDataAudiocallShortTerm.percentOfRightAnswers = this.objStatistic.percentOfRightAnswers;
           statisticsDataAudiocallShortTerm.longestSeriesOfRightAnswers = this.objStatistic.longestSeriesOfRightAnswers as number;
-
+          console.log(statisticsDataAudiocallShortTerm, 'statisticsDataAudiocallShortTerm в игре');
           this.checkLearnedWrds();
           this.clearLocalStorage();
         });
