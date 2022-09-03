@@ -27,6 +27,7 @@ if (localStorage.getItem('user')) {
   userId = JSON.parse(localStorage.getItem('user')!).userId;
 }
 
+console.log(userId);
 class Support {
   public difficultWords: string[];
 
