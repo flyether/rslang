@@ -9,5 +9,5 @@ export function checkUserAuthorization(): string | undefined {
     const { userId } = userObj;
     return userId;
   }
-  return undefined;
+  return 'no';
 }

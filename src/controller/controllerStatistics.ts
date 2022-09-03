@@ -3,7 +3,7 @@
 /* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 
-import { staticGet, statisticsDataAudiocallShortTerm } from '../pages/statistics/statisticsData';
+import { staticGet, statisticsDataAudiocallShortTerm, staticGetSprint } from '../pages/statistics/statisticsData';
 import { ModuleModel } from '../model/modelStatistics';
 // import { setSprintData } from '../pages/sprint/sprintData';
 

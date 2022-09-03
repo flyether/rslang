@@ -9,6 +9,7 @@ import { apiPath } from '../api/api-path';
 import { IWord } from '../types/types';
 import { randomInteger, checkUserAuthorization } from '../utils/func';
 import { sprintSettings } from '../pages/sprint/sprintSettings';
+import { sprintData } from '../pages/sprint/sprintData';
 
 export class ModuleModel {
   myModuleView!: ModuleView;
@@ -130,10 +131,16 @@ export class ModuleModel {
       this.rightAnswerAudio.play();
       this.arrayOfAnswers.push(true);
       this.analyzeTrueAnswer();
+      sprintData.seriesArr.push(1);
+      sprintData.allAnswers.push(true);
+      sprintData.rightAnswers.push(this.active20Words[this.activeWordNumber].id);
+      console.log(sprintData);
     } else {
       this.wrongAnswerAudio.play();
       this.arrayOfAnswers.push(false);
       this.analyzeFalseAnswer();
+      sprintData.updateLongestSeries();
+      sprintData.allAnswers.push(false);
     }
   }
 
@@ -203,6 +210,7 @@ export class ModuleModel {
       }
     });
     this.myModuleView.renderResults(this.arrayOfQuestion, this.arrayOfAnswers, rightAnswers, wrongAnswers, this.score);
+    sprintData.writeSprintDataToStatistics();
   }
 
   getAudio(rightAnswer:HTMLAudioElement, wrongAnswer:HTMLAudioElement, timeover:HTMLAudioElement):void {

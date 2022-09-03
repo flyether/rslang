@@ -1,7 +1,7 @@
 import {
   statisticsDataTextbookShortTerm, statisticsDataAudiocallShortTerm,
   statisticsDataSprintShortTerm,
-  staticGet,
+  staticGet, staticGetSprint,
 } from './statisticsData';
 
 export const StatisticsPageTextbookShortTeam = {
@@ -45,20 +45,20 @@ export const StatisticsPageAudiocallShortTeam = {
 };
 
 export const StatisticsPageSprintShortTeam = {
-  render(): string {
+  render(array:number[]): string {
     return `
     <div class = "statistics__shortterm">
       <div class="shortterm__new-words">
         Количество новых слов
-        <div class="words">${statisticsDataSprintShortTerm.newWords}</div>
+        <div class="words">${array[0]}</div>
       </div>
       <div class="shortterm__right-answers">
         Процент правильных ответов
-        <div class="words">${statisticsDataSprintShortTerm.percentOfRightAnswers}</div>
+        <div class="words">${Math.round(array[1])}</div>
       </div>
       <div class="shortterm__max-seria">
         Самая длинная серия правильных ответов
-        <div class="words">${statisticsDataSprintShortTerm.longestSeriesOfRightAnswers}</div>
+        <div class="words">${array[2]}</div>
       </div>
     </div>`;
   },

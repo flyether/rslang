@@ -67,6 +67,12 @@ export const statisticsDataAudiocallShortTerm = {
   longestSeriesOfRightAnswers: objAudiocallDate.longestSeriesOfRightAnswers,
 };
 
+export const statisticsDataSprintShortTerm = {
+  newWords: objAudiocallDate.newWordsSprint,
+  percentOfRightAnswers: objAudiocallDate.percentOfRightAnswersSprint,
+  longestSeriesOfRightAnswers: objAudiocallDate.longestSeriesOfRightAnswersSprint,
+};
+
 export async function staticGet() : Promise<void> {
   api.GetsStatistics(userId)
     .then((res) => {
@@ -82,8 +88,29 @@ export async function staticGet() : Promise<void> {
     });
 }
 
-export const statisticsDataSprintShortTerm = {
-  newWords: 100,
-  percentOfRightAnswers: 50,
-  longestSeriesOfRightAnswers: 15,
-};
+export async function staticGetSprint() : Promise<void> {
+  api.GetsStatistics(userId)
+    .then((res) => {
+      console.log('c сервера', res);
+      if (objAudiocallDate.date === res?.optional?.games?.date) {
+        objAudiocallDate.percentOfRightAnswersSprint = res?.optional?.games?.percentOfRightAnswersSprint;
+        objAudiocallDate.newWordsSprint = res?.optional?.games?.newWordsSprint;
+        objAudiocallDate.longestSeriesOfRightAnswersSprint = res?.optional?.games?.longestSeriesOfRightAnswersSprint;
+        objAudiocallDate.rightAnswersSprint = res?.optional?.games?.rightAnswersSprint;
+        objAudiocallDate.AllAnswersFromGameSprint = res?.optional?.games?.AllAnswersFromGameSprint;
+      } else { api.UpsertsNewStatistics(userId, valueStatisticsAudiocall); }
+    });
+}
+
+export async function getSprintDataForRendering() {
+  await staticGetSprint();
+  console.log(objAudiocallDate.longestSeriesOfRightAnswersSprint);
+  return [objAudiocallDate.newWordsSprint, objAudiocallDate.percentOfRightAnswersSprint, objAudiocallDate.longestSeriesOfRightAnswersSprint];
+}
+
+export async function getSprintDataArray() {
+  await staticGetSprint();
+  console.log(objAudiocallDate.newWordsSprint, objAudiocallDate.longestSeriesOfRightAnswersSprint, objAudiocallDate.AllAnswersFromGameSprint, objAudiocallDate.rightAnswersSprint);
+  return [objAudiocallDate.newWordsSprint, objAudiocallDate.longestSeriesOfRightAnswersSprint,
+    objAudiocallDate.AllAnswersFromGameSprint, objAudiocallDate.rightAnswersSprint];
+}

@@ -4,7 +4,7 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 import Chart from 'chart.js/auto';
 import { Routes } from '../types/types';
-import { statisticsDataLongTerm } from '../pages/statistics/statisticsData';
+import { statisticsDataLongTerm, getSprintDataForRendering } from '../pages/statistics/statisticsData';
 import {
   StatisticsPageTextbookShortTeam, StatisticsPageAudiocallShortTeam,
   StatisticsPageSprintShortTeam,
@@ -109,8 +109,10 @@ export class ModuleView {
     }
   }
 
-  renderDayStatistics(str:string): void {
+  async renderDayStatistics(str:string): Promise<void> {
     this.statisticsDiv = this.myModuleContainer.querySelector('.statistics__div') as HTMLElement;
+    const arr = await getSprintDataForRendering() as number[];
+    console.log(arr);
     switch (str) {
       case 'textbook':
         this.statisticsDiv.innerHTML = StatisticsPageTextbookShortTeam.render();
@@ -119,7 +121,7 @@ export class ModuleView {
         this.statisticsDiv.innerHTML = StatisticsPageAudiocallShortTeam.render();
         break;
       case 'sprint':
-        this.statisticsDiv.innerHTML = StatisticsPageSprintShortTeam.render();
+        this.statisticsDiv.innerHTML = StatisticsPageSprintShortTeam.render(arr);
         break;
       default:
         break;
