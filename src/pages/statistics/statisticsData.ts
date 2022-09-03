@@ -104,13 +104,13 @@ export async function staticGetSprint() : Promise<void> {
 
 export async function getSprintDataForRendering() {
   await staticGetSprint();
-  console.log(objAudiocallDate.longestSeriesOfRightAnswersSprint);
+  // console.log(objAudiocallDate.longestSeriesOfRightAnswersSprint);
   return [objAudiocallDate.newWordsSprint, objAudiocallDate.percentOfRightAnswersSprint, objAudiocallDate.longestSeriesOfRightAnswersSprint];
 }
 
 export async function getSprintDataArray() {
   await staticGetSprint();
-  console.log(objAudiocallDate.newWordsSprint, objAudiocallDate.longestSeriesOfRightAnswersSprint, objAudiocallDate.AllAnswersFromGameSprint, objAudiocallDate.rightAnswersSprint);
+  // console.log(objAudiocallDate.newWordsSprint, objAudiocallDate.longestSeriesOfRightAnswersSprint, objAudiocallDate.AllAnswersFromGameSprint, objAudiocallDate.rightAnswersSprint);
   return [objAudiocallDate.newWordsSprint, objAudiocallDate.longestSeriesOfRightAnswersSprint,
     objAudiocallDate.AllAnswersFromGameSprint, objAudiocallDate.rightAnswersSprint];
 }
