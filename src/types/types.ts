@@ -49,6 +49,7 @@ export interface MenuItems {
   textbook: HTMLElement,
   statistics: HTMLElement,
   audiocall: HTMLElement,
+  audiocallgame: HTMLElement,
   sprint: HTMLElement,
   aboutsprint: HTMLElement,
   team: HTMLElement,
