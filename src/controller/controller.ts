@@ -30,8 +30,6 @@ class ModuleController {
 
   sprintLevel !: HTMLInputElement;
 
-  audiocallgame !: HTMLElement;
-
   authorizationHeader !: HTMLElement;
 
   statisticsConteiner !: HTMLElement;

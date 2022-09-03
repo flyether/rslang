@@ -133,8 +133,13 @@ export interface IOptionalStatistic {
 export interface IOptionalStatisticWrapper {
   textbook?: IOptionalStatistic;
   games?: IOptionalStatisticGame;
+  long?: ILongStatisticsStore;
 }
-
+export interface ILongStatisticsStore {
+  learnedWords?: number [];
+  NewWords?: number [];
+  date?: string [];
+}
 export interface IStatistic {
   learnedWords?: number;
   optional?: IOptionalStatisticWrapper;
