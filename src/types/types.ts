@@ -116,7 +116,7 @@ export interface IOptionalStatisticGame {
   longestSeriesOfRightAnswers?: number;
   rightAnswers?: number;
   AllAnswersFromGame?: number;
-  // newWordsSprint?: number;
+  newWordsSprint?: number;
   percentOfRightAnswersSprint?: number;
   longestSeriesOfRightAnswersSprint?: number;
   rightAnswersSprint?: number;
