@@ -234,14 +234,14 @@
   font-size: 2em;
 }
 
-@media (max-width:768px) {
+@media (max-width:1024px) {
   .btn-game-over-container {
     flex-direction: column;
   }
 
   .button-wrapper {
     flex-direction: column;
-    gap: 10px;
+    gap: 20px;
   }
 
   .button-container {
@@ -250,7 +250,7 @@
 
   .btn-translation {
     height: 35px;
-    font-size: 0.7em;
+    font-size: 1em;
   }
 
   .audio-container-game {
