@@ -64,6 +64,7 @@ const TextbookPage: ITextbookPage = {
          <span class="unit-page-name">страница ${page}</span>
         </p>
       </div>
+      <div class="spinner"></div>
       <ul class=${this.wordlist}>
        ${this.getCards(unit, page)}
       </ul>
@@ -94,7 +95,7 @@ const TextbookPage: ITextbookPage = {
     }
     return pages;
   },
-  getCards(unit: number, page: number): void {
+  getCards(unit: number, page: number): string {
     this.isAuth = !!localStorage.getItem('user');
     const { wordlist, isAuth } = this;
     let userId = '';
@@ -189,6 +190,7 @@ const TextbookPage: ITextbookPage = {
           }
           await Promise.all(requests);
           renderCards(words);
+          document.querySelector('.spinner')?.remove();
           this.checkWords(words);
         })();
         return;
@@ -198,8 +200,10 @@ const TextbookPage: ITextbookPage = {
         Words.words = res as IWord[];
         this.checkWords(res);
         renderCards(res as IWord[], userWords);
+        document.querySelector('.spinner')?.remove();
       }
     })();
+    return '';
   },
   checkWords(res: IWord[]) {
     const locationHash = window.location.hash.split('/');
