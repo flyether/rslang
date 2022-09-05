@@ -139,7 +139,6 @@ export class ModuleModel {
       sprintData.seriesArr.push(1);
       sprintData.allAnswers.push(true);
       sprintData.allAnswersId.push(this.active20Words[this.activeWordNumber].id);
-      console.log(sprintData);
     } else {
       this.wrongAnswerAudio.play();
       this.arrayOfAnswers.push(false);
