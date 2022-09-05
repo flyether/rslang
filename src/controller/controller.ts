@@ -30,8 +30,6 @@ class ModuleController {
 
   sprintLevel !: HTMLInputElement;
 
-  audiocallgame !: HTMLElement;
-
   authorizationHeader !: HTMLElement;
 
   statisticsConteiner !: HTMLElement;
@@ -78,6 +76,7 @@ class ModuleController {
       textbook: this.menuTextbook,
       statistics: this.menuStatictics,
       audiocall: this.menuAudiocall,
+      audiocallgame: this.menuAudiocall,
       sprint: this.menuSprint,
       aboutsprint: this.menuSprint,
       team: this.menuTeam,

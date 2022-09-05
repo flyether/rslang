@@ -49,6 +49,7 @@ export interface MenuItems {
   textbook: HTMLElement,
   statistics: HTMLElement,
   audiocall: HTMLElement,
+  audiocallgame: HTMLElement,
   sprint: HTMLElement,
   aboutsprint: HTMLElement,
   team: HTMLElement,
@@ -58,6 +59,7 @@ export interface IUserWord {
   id: string,
   wordId: string,
   difficulty: string,
+  optional: IOptionalUserWords,
 }
 
 export interface IWord {
@@ -114,6 +116,11 @@ export interface IOptionalStatisticGame {
   longestSeriesOfRightAnswers?: number;
   rightAnswers?: number;
   AllAnswersFromGame?: number;
+  newWordsSprint?: number;
+  percentOfRightAnswersSprint?: number;
+  longestSeriesOfRightAnswersSprint?: number;
+  rightAnswersSprint?: number;
+  AllAnswersFromGameSprint?: number;
   answer?: string[];
 }
 export interface IOptionalStatistic {
@@ -125,10 +132,14 @@ export interface IOptionalStatistic {
 
 export interface IOptionalStatisticWrapper {
   textbook?: IOptionalStatistic;
-  sprint?: IOptionalStatisticGame ;
-  audiocall?: IOptionalStatisticGame ;
+  games?: IOptionalStatisticGame;
+  long?: ILongStatisticsStore;
 }
-
+export interface ILongStatisticsStore {
+  learnedWords?: number [];
+  NewWords?: number [];
+  date?: string [];
+}
 export interface IStatistic {
   learnedWords?: number;
   optional?: IOptionalStatisticWrapper;
