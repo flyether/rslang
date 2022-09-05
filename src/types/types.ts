@@ -136,9 +136,9 @@ export interface IOptionalStatisticWrapper {
   long?: ILongStatisticsStore;
 }
 export interface ILongStatisticsStore {
-  learnedWords?: number [];
-  NewWords?: number [];
-  date?: string [];
+  learnedWords?: number[];
+  NewWords?: number[];
+  date?: string[];
 }
 export interface IStatistic {
   learnedWords?: number;
@@ -182,6 +182,7 @@ export interface ITextbookPage {
   render(): string;
   renderPages(unit: number): string;
   getCards(unit: number, page: number): void;
+  checkWords(res: IWord[]): void;
 }
 export interface IObjStatisticStorage {
   date?: string;
