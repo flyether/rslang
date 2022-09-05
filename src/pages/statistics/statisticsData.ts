@@ -204,7 +204,7 @@ export async function staticGetSprint() : Promise<void> {
       objAudiocallDate = {
         percentOfRightAnswers: 0,
         newWords: 0,
-        // longestSeriesOfRightAnswers: 0,
+        longestSeriesOfRightAnswers: 0,
         percentOfRightAnswersSprint: 0,
         longestSeriesOfRightAnswersSprint: 0,
         rightAnswersSprint: 0,
