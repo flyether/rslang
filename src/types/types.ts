@@ -49,6 +49,7 @@ export interface MenuItems {
   textbook: HTMLElement,
   statistics: HTMLElement,
   audiocall: HTMLElement,
+  audiocallgame: HTMLElement,
   sprint: HTMLElement,
   aboutsprint: HTMLElement,
   team: HTMLElement,
@@ -132,8 +133,13 @@ export interface IOptionalStatistic {
 export interface IOptionalStatisticWrapper {
   textbook?: IOptionalStatistic;
   games?: IOptionalStatisticGame;
+  long?: ILongStatisticsStore;
 }
-
+export interface ILongStatisticsStore {
+  learnedWords?: number [];
+  NewWords?: number [];
+  date?: string [];
+}
 export interface IStatistic {
   learnedWords?: number;
   optional?: IOptionalStatisticWrapper;

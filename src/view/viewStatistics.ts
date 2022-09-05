@@ -4,7 +4,7 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 import Chart from 'chart.js/auto';
 import { Routes } from '../types/types';
-import { statisticsDataLongTerm } from '../pages/statistics/statisticsData';
+import { statisticsDataLongTerm, getSprintDataForRendering } from '../pages/statistics/statisticsData';
 import {
   StatisticsPageTextbookShortTeam, StatisticsPageAudiocallShortTeam,
   StatisticsPageSprintShortTeam,
@@ -23,6 +23,8 @@ export class ModuleView {
   chart1 !: Chart;
 
   chart2 !: Chart;
+
+  chart3!: Chart;
 
   init(container: HTMLElement):void {
     this.myModuleContainer = container;
@@ -58,9 +60,27 @@ export class ModuleView {
     this.chart2 = new Chart(ctx1, {
       type: 'line',
       data: {
-        labels: statisticsDataLongTerm.labels,
+        labels: statisticsDataLongTerm.labels1,
         datasets: [{
           data: statisticsDataLongTerm.data2,
+          label: statisticsDataLongTerm.label2,
+          borderColor: '#3e95cd',
+          fill: false,
+        }],
+      },
+    });
+  }
+
+  renderLineChartNew(chart3: HTMLCanvasElement): void {
+    if (this.chart3) { this.chart3.destroy(); }
+    const ctx1 = chart3.getContext('2d') as CanvasRenderingContext2D;
+    ctx1.clearRect(0, 0, chart3.width, chart3.height);
+    this.chart3 = new Chart(ctx1, {
+      type: 'line',
+      data: {
+        labels: statisticsDataLongTerm.labels1,
+        datasets: [{
+          data: statisticsDataLongTerm.data3,
           label: statisticsDataLongTerm.label2,
           borderColor: '#3e95cd',
           fill: false,
@@ -109,8 +129,10 @@ export class ModuleView {
     }
   }
 
-  renderDayStatistics(str:string): void {
+  async renderDayStatistics(str:string): Promise<void> {
     this.statisticsDiv = this.myModuleContainer.querySelector('.statistics__div') as HTMLElement;
+    const arr = await getSprintDataForRendering() as number[];
+    console.log(arr);
     switch (str) {
       case 'textbook':
         this.statisticsDiv.innerHTML = StatisticsPageTextbookShortTeam.render();
@@ -119,7 +141,7 @@ export class ModuleView {
         this.statisticsDiv.innerHTML = StatisticsPageAudiocallShortTeam.render();
         break;
       case 'sprint':
-        this.statisticsDiv.innerHTML = StatisticsPageSprintShortTeam.render();
+        this.statisticsDiv.innerHTML = StatisticsPageSprintShortTeam.render(arr);
         break;
       default:
         break;
@@ -133,5 +155,7 @@ export class ModuleView {
     this.renderBarChart(chartCanvas1);
     const chartCanvas2 = document.getElementById('chart2') as HTMLCanvasElement;
     this.renderLineChart(chartCanvas2);
+    const chartCanvas3 = document.getElementById('chart3') as HTMLCanvasElement;
+    this.renderLineChartNew(chartCanvas3);
   }
 }
