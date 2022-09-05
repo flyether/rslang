@@ -226,12 +226,7 @@ export async function getSprintDataForRendering() {
 
 export async function getSprintDataArray() {
   await staticGetSprint();
-<<<<<<< HEAD
-  // console.log(objAudiocallDate.newWordsSprint, objAudiocallDate.longestSeriesOfRightAnswersSprint, objAudiocallDate.AllAnswersFromGameSprint, objAudiocallDate.rightAnswersSprint);
-  return [objAudiocallDate.newWordsSprint, objAudiocallDate.longestSeriesOfRightAnswersSprint,
-=======
   return [objAudiocallDate.newWords, objAudiocallDate.longestSeriesOfRightAnswersSprint,
->>>>>>> develop
     objAudiocallDate.AllAnswersFromGameSprint, objAudiocallDate.rightAnswersSprint];
 }
 
