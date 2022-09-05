@@ -5,40 +5,40 @@ import {
 } from './statisticsData';
 
 export const StatisticsPageTextbookShortTeam = {
-  render(): string {
+  render(array:number[]): string {
     return `
     <div class = "statistics__shortterm">
       <div class="shortterm__new-words">
         Количество новых слов
-        <div class="words">${statisticsDataTextbookShortTerm.newWords}</div>
+        <div class="words">${array[0]}</div>
       </div>
       <div class="shortterm__right-answers">
         Количество изученных слов
-        <div class="words">${statisticsDataTextbookShortTerm.learnedWords}</div>
+        <div class="words">${Math.round(array[1])}</div>
       </div>
       <div class="shortterm__max-seria">
         Процент правильных ответов
-        <div class="words">${statisticsDataTextbookShortTerm.percentOfRightAnswers}</div>
+        <div class="words">${array[2]}</div>
       </div>
     </div>`;
   },
 };
 
 export const StatisticsPageAudiocallShortTeam = {
-  render(): string {
+  render(array:number[]): string {
     return `
     <div class = "statistics__shortterm">
       <div class="shortterm__new-words">
         Количество новых слов
-        <div class="words">${statisticsDataAudiocallShortTerm.newWords}</div>
+        <div class="words">${array[0]}</div>
       </div>
       <div class="shortterm__right-answers">
         Процент правильных ответов
-        <div class="words">${statisticsDataAudiocallShortTerm.percentOfRightAnswers}</div>
+        <div class="words">${Math.round(array[1])}</div>
       </div>
       <div class="shortterm__max-seria">
         Самая длинная серия правильных ответов
-        <div class="words">${statisticsDataAudiocallShortTerm.longestSeriesOfRightAnswers}</div>
+        <div class="words">${array[2]}</div>
       </div>
     </div>`;
   },
