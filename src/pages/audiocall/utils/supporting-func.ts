@@ -366,7 +366,9 @@ class Support {
           if (!this.objStatistic.percentOfRightAnswersSprint) {
             this.objStatistic.percentOfRightAnswersSprint = 0;
           }
-
+          if (!this.objStatistic.newWordsSprint) {
+            this.objStatistic.newWordsSprint = 0;
+          }
           this.objStatistic.date = this.dataNow();
 
           if (this.objStatistic.newWords) {
