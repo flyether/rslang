@@ -359,6 +359,13 @@ class Support {
           } else {
             this.objStatistic.longestSeriesOfRightAnswers! = this.RightAnsweredWords!.length;
           }
+          // проверяем если нет со спринта данных то нули на сервер запишем вместо андефаинд
+          if (!this.objStatistic.longestSeriesOfRightAnswersSprint) {
+            this.objStatistic.longestSeriesOfRightAnswersSprint = 0;
+          }
+          if (!this.objStatistic.percentOfRightAnswersSprint) {
+            this.objStatistic.percentOfRightAnswersSprint = 0;
+          }
 
           this.objStatistic.date = this.dataNow();
 
