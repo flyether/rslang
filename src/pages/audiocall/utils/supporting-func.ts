@@ -264,7 +264,7 @@ class Support {
   async printBtnString(): Promise<void> {
     this.getUserWords();
     const btnWrapper = document.querySelector('.audio-container-game') as HTMLElement;
-    const countWord = 5;
+    const countWord = 15;
     //     выбор уровня и страницы для загрузки слов  ссервера
 
     this.group = this.level! - 1;

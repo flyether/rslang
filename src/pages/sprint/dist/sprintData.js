@@ -121,7 +121,7 @@ exports.sprintData = {
         this.amountOfRightAnswers = 0;
     },
     updateobjSprintDate: function (arr) {
-        console.log(arr);
+        // console.log(arr);
         // objSprintDate.newWordsSprint = arr[0] + word
         exports.objSprintDate.longestSeriesOfRightAnswersSprint = (arr[1] > this.longestSeries)
             ? arr[1] : this.longestSeries;

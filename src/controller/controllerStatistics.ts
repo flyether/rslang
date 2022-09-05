@@ -3,7 +3,9 @@
 /* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 
-import { staticGet, statisticsDataAudiocallShortTerm, staticGetSprint } from '../pages/statistics/statisticsData';
+import {
+  staticGet, statisticsDataAudiocallShortTerm, staticGetSprint, getUserWordsStat,
+} from '../pages/statistics/statisticsData';
 import { ModuleModel } from '../model/modelStatistics';
 // import { setSprintData } from '../pages/sprint/sprintData';
 
@@ -26,18 +28,26 @@ export class ModuleController {
     this.statisticsConteiner.addEventListener('click', (e: Event) => {
       const el = e.target as HTMLElement;
       if (el.closest('.statistics__textbook')) {
-        this.myModuleModel.switchStatictics('textbook');
+        staticGet().then(() => {
+          getUserWordsStat().then(() => {
+            this.myModuleModel.switchStatictics('textbook');
+          });
+        });
       }
       if (el.closest('.statistics__audiocall')) {
-        staticGet().then(() => {
+        // staticGet().then(() => {
           this.myModuleModel.switchStatictics('audiocall');
-        });
+        // });
       }
       if (el.closest('.statistics__sprint')) {
         this.myModuleModel.switchStatictics('sprint');
       }
       if (el.closest('.statistics__day')) {
-        this.myModuleModel.switchStaticticsKind('day');
+        // staticGet().then(() => {
+        //   getUserWordsStat().then(() => {
+            this.myModuleModel.switchStaticticsKind('day');
+        //   });
+        // });
       }
       if (el.closest('.statistics__alltime')) {
         this.myModuleModel.switchStaticticsKind('alltime');

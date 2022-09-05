@@ -4,7 +4,9 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 import Chart from 'chart.js/auto';
 import { Routes } from '../types/types';
-import { statisticsDataLongTerm, getSprintDataForRendering } from '../pages/statistics/statisticsData';
+import {
+  statisticsDataLongTerm, getSprintDataForRendering, getSprintDataForRenderingAudio, getSprintDataForRenderingTextbook,
+} from '../pages/statistics/statisticsData';
 import {
   StatisticsPageTextbookShortTeam, StatisticsPageAudiocallShortTeam,
   StatisticsPageSprintShortTeam,
@@ -132,13 +134,15 @@ export class ModuleView {
   async renderDayStatistics(str:string): Promise<void> {
     this.statisticsDiv = this.myModuleContainer.querySelector('.statistics__div') as HTMLElement;
     const arr = await getSprintDataForRendering() as number[];
-    console.log(arr);
+    const arrTextbook = await getSprintDataForRenderingTextbook() as number[];
+    const arrAudio = await getSprintDataForRenderingAudio() as number[];
+    // console.log(arr);
     switch (str) {
       case 'textbook':
-        this.statisticsDiv.innerHTML = StatisticsPageTextbookShortTeam.render();
+        this.statisticsDiv.innerHTML = StatisticsPageTextbookShortTeam.render(arrTextbook);
         break;
       case 'audiocall':
-        this.statisticsDiv.innerHTML = StatisticsPageAudiocallShortTeam.render();
+        this.statisticsDiv.innerHTML = StatisticsPageAudiocallShortTeam.render(arrAudio);
         break;
       case 'sprint':
         this.statisticsDiv.innerHTML = StatisticsPageSprintShortTeam.render(arr);
