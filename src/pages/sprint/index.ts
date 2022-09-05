@@ -17,7 +17,7 @@ const SprintGamePage = {
     ${Header.render()}
     <div class = '${this.classname}-conteiner'>
       <div class="sprint__score">0</div>
-      <div class="sprint__timer">10</div>
+      <div class="sprint__timer">60</div>
       <div class="sprint__field">
         <div class="field__title">
           <div class="title__count"></div>

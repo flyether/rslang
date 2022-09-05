@@ -145,7 +145,7 @@ export async function staticGet() : Promise<void> {
         } else { statisticsDataAudiocallShortTerm.newWords = 0; }
         if (res?.optional?.games?.longestSeriesOfRightAnswers) {
           statisticsDataAudiocallShortTerm.longestSeriesOfRightAnswers = res?.optional?.games?.longestSeriesOfRightAnswers;
-        } else { statisticsDataAudiocallShortTerm.longestSeriesOfRightAnswers = 666; }
+        } else { statisticsDataAudiocallShortTerm.longestSeriesOfRightAnswers = 0; }
       } else {
         if (res?.optional?.games?.newWords) {
           longStatisticsStore.NewWords?.push(res?.optional?.games?.newWords);
@@ -204,7 +204,7 @@ export async function staticGetSprint() : Promise<void> {
       objAudiocallDate = {
         percentOfRightAnswers: 0,
         newWords: 0,
-        // longestSeriesOfRightAnswers: 0,
+        longestSeriesOfRightAnswers: 0,
         percentOfRightAnswersSprint: 0,
         longestSeriesOfRightAnswersSprint: 0,
         rightAnswersSprint: 0,

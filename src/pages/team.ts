@@ -23,7 +23,6 @@ const AboutTeamPage = {
             <li class="development__item">Backend</li>
             <li class="development__item">Авторизация</li>
             <li class="development__item">Мини-игра 'Аудиовызов'</li>
-            <li class="development__item">...</li>
           </ul>
         </div>
         <div class='ourteam'>
@@ -34,8 +33,6 @@ const AboutTeamPage = {
           <ul class="development__list">
             <li class="development__item">Электронный учебник</li>
             <li class="development__item">Дизайн</li>
-            <li class="development__item">...</li>
-            <li class="development__item">...</li>
           </ul>
         </div>
         <div class='ourteam'>
@@ -46,8 +43,6 @@ const AboutTeamPage = {
           <ul class="development__list">
             <li class="development__item">Главная страница</li>
             <li class="development__item">Мини-игра 'Спринт'</li>
-            <li class="development__item">...</li>
-            <li class="development__item">...</li>
           </ul>
         </div>
       </div>

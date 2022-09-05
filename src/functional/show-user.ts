@@ -21,5 +21,6 @@ ${storage.user?.name ? '<div class="user-icon"></div>' : ''}
   if (ret) {
     return html;
   }
+  Header.render();
   header.innerHTML = html;
 }
