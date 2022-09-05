@@ -1,0 +1,274 @@
+@import './vars.scss';
+
+.button-container {
+  width: 17%;
+}
+
+.button-container:first-child {
+  display: none;
+}
+
+.button-wrapper {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.audio-call__btns {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.audio-container-game {
+  width: 90%;
+  height: 400px;
+  display: flex;
+  justify-content: space-between;
+  gap: 50px;
+  flex-direction: column;
+  align-items: center;
+  margin: 100px auto 0;
+}
+
+.container {
+  background-image: url('https://www.wallpaperflare.com/static/902/419/614/ocean-sand-beach-blue-wallpaper.jpg');
+  width: 100%;
+  min-height: 100vh;
+  background-size: cover;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+}
+
+.audio-call {
+  line-height: 35px;
+  font-weight: 700;
+  width: 75%;
+  display: flex;
+  flex-direction: column;
+  font-size: 16px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  background: $white-color;
+  box-shadow: $shadow;
+  font-family: $mplus-font;
+  color: $light-blue-color;
+  margin: 5% auto;
+  padding: 20px;
+  border-radius: $border-radius-btn;
+}
+
+.audio-call__text {
+  width: 70%;
+  margin: 0 auto 40px;
+  text-align: center;
+}
+
+.audio-call__text+p {
+  font-weight: 700;
+  margin-top: 0.8em;
+}
+
+.audio-container {
+  flex: 0 0 auto;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.link {
+  display: flex;
+  text-align: center;
+  cursor: pointer;
+  font-size: medium;
+  font-weight: 700;
+  color: #f8631d;
+  background-color: #679fe5;
+  border-radius: $border-radius-btn;
+  border: 1px solid #224a9a;
+  margin: 0 auto;
+  ;
+  padding: 10px 10px;
+}
+
+.go-main {
+  @include orange-btn;
+  margin: 70px auto 0;
+  width: 200px;
+  transition: all 0.5s ease-out;
+
+  &:hover {
+    cursor: pointer;
+    background-color: $dark-orange;
+  }
+}
+
+.btn-translation {
+  color: $white-color;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: large;
+  font-weight: 700;
+  width: 100%;
+  height: 60px;
+  background-color: $light-blue-color;
+  text-align: center;
+  border-radius: $border-radius-btn;
+  cursor: pointer;
+
+
+  &:hover {
+    background-color: $very-light-blue-color;
+  }
+}
+
+.btn-level {
+  color: #224a9a;
+  width: 80px;
+  height: 50px;
+  background-color: $white-color;
+  box-shadow: $shadow;
+  text-align: center;
+  line-height: 35px;
+  border-radius: 3px;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-translation.btn-translation-right {
+  background-color: $right-color;
+
+  &:hover {
+    background-color: $right-color;
+  }
+}
+
+.btn-blue {
+  margin-bottom: 0 auto 10px;
+  justify-content: center;
+  align-items: center;
+  margin: 20px;
+  font-size: 1em;
+  box-shadow: $shadow;
+  padding: 5px 15px;
+  transition: all 0.5s ease-in-out;
+  border-radius: $border-radius-btn;
+}
+
+.btn-blue:hover {
+  background-color: $very-light-blue-color;
+  box-shadow: $shadow;
+  cursor: pointer;
+  font-size: 1.4em;
+}
+
+.btn-translation.btn-translation-wrong {
+  background-color: $wrong-color;
+
+  &:hover {
+    background-color: $wrong-color;
+  }
+}
+
+.btn-sound {
+  color: $blue-color;
+  width: 80px;
+  height: 80px;
+  background: url('../../src/assets/volume.png') center no-repeat;
+  background-size: 70%;
+  cursor: pointer;
+}
+
+.btn-sound:hover {
+  width: 90px;
+  height: 90px;
+}
+
+.game-over {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: $white-color;
+  box-shadow: $shadow;
+  font-size: large;
+  font-weight: 700;
+  width: 50%;
+  text-align: center;
+  line-height: 35px;
+  border-radius: $border-radius-btn;
+  margin: 0, 0, 20px, 0;
+  padding: 10px 20px;
+}
+
+.btn-game-over-container {
+  display: flex;
+  justify-content: center;
+}
+
+.answer {
+  font-size: large;
+  font-weight: 700;
+  width: 400px;
+  text-align: center;
+  line-height: 35px;
+  border-radius: $border-radius-btn;
+  padding: 5px;
+}
+
+.answer-img {
+  border-radius: $border-radius-btn;
+  width: 250px;
+}
+
+.game-text:first-child {
+  color: $right-color;
+  font-size: 2em;
+}
+
+@media (max-width:1024px) {
+  .btn-game-over-container {
+    flex-direction: column;
+  }
+
+  .button-wrapper {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .button-container {
+    width: 50%;
+  }
+
+  .btn-translation {
+    height: 35px;
+    font-size: 1em;
+  }
+
+  .audio-container-game {
+    gap: 15px;
+  }
+
+  .go-main {
+    width: 50%;
+  }
+
+  .game-over {
+    font-size: 0.8em;
+    line-height: 170%;
+  }
+
+  .audio-call__text {
+    text-align: center;
+    line-height: 20px;
+
+  }
+}

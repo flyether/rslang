@@ -1,0 +1,333 @@
+@import '../../styles/vars.scss';
+
+.textbook {
+  width: 90%;
+  padding-top: 30px auto;
+  margin: 40px auto 0;
+  box-sizing: border-box;
+
+  p {
+    margin: 0;
+    padding: 0;
+  }
+
+  &-navigation {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+  }
+
+  &-navigation.unit-navigation {
+    margin-top: 40px;
+  }
+
+  .unit-name {
+    font-size: 30px;
+    font-family: $mplus-font;
+    font-weight: 700;
+  }
+
+  .unit-page-name {
+    font-size: 20px;
+    font-family: $mplus-font;
+    color: $light-blue-color;
+  }
+}
+
+.btn-round {
+  background-image: url(../../assets/left-arrow.png);
+  background-position: 50% 50%;
+  background-size: contain;
+  background-color: $white-color;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  margin-left: 5%;
+}
+
+.learned-page-menu {
+  background-color: $transparent-blue-color;
+}
+
+.learned-page-game {
+  pointer-events: none;
+  cursor: default;
+  color: $light-grey-color;
+}
+
+.learned-page {
+  background-color: $transparent-blue-color;
+  position: relative;
+
+  &::before {
+    background-image: url(../../assets/check.png);
+    width: 60px;
+    background-size: 60px 60px;
+    aspect-ratio: 1;
+    content: '';
+    z-index: 10;
+    position: absolute;
+    top: -90px;
+    right: 15%;
+  }
+}
+
+.word-list {
+  display: grid;
+  width: 100%;
+  gap: 20px;
+  grid-template-columns: repeat(3, 1fr);
+
+  .word-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    padding: 20px;
+    box-shadow: $shadow;
+    border-radius: 16px;
+
+    .translation {
+      font-size: 13px;
+    }
+
+    .word-image {
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: 50% 50%;
+      width: 100%;
+      height: 220px;
+    }
+
+    .word-noted {
+      display: flex;
+      width: 100%;
+      justify-content: space-around;
+      margin-top: auto;
+      gap: 2%;
+    }
+
+    .btn-difficult,
+    .btn-learned {
+      width: 40%;
+      background-image: none;
+      border: none;
+    }
+
+    .word-description {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+
+      .word-audio {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .audio {
+        background-image: url(../../assets/speaker-audio.png);
+        height: 20px;
+        aspect-ratio: 1;
+        padding: 6px 12px;
+        border-radius: 16px;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-color: $orange-color;
+        background-size: 40%;
+        cursor: pointer;
+      }
+
+      .word-progress {
+        background-size: 25px 25px;
+        width: 25px;
+        height: 25px;
+        margin-left: auto;
+      }
+
+      .progress-no {
+        background-image: url(../../assets/dislike\ \(1\).png);
+      }
+
+      .progress-done {
+        background-image: url(../../assets/medal.png);
+      }
+
+
+    }
+  }
+}
+
+.btn-orange {
+  background-color: $orange-color;
+  font-size: 14px;
+  padding: 6px 4px;
+  margin: 4px auto;
+  text-align: center;
+  font-weight: bold;
+  color: $white-color;
+  border-radius: 3px;
+  border: 1px solid transparent;
+  font-family: $mplus-font;
+  cursor: pointer;
+
+  &:disabled {
+    background-color: $dark-grey-color;
+    cursor: default;
+  }
+}
+
+.textbook-footer {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  width: 100%;
+  margin: 60px 0;
+}
+
+.textbook-pagination {
+  display: flex;
+  width: 100%;
+  gap: 60px;
+  justify-content: center;
+  align-items: center;
+}
+
+.textbook-game {
+  cursor: pointer;
+}
+
+.pagination-btn {
+  padding: 5px 15px;
+  outline: none;
+  border-radius: 3px;
+  width: 15%;
+  margin: 0;
+  background-color: $blue-color;
+}
+
+.textbook-units {
+  width: 90%;
+  margin: 50px auto;
+  display: flex;
+  gap: 30px;
+  flex-direction: column;
+}
+
+.textbook-unit {
+  width: 100%;
+  height: 100px;
+  border-radius: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: $mplus-font;
+  color: $orange-color;
+  font-weight: 700;
+  font-size: 25px;
+  box-shadow: $shadow;
+  cursor: pointer;
+}
+
+.unit-pages {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  width: 90%;
+  margin: 0 auto;
+  justify-content: space-around;
+  align-items: center;
+  gap: 20px;
+
+  .unit-page {
+    border: 1px solid $blue-color;
+    padding: 10px 20px;
+    border-radius: 5px;
+
+  }
+}
+
+@media all and (max-width: 1024px) {
+  .word-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .word-name {
+    font-size: 20px;
+  }
+
+  .pagination-btn {
+    width: 60%;
+  }
+}
+
+@media all and (max-width: 768px) {
+  .word-list {
+    grid-template-columns: repeat(1, 1fr);
+
+    .word-description .translation {
+      font-size: 18px;
+    }
+  }
+
+  .learned-page::before {
+    width: 30px;
+    background-size: 30px 30px;
+    top: -20px;
+    right: -15px;
+  }
+
+  .unit-navigation {
+    width: 90%;
+    margin: 0 auto 30px
+  }
+
+  .unit-pages {
+    margin-bottom: 20px;
+  }
+
+  .btn-orange {
+    margin: 0
+  }
+
+  .word-name {
+    font-size: 25px;
+  }
+
+  .textbook-unit {
+    font-size: 19px;
+  }
+
+  .word-pronounce,
+  .word-example {
+    font-size: 20px;
+  }
+
+  .textbook p.unit-name {
+    font-size: 25px;
+  }
+
+  .textbook-pagination {
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+  }
+}
+
+@media all and (max-width: 353px) {
+  .textbook-navigation span {
+    margin-left: 30px;
+  }
+
+  .textbook-pagination {
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+  }
+
+  .pagination-btn {
+    width: 80%;
+  }
+}

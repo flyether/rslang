@@ -1,0 +1,61 @@
+@import './vars.scss'
+
+.team-page-conteiner
+  margin-top: 60px
+.ourteam__title
+  text-align: center
+  font-size: 1.5rem
+  font-weight: 600
+  font-family: inherit
+  margin: 0
+  margin-bottom: 30px
+.ourteam__conteiner
+  display: flex
+  flex-direction: column
+  align-items: center
+  justify-content: center
+  padding: 1rem
+  box-sizing: border-box
+  max-width: 50rem
+  margin: 0 auto
+.ourteam
+  width: 100%
+  padding: 1rem 2rem
+  box-sizing: border-box
+  max-width: 35rem
+  display: flex
+  justify-content: space-between
+  align-items: center
+  border-radius: 0.5rem
+  margin-bottom: 1rem
+  box-shadow: $shadow
+.ourteam__github a
+  margin-left: 1rem
+.ourteam__fotos
+  display: block
+  width: 5rem
+  height: 5rem
+  border-radius: 50%
+  margin-bottom: 0.5rem
+.development__item,.ourteam__teamlead
+  width: 13rem
+  height: 1.5rem
+  font-weight: 500
+  line-height: 1.5rem
+  text-align: center
+  border-radius: 0.2rem
+  margin-bottom: 0.5rem
+  box-shadow: $shadow
+.development__item
+  background-color: $very-light-blue-color
+  padding: 10px 15px
+.ourteam__teamlead
+  width: 5rem
+  background-color: $orange-color
+  color: $white-color
+  padding: 0.1rem
+@media (max-width:520px)
+  .ourteam
+    flex-direction: column
+  .ourteam__github
+    margin-bottom: 1rem
