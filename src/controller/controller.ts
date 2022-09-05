@@ -82,6 +82,7 @@ class ModuleController {
       team: this.menuTeam,
     };
     if (this.menuMain) {
+      console.log('yes', this.menuMain);
       this.myModuleModel.highlightActiveMenuItem(obj, hash);
       this.myModuleModel.checkUserAuthorization(this.menuStatictics);
     }

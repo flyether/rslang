@@ -29,6 +29,11 @@ export const objSprintDate:IOptionalStatisticGame = {
 const valueStatisticsAudiocall = {
   optional: {
     games: objSprintDate,
+    long: {
+      learnedWords: [0],
+      NewWords: [0],
+      date: ['0'],
+    },
   },
 };
 
@@ -42,17 +47,17 @@ export const sprintData: SprintData = {
   amountOfNewWords: 0,
   amountOfAllAnswers: 0,
   amountOfRightAnswers: 0,
-  updateLongestSeries() {
+  updateLongestSeries():void {
     if (this.seriesArr.length > this.longestSeries) {
       this.longestSeries = this.seriesArr.length;
     }
     this.seriesArr = [];
   },
-  countAnswers() {
+  countAnswers():void {
     this.amountOfAllAnswers = this.allAnswers.length;
     this.amountOfRightAnswers = this.allAnswers.filter((item) => item).length;
   },
-  async writeSprintDataToStatistics() {
+  async writeSprintDataToStatistics(): Promise<void> {
     this.userID = checkUserAuthorization() as string;
     if (this.userID !== 'no') {
       await this.checkLearnedWordsInAnswers();
@@ -68,7 +73,7 @@ export const sprintData: SprintData = {
       this.cleanData();
     }
   },
-  async checkLearnedWordsInAnswers() {
+  async checkLearnedWordsInAnswers(): Promise<void> {
     const res = await api.getAllUserWords(this.userID) as IUserWord[];
   },
   cleanData() {
