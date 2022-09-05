@@ -158,7 +158,7 @@ class Support {
           percentOfRightAnswers: 0,
           newWords: 0,
           longestSeriesOfRightAnswers: 0,
-          newWordsSprint: 0,
+          // newWordsSprint: 0,
           percentOfRightAnswersSprint: 0,
           longestSeriesOfRightAnswersSprint: 0,
           rightAnswersSprint: 0,
@@ -342,25 +342,33 @@ class Support {
 
           if (this.objStatistic.longestSeriesOfRightAnswers! < this.RightAnsweredWords!.length) {
             this.objStatistic.longestSeriesOfRightAnswers = this.RightAnsweredWords!.length;
+          } else {
+            this.objStatistic.longestSeriesOfRightAnswers! = this.RightAnsweredWords!.length;
           }
 
+          console.log(this.objStatistic, 'this.objStatistic');
           this.objStatistic.date = this.dataNow();
-          this.objStatistic.newWords! += this.countNewWords!;
+
+          if (this.objStatistic.newWords) {
+            this.objStatistic.newWords! += this.countNewWords!;
+          } else { this.objStatistic.newWords! = this.countNewWords!; }
 
           if (this.objStatistic.answer) {
             this.objStatistic.answer = this.objStatistic.answer!.concat(this.RightAnsweredWords!);
           } else { this.objStatistic.answer = this.RightAnsweredWords; }
 
-          this.objStatistic.AllAnswersFromGame! += countWord;
+          if (this.objStatistic.AllAnswersFromGame) { this.objStatistic.AllAnswersFromGame! += countWord; } else { this.objStatistic.AllAnswersFromGame = countWord; }
+
           if (this.objStatistic.rightAnswers) {
             this.objStatistic.rightAnswers! += this.RightAnsweredWords!.length;
           } else { this.objStatistic.rightAnswers! = this.RightAnsweredWords!.length; }
 
-          if (this.objStatistic.rightAnswers && this.objStatistic.rightAnswers !== 0) {
+          if (this.objStatistic.rightAnswers) {
             this.objStatistic.percentOfRightAnswers = Math.floor((this.objStatistic.rightAnswers! * 100) / this.objStatistic.AllAnswersFromGame!);
           } else {
-            this.objStatistic.percentOfRightAnswers = Math.floor((this.RightAnsweredWords!.length * 100) / countWord);
+            this.objStatistic.percentOfRightAnswers = 0;
           }
+
           console.log(this.objStatistic.percentOfRightAnswers, 'this.objStatistic.percentOfRightAnswers');
           this.staticUpdate(this.objStatistic);
 

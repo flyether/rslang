@@ -54,7 +54,7 @@ let objAudiocallDate: IOptionalStatisticGame = {
   percentOfRightAnswers: 0,
   newWords: 0,
   longestSeriesOfRightAnswers: 0,
-  newWordsSprint: 0,
+  // newWordsSprint: 0,
   percentOfRightAnswersSprint: 0,
   longestSeriesOfRightAnswersSprint: 0,
   rightAnswersSprint: 0,
@@ -79,7 +79,17 @@ const valueStatisticsAudiocall:IStatistic = {
     long: longStatisticsStore,
   },
 };
+// проверка на нули
 
+// function checkUndefaind(obj: IOptionalStatisticGame) {
+//   for (const key in obj) {
+//     if (key !== 'date') {
+//       if (!(obj[key] as number)) {
+//         (obj[key] as number) = 0;
+//       }
+//     }
+//   }
+// }
 export const statisticsDataAudiocallShortTerm = {
   newWords: objAudiocallDate.newWords,
   percentOfRightAnswers: objAudiocallDate.percentOfRightAnswers,
@@ -100,21 +110,38 @@ export const statisticsDataSprintShortTerm: IstatisticsDataSprintShortTerm = {
 export async function staticGet() : Promise<void> {
   return api.GetsStatistics(userId)
     .then((res) => {
-      console.log(objAudiocallDate.date, 'objAudiocallDate.date', 'res?.optional?.games?.date', res?.optional?.games?.date);
+      console.log(objAudiocallDate.date, 'objAudiocallDate.date', 'res?.optional?.games', res?.optional?.games);
       if (objAudiocallDate.date === res?.optional?.games?.date) {
         objAudiocallDate.newWords = res?.optional?.games?.newWords;
         objAudiocallDate.longestSeriesOfRightAnswers = res?.optional?.games?.longestSeriesOfRightAnswers;
         objAudiocallDate.percentOfRightAnswers = res?.optional?.games?.percentOfRightAnswers;
-
-        statisticsDataAudiocallShortTerm.percentOfRightAnswers = res?.optional?.games?.percentOfRightAnswers;
-        statisticsDataAudiocallShortTerm.newWords = res?.optional?.games?.newWords;
-        statisticsDataAudiocallShortTerm.longestSeriesOfRightAnswers = res?.optional?.games?.longestSeriesOfRightAnswers;
+        if (res?.optional?.games?.percentOfRightAnswers) {
+          statisticsDataAudiocallShortTerm.percentOfRightAnswers = res?.optional?.games?.percentOfRightAnswers;
+        } else {
+          statisticsDataAudiocallShortTerm.percentOfRightAnswers = 0;
+        }
+        if (res?.optional?.games?.newWords) {
+          statisticsDataAudiocallShortTerm.newWords = res?.optional?.games?.newWords;
+        } else { statisticsDataAudiocallShortTerm.newWords = 0; }
+        if (res?.optional?.games?.longestSeriesOfRightAnswers) {
+          statisticsDataAudiocallShortTerm.longestSeriesOfRightAnswers = res?.optional?.games?.longestSeriesOfRightAnswers;
+        } else { statisticsDataAudiocallShortTerm.longestSeriesOfRightAnswers = 0; }
 
         console.log(longStatisticsStore, 'ongStatisticsStore');
       } else {
         if (res?.optional?.games?.newWords) {
           longStatisticsStore.NewWords?.push(res?.optional?.games?.newWords);
           statisticsDataLongTerm.data3 = longStatisticsStore.NewWords as number[];
+          dada1push();
+          if (res?.optional?.textbook?.learnedWordss) {
+            longStatisticsStore.learnedWords?.push(res?.optional?.textbook.learnedWordss);
+            statisticsDataLongTerm.data2 = longStatisticsStore.learnedWords as number[];
+          } else { longStatisticsStore.learnedWords?.push(0); }
+          if (res?.optional?.games?.date) {
+            longStatisticsStore.date?.push(res?.optional?.games?.date);
+            statisticsDataLongTerm.labels1 = longStatisticsStore.date as string[];
+          } else { longStatisticsStore.date?.push('нет даты'); }
+          console.log(longStatisticsStore, 'longStatisticsStore', res?.optional, 'res?.optional?');
         } else { longStatisticsStore.NewWords?.push(0); }
         dada1push();
         if (res?.optional?.textbook?.learnedWordss) {
@@ -133,7 +160,7 @@ export async function staticGet() : Promise<void> {
         percentOfRightAnswers: 0,
         newWords: 0,
         longestSeriesOfRightAnswers: 0,
-        newWordsSprint: 0,
+        // newWordsSprint: 0,
         percentOfRightAnswersSprint: 0,
         longestSeriesOfRightAnswersSprint: 0,
         rightAnswersSprint: 0,
@@ -147,7 +174,7 @@ export async function staticGetSprint() : Promise<void> {
     .then((res) => {
       if (objAudiocallDate.date === res?.optional?.games?.date) {
         objAudiocallDate.percentOfRightAnswersSprint = res?.optional?.games?.percentOfRightAnswersSprint;
-        objAudiocallDate.newWordsSprint = res?.optional?.games?.newWordsSprint;
+        objAudiocallDate.newWords = res?.optional?.games?.newWords;
         objAudiocallDate.longestSeriesOfRightAnswersSprint = res?.optional?.games?.longestSeriesOfRightAnswersSprint;
         objAudiocallDate.rightAnswersSprint = res?.optional?.games?.rightAnswersSprint;
         objAudiocallDate.AllAnswersFromGameSprint = res?.optional?.games?.AllAnswersFromGameSprint;
@@ -156,8 +183,8 @@ export async function staticGetSprint() : Promise<void> {
       objAudiocallDate = {
         percentOfRightAnswers: 0,
         newWords: 0,
-        longestSeriesOfRightAnswers: 0,
-        newWordsSprint: 0,
+        // longestSeriesOfRightAnswers: 0,
+        // newWordsSprint: 0,
         percentOfRightAnswersSprint: 0,
         longestSeriesOfRightAnswersSprint: 0,
         rightAnswersSprint: 0,
@@ -169,12 +196,12 @@ export async function staticGetSprint() : Promise<void> {
 export async function getSprintDataForRendering() {
   await staticGetSprint();
   // console.log(objAudiocallDate.longestSeriesOfRightAnswersSprint);
-  return [objAudiocallDate.newWordsSprint, objAudiocallDate.percentOfRightAnswersSprint, objAudiocallDate.longestSeriesOfRightAnswersSprint];
+  return [objAudiocallDate.newWords, objAudiocallDate.percentOfRightAnswersSprint, objAudiocallDate.longestSeriesOfRightAnswersSprint];
 }
 
 export async function getSprintDataArray() {
   await staticGetSprint();
-  console.log(objAudiocallDate.newWordsSprint, objAudiocallDate.longestSeriesOfRightAnswersSprint, objAudiocallDate.AllAnswersFromGameSprint, objAudiocallDate.rightAnswersSprint);
-  return [objAudiocallDate.newWordsSprint, objAudiocallDate.longestSeriesOfRightAnswersSprint,
+  console.log(objAudiocallDate.newWords, objAudiocallDate.longestSeriesOfRightAnswersSprint, objAudiocallDate.AllAnswersFromGameSprint, objAudiocallDate.rightAnswersSprint);
+  return [objAudiocallDate.newWords, objAudiocallDate.longestSeriesOfRightAnswersSprint,
     objAudiocallDate.AllAnswersFromGameSprint, objAudiocallDate.rightAnswersSprint];
 }

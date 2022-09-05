@@ -82,7 +82,7 @@ var objAudiocallDate = {
     percentOfRightAnswers: 0,
     newWords: 0,
     longestSeriesOfRightAnswers: 0,
-    newWordsSprint: 0,
+    // newWordsSprint: 0,
     percentOfRightAnswersSprint: 0,
     longestSeriesOfRightAnswersSprint: 0,
     rightAnswersSprint: 0,
@@ -110,6 +110,16 @@ var valueStatisticsAudiocall = {
         long: longStatisticsStore
     }
 };
+// проверка на нули
+// function checkUndefaind(obj: IOptionalStatisticGame) {
+//   for (const key in obj) {
+//     if (key !== 'date') {
+//       if (!(obj[key] as number)) {
+//         (obj[key] as number) = 0;
+//       }
+//     }
+//   }
+// }
 exports.statisticsDataAudiocallShortTerm = {
     newWords: objAudiocallDate.newWords,
     percentOfRightAnswers: objAudiocallDate.percentOfRightAnswers,
@@ -125,39 +135,70 @@ function staticGet() {
         return __generator(this, function (_a) {
             return [2 /*return*/, api_1.api.GetsStatistics(userId)
                     .then(function (res) {
-                    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _0, _1, _2, _3, _4, _5, _6, _7, _8;
-                    console.log(objAudiocallDate.date, 'objAudiocallDate.date', 'res?.optional?.games?.date', (_b = (_a = res === null || res === void 0 ? void 0 : res.optional) === null || _a === void 0 ? void 0 : _a.games) === null || _b === void 0 ? void 0 : _b.date);
-                    if (objAudiocallDate.date === ((_d = (_c = res === null || res === void 0 ? void 0 : res.optional) === null || _c === void 0 ? void 0 : _c.games) === null || _d === void 0 ? void 0 : _d.date)) {
-                        objAudiocallDate.newWords = (_f = (_e = res === null || res === void 0 ? void 0 : res.optional) === null || _e === void 0 ? void 0 : _e.games) === null || _f === void 0 ? void 0 : _f.newWords;
-                        objAudiocallDate.longestSeriesOfRightAnswers = (_h = (_g = res === null || res === void 0 ? void 0 : res.optional) === null || _g === void 0 ? void 0 : _g.games) === null || _h === void 0 ? void 0 : _h.longestSeriesOfRightAnswers;
-                        objAudiocallDate.percentOfRightAnswers = (_k = (_j = res === null || res === void 0 ? void 0 : res.optional) === null || _j === void 0 ? void 0 : _j.games) === null || _k === void 0 ? void 0 : _k.percentOfRightAnswers;
-                        exports.statisticsDataAudiocallShortTerm.percentOfRightAnswers = (_m = (_l = res === null || res === void 0 ? void 0 : res.optional) === null || _l === void 0 ? void 0 : _l.games) === null || _m === void 0 ? void 0 : _m.percentOfRightAnswers;
-                        exports.statisticsDataAudiocallShortTerm.newWords = (_p = (_o = res === null || res === void 0 ? void 0 : res.optional) === null || _o === void 0 ? void 0 : _o.games) === null || _p === void 0 ? void 0 : _p.newWords;
-                        exports.statisticsDataAudiocallShortTerm.longestSeriesOfRightAnswers = (_r = (_q = res === null || res === void 0 ? void 0 : res.optional) === null || _q === void 0 ? void 0 : _q.games) === null || _r === void 0 ? void 0 : _r.longestSeriesOfRightAnswers;
+                    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24;
+                    console.log(objAudiocallDate.date, 'objAudiocallDate.date', 'res?.optional?.games', (_a = res === null || res === void 0 ? void 0 : res.optional) === null || _a === void 0 ? void 0 : _a.games);
+                    if (objAudiocallDate.date === ((_c = (_b = res === null || res === void 0 ? void 0 : res.optional) === null || _b === void 0 ? void 0 : _b.games) === null || _c === void 0 ? void 0 : _c.date)) {
+                        objAudiocallDate.newWords = (_e = (_d = res === null || res === void 0 ? void 0 : res.optional) === null || _d === void 0 ? void 0 : _d.games) === null || _e === void 0 ? void 0 : _e.newWords;
+                        objAudiocallDate.longestSeriesOfRightAnswers = (_g = (_f = res === null || res === void 0 ? void 0 : res.optional) === null || _f === void 0 ? void 0 : _f.games) === null || _g === void 0 ? void 0 : _g.longestSeriesOfRightAnswers;
+                        objAudiocallDate.percentOfRightAnswers = (_j = (_h = res === null || res === void 0 ? void 0 : res.optional) === null || _h === void 0 ? void 0 : _h.games) === null || _j === void 0 ? void 0 : _j.percentOfRightAnswers;
+                        if ((_l = (_k = res === null || res === void 0 ? void 0 : res.optional) === null || _k === void 0 ? void 0 : _k.games) === null || _l === void 0 ? void 0 : _l.percentOfRightAnswers) {
+                            exports.statisticsDataAudiocallShortTerm.percentOfRightAnswers = (_o = (_m = res === null || res === void 0 ? void 0 : res.optional) === null || _m === void 0 ? void 0 : _m.games) === null || _o === void 0 ? void 0 : _o.percentOfRightAnswers;
+                        }
+                        else {
+                            exports.statisticsDataAudiocallShortTerm.percentOfRightAnswers = 0;
+                        }
+                        if ((_q = (_p = res === null || res === void 0 ? void 0 : res.optional) === null || _p === void 0 ? void 0 : _p.games) === null || _q === void 0 ? void 0 : _q.newWords) {
+                            exports.statisticsDataAudiocallShortTerm.newWords = (_s = (_r = res === null || res === void 0 ? void 0 : res.optional) === null || _r === void 0 ? void 0 : _r.games) === null || _s === void 0 ? void 0 : _s.newWords;
+                        }
+                        else {
+                            exports.statisticsDataAudiocallShortTerm.newWords = 0;
+                        }
+                        if ((_u = (_t = res === null || res === void 0 ? void 0 : res.optional) === null || _t === void 0 ? void 0 : _t.games) === null || _u === void 0 ? void 0 : _u.longestSeriesOfRightAnswers) {
+                            exports.statisticsDataAudiocallShortTerm.longestSeriesOfRightAnswers = (_w = (_v = res === null || res === void 0 ? void 0 : res.optional) === null || _v === void 0 ? void 0 : _v.games) === null || _w === void 0 ? void 0 : _w.longestSeriesOfRightAnswers;
+                        }
+                        else {
+                            exports.statisticsDataAudiocallShortTerm.longestSeriesOfRightAnswers = 0;
+                        }
                         console.log(longStatisticsStore, 'ongStatisticsStore');
                     }
                     else {
-                        if ((_t = (_s = res === null || res === void 0 ? void 0 : res.optional) === null || _s === void 0 ? void 0 : _s.games) === null || _t === void 0 ? void 0 : _t.newWords) {
-                            (_u = longStatisticsStore.NewWords) === null || _u === void 0 ? void 0 : _u.push((_w = (_v = res === null || res === void 0 ? void 0 : res.optional) === null || _v === void 0 ? void 0 : _v.games) === null || _w === void 0 ? void 0 : _w.newWords);
+                        if ((_y = (_x = res === null || res === void 0 ? void 0 : res.optional) === null || _x === void 0 ? void 0 : _x.games) === null || _y === void 0 ? void 0 : _y.newWords) {
+                            (_z = longStatisticsStore.NewWords) === null || _z === void 0 ? void 0 : _z.push((_1 = (_0 = res === null || res === void 0 ? void 0 : res.optional) === null || _0 === void 0 ? void 0 : _0.games) === null || _1 === void 0 ? void 0 : _1.newWords);
                             exports.statisticsDataLongTerm.data3 = longStatisticsStore.NewWords;
+                            dada1push();
+                            if ((_3 = (_2 = res === null || res === void 0 ? void 0 : res.optional) === null || _2 === void 0 ? void 0 : _2.textbook) === null || _3 === void 0 ? void 0 : _3.learnedWordss) {
+                                (_4 = longStatisticsStore.learnedWords) === null || _4 === void 0 ? void 0 : _4.push((_5 = res === null || res === void 0 ? void 0 : res.optional) === null || _5 === void 0 ? void 0 : _5.textbook.learnedWordss);
+                                exports.statisticsDataLongTerm.data2 = longStatisticsStore.learnedWords;
+                            }
+                            else {
+                                (_6 = longStatisticsStore.learnedWords) === null || _6 === void 0 ? void 0 : _6.push(0);
+                            }
+                            if ((_8 = (_7 = res === null || res === void 0 ? void 0 : res.optional) === null || _7 === void 0 ? void 0 : _7.games) === null || _8 === void 0 ? void 0 : _8.date) {
+                                (_9 = longStatisticsStore.date) === null || _9 === void 0 ? void 0 : _9.push((_11 = (_10 = res === null || res === void 0 ? void 0 : res.optional) === null || _10 === void 0 ? void 0 : _10.games) === null || _11 === void 0 ? void 0 : _11.date);
+                                exports.statisticsDataLongTerm.labels1 = longStatisticsStore.date;
+                            }
+                            else {
+                                (_12 = longStatisticsStore.date) === null || _12 === void 0 ? void 0 : _12.push('нет даты');
+                            }
+                            console.log(longStatisticsStore, 'longStatisticsStore', res === null || res === void 0 ? void 0 : res.optional, 'res?.optional?');
                         }
                         else {
-                            (_x = longStatisticsStore.NewWords) === null || _x === void 0 ? void 0 : _x.push(0);
+                            (_13 = longStatisticsStore.NewWords) === null || _13 === void 0 ? void 0 : _13.push(0);
                         }
                         dada1push();
-                        if ((_z = (_y = res === null || res === void 0 ? void 0 : res.optional) === null || _y === void 0 ? void 0 : _y.textbook) === null || _z === void 0 ? void 0 : _z.learnedWordss) {
-                            (_0 = longStatisticsStore.learnedWords) === null || _0 === void 0 ? void 0 : _0.push((_1 = res === null || res === void 0 ? void 0 : res.optional) === null || _1 === void 0 ? void 0 : _1.textbook.learnedWordss);
+                        if ((_15 = (_14 = res === null || res === void 0 ? void 0 : res.optional) === null || _14 === void 0 ? void 0 : _14.textbook) === null || _15 === void 0 ? void 0 : _15.learnedWordss) {
+                            (_16 = longStatisticsStore.learnedWords) === null || _16 === void 0 ? void 0 : _16.push((_17 = res === null || res === void 0 ? void 0 : res.optional) === null || _17 === void 0 ? void 0 : _17.textbook.learnedWordss);
                             exports.statisticsDataLongTerm.data2 = longStatisticsStore.learnedWords;
                         }
                         else {
-                            (_2 = longStatisticsStore.learnedWords) === null || _2 === void 0 ? void 0 : _2.push(0);
+                            (_18 = longStatisticsStore.learnedWords) === null || _18 === void 0 ? void 0 : _18.push(0);
                         }
-                        if ((_4 = (_3 = res === null || res === void 0 ? void 0 : res.optional) === null || _3 === void 0 ? void 0 : _3.games) === null || _4 === void 0 ? void 0 : _4.date) {
-                            (_5 = longStatisticsStore.date) === null || _5 === void 0 ? void 0 : _5.push((_7 = (_6 = res === null || res === void 0 ? void 0 : res.optional) === null || _6 === void 0 ? void 0 : _6.games) === null || _7 === void 0 ? void 0 : _7.date);
+                        if ((_20 = (_19 = res === null || res === void 0 ? void 0 : res.optional) === null || _19 === void 0 ? void 0 : _19.games) === null || _20 === void 0 ? void 0 : _20.date) {
+                            (_21 = longStatisticsStore.date) === null || _21 === void 0 ? void 0 : _21.push((_23 = (_22 = res === null || res === void 0 ? void 0 : res.optional) === null || _22 === void 0 ? void 0 : _22.games) === null || _23 === void 0 ? void 0 : _23.date);
                             exports.statisticsDataLongTerm.labels1 = longStatisticsStore.date;
                         }
                         else {
-                            (_8 = longStatisticsStore.date) === null || _8 === void 0 ? void 0 : _8.push('нет даты');
+                            (_24 = longStatisticsStore.date) === null || _24 === void 0 ? void 0 : _24.push('нет даты');
                         }
                         console.log(longStatisticsStore, 'longStatisticsStore', res === null || res === void 0 ? void 0 : res.optional, 'res?.optional?');
                         api_1.api.UpsertsNewStatistics(userId, valueStatisticsAudiocall);
@@ -167,7 +208,7 @@ function staticGet() {
                         percentOfRightAnswers: 0,
                         newWords: 0,
                         longestSeriesOfRightAnswers: 0,
-                        newWordsSprint: 0,
+                        // newWordsSprint: 0,
                         percentOfRightAnswersSprint: 0,
                         longestSeriesOfRightAnswersSprint: 0,
                         rightAnswersSprint: 0,
@@ -186,7 +227,7 @@ function staticGetSprint() {
                     var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m;
                     if (objAudiocallDate.date === ((_b = (_a = res === null || res === void 0 ? void 0 : res.optional) === null || _a === void 0 ? void 0 : _a.games) === null || _b === void 0 ? void 0 : _b.date)) {
                         objAudiocallDate.percentOfRightAnswersSprint = (_d = (_c = res === null || res === void 0 ? void 0 : res.optional) === null || _c === void 0 ? void 0 : _c.games) === null || _d === void 0 ? void 0 : _d.percentOfRightAnswersSprint;
-                        objAudiocallDate.newWordsSprint = (_f = (_e = res === null || res === void 0 ? void 0 : res.optional) === null || _e === void 0 ? void 0 : _e.games) === null || _f === void 0 ? void 0 : _f.newWordsSprint;
+                        objAudiocallDate.newWords = (_f = (_e = res === null || res === void 0 ? void 0 : res.optional) === null || _e === void 0 ? void 0 : _e.games) === null || _f === void 0 ? void 0 : _f.newWords;
                         objAudiocallDate.longestSeriesOfRightAnswersSprint = (_h = (_g = res === null || res === void 0 ? void 0 : res.optional) === null || _g === void 0 ? void 0 : _g.games) === null || _h === void 0 ? void 0 : _h.longestSeriesOfRightAnswersSprint;
                         objAudiocallDate.rightAnswersSprint = (_k = (_j = res === null || res === void 0 ? void 0 : res.optional) === null || _j === void 0 ? void 0 : _j.games) === null || _k === void 0 ? void 0 : _k.rightAnswersSprint;
                         objAudiocallDate.AllAnswersFromGameSprint = (_m = (_l = res === null || res === void 0 ? void 0 : res.optional) === null || _l === void 0 ? void 0 : _l.games) === null || _m === void 0 ? void 0 : _m.AllAnswersFromGameSprint;
@@ -198,8 +239,8 @@ function staticGetSprint() {
                     objAudiocallDate = {
                         percentOfRightAnswers: 0,
                         newWords: 0,
-                        longestSeriesOfRightAnswers: 0,
-                        newWordsSprint: 0,
+                        // longestSeriesOfRightAnswers: 0,
+                        // newWordsSprint: 0,
                         percentOfRightAnswersSprint: 0,
                         longestSeriesOfRightAnswersSprint: 0,
                         rightAnswersSprint: 0,
@@ -218,7 +259,7 @@ function getSprintDataForRendering() {
                 case 1:
                     _a.sent();
                     // console.log(objAudiocallDate.longestSeriesOfRightAnswersSprint);
-                    return [2 /*return*/, [objAudiocallDate.newWordsSprint, objAudiocallDate.percentOfRightAnswersSprint, objAudiocallDate.longestSeriesOfRightAnswersSprint]];
+                    return [2 /*return*/, [objAudiocallDate.newWords, objAudiocallDate.percentOfRightAnswersSprint, objAudiocallDate.longestSeriesOfRightAnswersSprint]];
             }
         });
     });
@@ -231,8 +272,8 @@ function getSprintDataArray() {
                 case 0: return [4 /*yield*/, staticGetSprint()];
                 case 1:
                     _a.sent();
-                    console.log(objAudiocallDate.newWordsSprint, objAudiocallDate.longestSeriesOfRightAnswersSprint, objAudiocallDate.AllAnswersFromGameSprint, objAudiocallDate.rightAnswersSprint);
-                    return [2 /*return*/, [objAudiocallDate.newWordsSprint, objAudiocallDate.longestSeriesOfRightAnswersSprint,
+                    console.log(objAudiocallDate.newWords, objAudiocallDate.longestSeriesOfRightAnswersSprint, objAudiocallDate.AllAnswersFromGameSprint, objAudiocallDate.rightAnswersSprint);
+                    return [2 /*return*/, [objAudiocallDate.newWords, objAudiocallDate.longestSeriesOfRightAnswersSprint,
                             objAudiocallDate.AllAnswersFromGameSprint, objAudiocallDate.rightAnswersSprint]];
             }
         });
