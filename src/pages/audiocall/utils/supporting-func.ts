@@ -5,7 +5,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
 import {
-  IWord, IUserWords, IStatistic, IOptionalStatisticGame,
+  IWord, IUserWords, IStatistic, IOptionalStatisticGame, IOptionalStatisticWrapper,
 } from '../../../types/types';
 import { apiPath } from '../../../api/api-path';
 import { api } from '../../../api/api';
@@ -93,6 +93,8 @@ class Support {
 
   public objStatistic: IOptionalStatisticGame;
 
+  public statisticsFromServer: IStatistic | undefined;
+
   constructor() {
     this.objStatistic = {
       longestSeriesOfRightAnswers: 0,
@@ -158,7 +160,6 @@ class Support {
           percentOfRightAnswers: 0,
           newWords: 0,
           longestSeriesOfRightAnswers: 0,
-          // newWordsSprint: 0,
           percentOfRightAnswersSprint: 0,
           longestSeriesOfRightAnswersSprint: 0,
           rightAnswersSprint: 0,
@@ -208,6 +209,8 @@ class Support {
       api.GetsStatistics(userId)
         .then((res) => {
           if (res) {
+            this.statisticsFromServer = res;
+            console.log('this.statisticsFromServer в гетстатистике', this.statisticsFromServer, 'res', res);
             this.objStatistic = res?.optional?.games as IOptionalStatisticGame;
           }
           resolve();
@@ -227,19 +230,18 @@ class Support {
 
   // метод для заполнения статистики
   async staticUpdate(objStatistics: IOptionalStatisticGame) : Promise<void> {
-    const value: IStatistic = {
-      optional: {
-        games: objStatistics,
-      },
-    };
+    console.log('this.statisticsFromServer', this.statisticsFromServer);
+    const value: IStatistic = this.statisticsFromServer as IStatistic;
+    value.optional!.games = objStatistics;
+    console.log('value', value);
     await api.UpsertsNewStatistics(userId, value);
   }
+
   // удалим слово в котором ошибся юзер
 
   async deleteWrongWordFromServer():Promise<void> {
     if (userId) {
       await api.DeleteUserWord(userId, this.wordObj!.id);
-      console.log('удаляем ', this.wordObj?.word);
     }
   }
 
@@ -264,7 +266,7 @@ class Support {
   async printBtnString(): Promise<void> {
     this.getUserWords();
     const btnWrapper = document.querySelector('.audio-container-game') as HTMLElement;
-    const countWord = 15;
+    const countWord = 5;
     //     выбор уровня и страницы для загрузки слов  ссервера
 
     this.group = this.level! - 1;
@@ -346,7 +348,6 @@ class Support {
             this.objStatistic.longestSeriesOfRightAnswers! = this.RightAnsweredWords!.length;
           }
 
-          console.log(this.objStatistic, 'this.objStatistic');
           this.objStatistic.date = this.dataNow();
 
           if (this.objStatistic.newWords) {
@@ -369,7 +370,6 @@ class Support {
             this.objStatistic.percentOfRightAnswers = 0;
           }
 
-          console.log(this.objStatistic.percentOfRightAnswers, 'this.objStatistic.percentOfRightAnswers');
           this.staticUpdate(this.objStatistic);
 
           statisticsDataAudiocallShortTerm.newWords = this.objStatistic.newWords!;
