@@ -11,7 +11,11 @@ export default function showUser(ret: boolean): string | undefined {
     context = 'Выйти';
     className = 'exit_btn';
   }
-  const html = `<div class="user-show"><div class="user-icon"></div> ${storage.user?.name} <button class=${className}>${context}</button> </div>`;
+  const html = `<div class="user-show">
+${storage.user?.name ? '<div class="user-icon"></div>' : ''}
+  ${storage.user?.name}
+  <button class=${className}>${context}</button> 
+   </div>`;
 
   const header = document.querySelector('.header__auth') as HTMLElement;
   if (ret) {
