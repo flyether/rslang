@@ -100,6 +100,7 @@ export const statisticsDataSprintShortTerm: IstatisticsDataSprintShortTerm = {
 export async function staticGet() : Promise<void> {
   return api.GetsStatistics(userId)
     .then((res) => {
+      console.log(objAudiocallDate.date, 'objAudiocallDate.date', 'res?.optional?.games?.date', res?.optional?.games?.date);
       if (objAudiocallDate.date === res?.optional?.games?.date) {
         objAudiocallDate.newWords = res?.optional?.games?.newWords;
         objAudiocallDate.longestSeriesOfRightAnswers = res?.optional?.games?.longestSeriesOfRightAnswers;
@@ -109,7 +110,7 @@ export async function staticGet() : Promise<void> {
         statisticsDataAudiocallShortTerm.newWords = res?.optional?.games?.newWords;
         statisticsDataAudiocallShortTerm.longestSeriesOfRightAnswers = res?.optional?.games?.longestSeriesOfRightAnswers;
 
-        // console.log(longStatisticsStore, 'ongStatisticsStore');
+        console.log(longStatisticsStore, 'ongStatisticsStore');
       } else {
         if (res?.optional?.games?.newWords) {
           longStatisticsStore.NewWords?.push(res?.optional?.games?.newWords);
@@ -124,7 +125,7 @@ export async function staticGet() : Promise<void> {
           longStatisticsStore.date?.push(res?.optional?.games?.date);
           statisticsDataLongTerm.labels1 = longStatisticsStore.date as string[];
         } else { longStatisticsStore.date?.push('нет даты'); }
-
+        console.log(longStatisticsStore, 'longStatisticsStore', res?.optional, 'res?.optional?');
         api.UpsertsNewStatistics(userId, valueStatisticsAudiocall);
       }
     }).catch((error) => {
@@ -142,7 +143,7 @@ export async function staticGet() : Promise<void> {
 }
 
 export async function staticGetSprint() : Promise<void> {
-  api.GetsStatistics(userId)
+  return api.GetsStatistics(userId)
     .then((res) => {
       if (objAudiocallDate.date === res?.optional?.games?.date) {
         objAudiocallDate.percentOfRightAnswersSprint = res?.optional?.games?.percentOfRightAnswersSprint;
