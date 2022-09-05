@@ -19,7 +19,6 @@ export const objSprintDate:IOptionalStatisticGame = {
   percentOfRightAnswers: 0,
   newWords: 0,
   longestSeriesOfRightAnswers: 0,
-  newWordsSprint: 0,
   percentOfRightAnswersSprint: 0,
   longestSeriesOfRightAnswersSprint: 0,
   rightAnswersSprint: 0,
@@ -29,11 +28,6 @@ export const objSprintDate:IOptionalStatisticGame = {
 const valueStatisticsAudiocall = {
   optional: {
     games: objSprintDate,
-    long: {
-      learnedWords: [0],
-      NewWords: [0],
-      date: ['0'],
-    },
   },
 };
 
@@ -47,17 +41,17 @@ export const sprintData: SprintData = {
   amountOfNewWords: 0,
   amountOfAllAnswers: 0,
   amountOfRightAnswers: 0,
-  updateLongestSeries():void {
+  updateLongestSeries() {
     if (this.seriesArr.length > this.longestSeries) {
       this.longestSeries = this.seriesArr.length;
     }
     this.seriesArr = [];
   },
-  countAnswers():void {
+  countAnswers() {
     this.amountOfAllAnswers = this.allAnswers.length;
     this.amountOfRightAnswers = this.allAnswers.filter((item) => item).length;
   },
-  async writeSprintDataToStatistics(): Promise<void> {
+  async writeSprintDataToStatistics() {
     this.userID = checkUserAuthorization() as string;
     if (this.userID !== 'no') {
       await this.checkLearnedWordsInAnswers();
@@ -73,7 +67,7 @@ export const sprintData: SprintData = {
       this.cleanData();
     }
   },
-  async checkLearnedWordsInAnswers(): Promise<void> {
+  async checkLearnedWordsInAnswers() {
     const res = await api.getAllUserWords(this.userID) as IUserWord[];
   },
   cleanData() {
@@ -92,7 +86,6 @@ export const sprintData: SprintData = {
     objSprintDate.longestSeriesOfRightAnswers = obj.longestSeriesOfRightAnswers;
     objSprintDate.percentOfRightAnswers = obj.percentOfRightAnswers;
 
-    objSprintDate.newWordsSprint = obj.newWordsSprint;
     objSprintDate.longestSeriesOfRightAnswersSprint = (obj.longestSeriesOfRightAnswersSprint! > this.longestSeries)
       ? obj.longestSeriesOfRightAnswersSprint : this.longestSeries;
 
