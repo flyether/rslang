@@ -16,7 +16,9 @@ function dataNow(): string {
 
 export const objSprintDate:IOptionalStatisticGame = {
   date: dataNow(),
+  percentOfRightAnswers: 0,
   newWords: 0,
+  longestSeriesOfRightAnswers: 0,
   percentOfRightAnswersSprint: 0,
   longestSeriesOfRightAnswersSprint: 0,
   rightAnswersSprint: 0,
@@ -50,15 +52,14 @@ export const sprintData: SprintData = {
     this.amountOfRightAnswers = this.allAnswers.filter((item) => item).length;
   },
   async writeSprintDataToStatistics() {
-    // console.log(this.);
     this.userID = checkUserAuthorization() as string;
     if (this.userID !== 'no') {
       await this.checkLearnedWordsInAnswers();
       // проанализировать ответы
       this.updateLongestSeries();
       this.countAnswers();
-      const arr = await getSprintDataArray() as number[];
-      this.updateobjSprintDate(arr);
+      const obj = await getSprintDataArray() as IOptionalStatisticGame;
+      this.updateobjSprintDate(obj);
       this.setDataToStatistics();
       // write then clean
       this.cleanData();
@@ -67,11 +68,7 @@ export const sprintData: SprintData = {
     }
   },
   async checkLearnedWordsInAnswers() {
-    console.log(this.allAnswersId);
     const res = await api.getAllUserWords(this.userID) as IUserWord[];
-    res.forEach((item) => {
-      console.log(item.optional);
-    });
   },
   cleanData() {
     this.longestSeries = 0;
@@ -83,15 +80,18 @@ export const sprintData: SprintData = {
     this.amountOfAllAnswers = 0;
     this.amountOfRightAnswers = 0;
   },
-  updateobjSprintDate(arr: number[]): void {
-    // console.log(arr);
-    // objSprintDate.newWordsSprint = arr[0] + word
-    objSprintDate.longestSeriesOfRightAnswersSprint = (arr[1] > this.longestSeries)
-      ? arr[1] : this.longestSeries;
+  updateobjSprintDate(obj: IOptionalStatisticGame): void {
+    console.log(obj);
+    objSprintDate.newWords = obj.newWords;
+    objSprintDate.longestSeriesOfRightAnswers = obj.longestSeriesOfRightAnswers;
+    objSprintDate.percentOfRightAnswers = obj.percentOfRightAnswers;
 
-    objSprintDate.AllAnswersFromGameSprint = arr[2] + this.amountOfAllAnswers;
+    objSprintDate.longestSeriesOfRightAnswersSprint = (obj.longestSeriesOfRightAnswersSprint! > this.longestSeries)
+      ? obj.longestSeriesOfRightAnswersSprint : this.longestSeries;
 
-    objSprintDate.rightAnswersSprint = arr[3] + this.amountOfRightAnswers;
+    objSprintDate.AllAnswersFromGameSprint = obj.AllAnswersFromGameSprint! + this.amountOfAllAnswers;
+
+    objSprintDate.rightAnswersSprint = obj.rightAnswersSprint! + this.amountOfRightAnswers;
 
     objSprintDate.percentOfRightAnswersSprint = Math.round((objSprintDate.rightAnswersSprint * 100) / objSprintDate.AllAnswersFromGameSprint);
   },
@@ -116,6 +116,6 @@ interface SprintData {
   writeSprintDataToStatistics(): void,
   checkLearnedWordsInAnswers(): Promise<void>,
   cleanData(): void,
-  updateobjSprintDate(arr: number[]): void,
+  updateobjSprintDate(obj: IOptionalStatisticGame): void,
   setDataToStatistics(): Promise<void>,
 }

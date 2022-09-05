@@ -226,8 +226,9 @@ export async function getSprintDataForRendering() {
 
 export async function getSprintDataArray() {
   await staticGetSprint();
-  return [objAudiocallDate.newWords, objAudiocallDate.longestSeriesOfRightAnswersSprint,
-    objAudiocallDate.AllAnswersFromGameSprint, objAudiocallDate.rightAnswersSprint];
+  return objAudiocallDate;
+  /* return [objAudiocallDate.newWords, objAudiocallDate.longestSeriesOfRightAnswersSprint,
+    objAudiocallDate.AllAnswersFromGameSprint, objAudiocallDate.rightAnswersSprint]; */
 }
 
 export async function getSprintDataForRenderingAudio() {
