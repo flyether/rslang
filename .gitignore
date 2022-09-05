@@ -1,3 +1,4 @@
+
 # Logs
 logs
 *.log
@@ -89,8 +90,6 @@ typings/
 # https://nextjs.org/blog/next-9-1#public-directory-support
 # public
 
-# vuepress build output
-.vuepress/dist
 
 # Serverless directories
 .serverless/
@@ -103,3 +102,6 @@ typings/
 
 # TernJS port file
 .tern-port
+
+node_modules
+

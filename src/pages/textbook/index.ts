@@ -22,8 +22,6 @@ const TextbookPage: ITextbookPage = {
   learnedPages: [{ unit: 0, page: 0 }],
 
   render(): string {
-    api.getWord('5e9f5ee35eb9e72bc21af50e')
-      .then((response) => console.log(response));
     const locationHash = window.location.hash.split('/');
     const unit = +locationHash[1];
     const page = +locationHash[2];
@@ -53,7 +51,8 @@ const TextbookPage: ITextbookPage = {
       view = `
          <div class="textbook-navigation unit-navigation">
             <button class="btn-round" id="go-back"></button>
-            <p class="unit-name">Раздел ${this.unitDifficultWords === unit ? '"Сложные слова"' : unit}</p>
+            <p class="unit-name" 
+              data-unit=${unit}>Раздел ${this.unitDifficultWords === unit ? '"Сложные слова"' : unit}</p>
          </div>
          <ul class="unit-pages">
             ${this.renderPages(unit)}
@@ -62,10 +61,11 @@ const TextbookPage: ITextbookPage = {
       view = `<div class=${this.classname}>
       <div class="textbook-navigation">
         <button class="btn-round" id="go-back"></button>
-        <p class="unit-name">Раздел ${this.unitDifficultWords === unit ? '"Сложные слова"' : unit}
+        <p class="unit-name" data-unit=${unit}>Раздел ${this.unitDifficultWords === unit ? '"Сложные слова"' : unit}
          <span class="unit-page-name">страница ${page}</span>
         </p>
       </div>
+      <div class="spinner"></div>
       <ul class=${this.wordlist}>
        ${this.getCards(unit, page)}
       </ul>
@@ -96,7 +96,7 @@ const TextbookPage: ITextbookPage = {
     }
     return pages;
   },
-  getCards(unit: number, page: number): void {
+  getCards(unit: number, page: number): string {
     this.isAuth = !!localStorage.getItem('user');
     const { wordlist, isAuth } = this;
     let userId = '';
@@ -104,7 +104,6 @@ const TextbookPage: ITextbookPage = {
       userId = JSON.parse(localStorage.getItem('user')!).userId;
     }
     function renderCards(words: IWord[], userWords?: IUserWord[] | undefined) {
-      console.log(userWords);
       const wordContainer = document.querySelector(`.${wordlist}`);
       if (wordContainer) {
         wordContainer.innerHTML = '';
@@ -119,9 +118,9 @@ const TextbookPage: ITextbookPage = {
             isWordLearned = userWords.some((word) => words[i].id === word.wordId
               && word.difficulty === difficulties.learned);
             isWordNew = userWords.some((word) => words[i].id === word.wordId
-              && word?.optional.status === statuses.new);
+              && word?.optional?.status === statuses.new);
             isWordGuessed = userWords.some((word) => words[i].id === word.wordId
-              && word?.optional.answer === true);
+              && word?.optional?.answer === true);
           }
           const card = document.createElement('li');
           card.classList.add('word-item');
@@ -157,14 +156,7 @@ const TextbookPage: ITextbookPage = {
         }
       }
     }
-    // if (unit === this.unitDifficultWords) {
-    //   setTimeout(() => {
-    //     renderCards(Words.aggregatedWords);
-    //   }, 0);
-    //   return;
-    // }
     (async () => {
-      const res = await api.getWords(unit - 1, page - 1);
       let userWords: IUserWord[] = [];
       if (userId) {
         userWords = (await api.getAllUserWords(userId))!;
@@ -179,26 +171,59 @@ const TextbookPage: ITextbookPage = {
           Words.learnedWords.push(userWords[i].wordId);
         }
       }
+      if (unit === this.unitDifficultWords) {
+        (async () => {
+          const words: IWord[] = [];
+          const requests = [];
+          const wordsPerPage = 20;
+          const rest = Words.aggregatedWords.length % wordsPerPage;
+          const maxPage = Math.ceil(Words.aggregatedWords.length / wordsPerPage);
+          const startValue = (page - 1) * wordsPerPage;
+          let numberOfWords = wordsPerPage;
+          if (page === maxPage) {
+            numberOfWords = rest;
+          }
+          for (let i = startValue; i < startValue + numberOfWords; i += 1) {
+            requests.push(api.getWord(Words.aggregatedWords[i])
+              .then((res) => {
+                words.push(res as IWord);
+              }));
+          }
+          await Promise.all(requests);
+          renderCards(words);
+          document.querySelector('.spinner')?.remove();
+          this.checkWords(words);
+        })();
+        return;
+      }
+      const res = await api.getWords(unit - 1, page - 1);
       if (res) {
         Words.words = res as IWord[];
-        const areWordsLearned = [];
-        for (let i = 0; i < res.length; i += 1) {
-          const isWordLearned = Words.learnedWords.some((word) => word === res[i].id);
-          const isAggregatedWord = Words.aggregatedWords.some((word) => word === res[i].id);
-          areWordsLearned.push(isWordLearned || isAggregatedWord);
-        }
-        if (!areWordsLearned.includes(false)) {
-          document.querySelector('.word-list')?.classList.add('learned-page');
-          document.querySelectorAll('.textbook-game')?.forEach((item) => {
-            item.classList.add('learned-page-game');
-            (item as HTMLButtonElement).disabled = true;
-          });
-          this.learnedPages.push({ unit, page });
-        }
-
+        this.checkWords(res);
         renderCards(res as IWord[], userWords);
+        document.querySelector('.spinner')?.remove();
       }
     })();
+    return '';
+  },
+  checkWords(res: IWord[]) {
+    const locationHash = window.location.hash.split('/');
+    const unit = +locationHash[1];
+    const page = +locationHash[2];
+    const areWordsLearned = [];
+    for (let i = 0; i < res.length; i += 1) {
+      const isWordLearned = Words.learnedWords.some((word) => word === res[i].id);
+      const isAggregatedWord = Words.aggregatedWords.some((word) => word === res[i].id);
+      areWordsLearned.push(isWordLearned || isAggregatedWord);
+    }
+    if (!areWordsLearned.includes(false)) {
+      document.querySelector('.word-list')?.classList.add('learned-page');
+      document.querySelectorAll('.textbook-game')?.forEach((item) => {
+        item.classList.add('learned-page-game');
+        (item as HTMLButtonElement).disabled = true;
+      });
+      this.learnedPages.push({ unit, page });
+    }
   },
 };
 
