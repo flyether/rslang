@@ -51,7 +51,8 @@ const TextbookPage: ITextbookPage = {
       view = `
          <div class="textbook-navigation unit-navigation">
             <button class="btn-round" id="go-back"></button>
-            <p class="unit-name">Раздел ${this.unitDifficultWords === unit ? '"Сложные слова"' : unit}</p>
+            <p class="unit-name" 
+              data-unit=${unit}>Раздел ${this.unitDifficultWords === unit ? '"Сложные слова"' : unit}</p>
          </div>
          <ul class="unit-pages">
             ${this.renderPages(unit)}
@@ -60,10 +61,11 @@ const TextbookPage: ITextbookPage = {
       view = `<div class=${this.classname}>
       <div class="textbook-navigation">
         <button class="btn-round" id="go-back"></button>
-        <p class="unit-name">Раздел ${this.unitDifficultWords === unit ? '"Сложные слова"' : unit}
+        <p class="unit-name" data-unit=${unit}>Раздел ${this.unitDifficultWords === unit ? '"Сложные слова"' : unit}
          <span class="unit-page-name">страница ${page}</span>
         </p>
       </div>
+      <div class="spinner"></div>
       <ul class=${this.wordlist}>
        ${this.getCards(unit, page)}
       </ul>
@@ -94,7 +96,7 @@ const TextbookPage: ITextbookPage = {
     }
     return pages;
   },
-  getCards(unit: number, page: number): void {
+  getCards(unit: number, page: number): string {
     this.isAuth = !!localStorage.getItem('user');
     const { wordlist, isAuth } = this;
     let userId = '';
@@ -189,6 +191,7 @@ const TextbookPage: ITextbookPage = {
           }
           await Promise.all(requests);
           renderCards(words);
+          document.querySelector('.spinner')?.remove();
           this.checkWords(words);
         })();
         return;
@@ -198,8 +201,10 @@ const TextbookPage: ITextbookPage = {
         Words.words = res as IWord[];
         this.checkWords(res);
         renderCards(res as IWord[], userWords);
+        document.querySelector('.spinner')?.remove();
       }
     })();
+    return '';
   },
   checkWords(res: IWord[]) {
     const locationHash = window.location.hash.split('/');
