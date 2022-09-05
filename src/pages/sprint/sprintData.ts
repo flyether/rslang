@@ -16,9 +16,13 @@ function dataNow(): string {
 
 export const objSprintDate:IOptionalStatisticGame = {
   date: dataNow(),
+<<<<<<< HEAD
   percentOfRightAnswers: 0,
   newWords: 0,
   longestSeriesOfRightAnswers: 0,
+=======
+  newWordsSprint: 0,
+>>>>>>> develop
   percentOfRightAnswersSprint: 0,
   longestSeriesOfRightAnswersSprint: 0,
   rightAnswersSprint: 0,

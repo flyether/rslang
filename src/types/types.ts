@@ -116,7 +116,7 @@ export interface IOptionalStatisticGame {
   longestSeriesOfRightAnswers?: number;
   rightAnswers?: number;
   AllAnswersFromGame?: number;
-  // newWordsSprint?: number;
+  newWordsSprint?: number;
   percentOfRightAnswersSprint?: number;
   longestSeriesOfRightAnswersSprint?: number;
   rightAnswersSprint?: number;
@@ -141,6 +141,7 @@ export interface ILongStatisticsStore {
   date?: string[];
 }
 export interface IStatistic {
+  id?: string;
   learnedWords?: number;
   optional?: IOptionalStatisticWrapper;
 }
