@@ -93,16 +93,30 @@ class Support {
 
   public objStatistic: IOptionalStatisticGame;
 
-  public statisticsFromServer: IStatistic | undefined;
+  public statisticsFromServer: IStatistic;
 
   constructor() {
     this.objStatistic = {
-      longestSeriesOfRightAnswers: 0,
-      newWords: 0,
       percentOfRightAnswers: 0,
-      rightAnswers: 0,
-      AllAnswersFromGame: 0,
+      newWords: 0,
+      longestSeriesOfRightAnswers: 0,
+      percentOfRightAnswersSprint: 0,
+      longestSeriesOfRightAnswersSprint: 0,
+      rightAnswersSprint: 0,
+      AllAnswersFromGameSprint: 0,
       answer: [],
+    };
+    this.statisticsFromServer = {
+      learnedWords: 0,
+      optional: {
+        games: this.objStatistic,
+        long: {
+          learnedWords: [0],
+          NewWords: [0],
+          date: ['0'],
+        },
+
+      },
     };
     this.countNewWords = 0;
     this.newAndLearnUserWords = [];
@@ -210,7 +224,6 @@ class Support {
         .then((res) => {
           if (res) {
             this.statisticsFromServer = res;
-            console.log('this.statisticsFromServer в гетстатистике', this.statisticsFromServer, 'res', res);
             this.objStatistic = res?.optional?.games as IOptionalStatisticGame;
           }
           resolve();
@@ -230,10 +243,9 @@ class Support {
 
   // метод для заполнения статистики
   async staticUpdate(objStatistics: IOptionalStatisticGame) : Promise<void> {
-    console.log('this.statisticsFromServer', this.statisticsFromServer);
+    delete this.statisticsFromServer.id;
     const value: IStatistic = this.statisticsFromServer as IStatistic;
     value.optional!.games = objStatistics;
-    console.log('value', value);
     await api.UpsertsNewStatistics(userId, value);
   }
 
