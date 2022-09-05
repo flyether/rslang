@@ -24,7 +24,7 @@ function getArrOfLast5Days() {
     arr.push(new Date(now));
     now -= oneDay;
   }
-  return arr.map((elem) => elem.toLocaleDateString()).reverse();
+  return arr.map((elem) => elem.toLocaleDateString());
 }
 
 function dataNow(): string {
