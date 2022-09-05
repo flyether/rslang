@@ -194,10 +194,14 @@ export async function staticGet() : Promise<void> {
 export async function staticGetSprint() : Promise<void> {
   return api.GetsStatistics(userId)
     .then((res) => {
+      console.log('get', res, objAudiocallDate);
       if (objAudiocallDate.date === res?.optional?.games?.date) {
         objAudiocallDate.percentOfRightAnswersSprint = res?.optional?.games?.percentOfRightAnswersSprint;
+        objAudiocallDate.percentOfRightAnswers = res?.optional?.games?.percentOfRightAnswers;
+        objAudiocallDate.newWords = res?.optional?.games?.newWords;
         objAudiocallDate.newWordsSprint = res?.optional?.games?.newWordsSprint;
         objAudiocallDate.longestSeriesOfRightAnswersSprint = res?.optional?.games?.longestSeriesOfRightAnswersSprint;
+        objAudiocallDate.longestSeriesOfRightAnswers = res?.optional?.games?.longestSeriesOfRightAnswers;
         objAudiocallDate.rightAnswersSprint = res?.optional?.games?.rightAnswersSprint;
         objAudiocallDate.AllAnswersFromGameSprint = res?.optional?.games?.AllAnswersFromGameSprint;
       } else { api.UpsertsNewStatistics(userId, valueStatisticsAudiocall); }
