@@ -36,7 +36,7 @@ export class ModuleController {
       }
       if (el.closest('.statistics__audiocall')) {
         // staticGet().then(() => {
-          this.myModuleModel.switchStatictics('audiocall');
+        this.myModuleModel.switchStatictics('audiocall');
         // });
       }
       if (el.closest('.statistics__sprint')) {
@@ -45,7 +45,7 @@ export class ModuleController {
       if (el.closest('.statistics__day')) {
         // staticGet().then(() => {
         //   getUserWordsStat().then(() => {
-            this.myModuleModel.switchStaticticsKind('day');
+        this.myModuleModel.switchStaticticsKind('day');
         //   });
         // });
       }

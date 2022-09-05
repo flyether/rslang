@@ -1,6 +1,8 @@
 import { checkUserAuthorization } from '../../utils/func';
 import { api } from '../../api/api';
-import { IObjStatisticStorage, IOptionalStatisticGame, IStatistic } from '../../types/types';
+import {
+  IObjStatisticStorage, IOptionalStatisticGame, IStatistic, IUserWord,
+} from '../../types/types';
 import { getSprintDataArray } from '../statistics/statisticsData';
 
 function dataNow(): string {
@@ -32,7 +34,7 @@ export const sprintData: SprintData = {
   longestSeries: 0,
   seriesArr: [],
   allAnswers: [],
-  rightAnswers: [],
+  allAnswersId: [],
   newWords: [],
   amountOfNewWords: 0,
   amountOfAllAnswers: 0,
@@ -41,7 +43,6 @@ export const sprintData: SprintData = {
     if (this.seriesArr.length > this.longestSeries) {
       this.longestSeries = this.seriesArr.length;
     }
-    console.log(this.longestSeries);
     this.seriesArr = [];
   },
   countAnswers() {
@@ -49,10 +50,11 @@ export const sprintData: SprintData = {
     this.amountOfRightAnswers = this.allAnswers.filter((item) => item).length;
   },
   async writeSprintDataToStatistics() {
-    console.log(this.rightAnswers);
+    // console.log(this.);
     this.userID = checkUserAuthorization() as string;
     if (this.userID !== 'no') {
-      // проанализировать правильные ответы
+      await this.checkLearnedWordsInAnswers();
+      // проанализировать ответы
       this.updateLongestSeries();
       this.countAnswers();
       const arr = await getSprintDataArray() as number[];
@@ -64,11 +66,18 @@ export const sprintData: SprintData = {
       this.cleanData();
     }
   },
+  async checkLearnedWordsInAnswers() {
+    console.log(this.allAnswersId);
+    const res = await api.getAllUserWords(this.userID) as IUserWord[];
+    res.forEach((item) => {
+      console.log(item.optional);
+    });
+  },
   cleanData() {
     this.longestSeries = 0;
     this.seriesArr = [];
     this.allAnswers = [];
-    this.rightAnswers = [];
+    this.allAnswersId = [];
     this.newWords = [];
     this.amountOfNewWords = 0;
     this.amountOfAllAnswers = 0;
@@ -97,7 +106,7 @@ interface SprintData {
   longestSeries:number,
   seriesArr: number[],
   allAnswers: boolean[],
-  rightAnswers: string[],
+  allAnswersId: string[],
   newWords: string[],
   amountOfNewWords: number,
   amountOfAllAnswers: number,
@@ -105,6 +114,7 @@ interface SprintData {
   updateLongestSeries():void,
   countAnswers(): void,
   writeSprintDataToStatistics(): void,
+  checkLearnedWordsInAnswers(): Promise<void>,
   cleanData(): void,
   updateobjSprintDate(arr: number[]): void,
   setDataToStatistics(): Promise<void>,

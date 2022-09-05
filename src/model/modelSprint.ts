@@ -75,7 +75,7 @@ export class ModuleModel {
   async getWordsFromApi(): Promise<IWord[] | void> {
     const res = await api.getWords(this.level, this.pages[this.activePageNumber]) as IWord[];
     this.active20Words = Array.from(res);
-    // console.log(this.active20Words);
+    console.log(this.active20Words);
     if (this.activePageNumber === 0 || sprintSettings.sprintFromTextbook) { this.prepearFirstWord(); }
   }
 
@@ -86,7 +86,11 @@ export class ModuleModel {
   }
 
   prepearNextWord():void {
-    (sprintSettings.sprintFromTextbook) ? this.checkWordsNumbersFromTextbook() : this.checkWordsNumbers();
+    if (sprintSettings.sprintFromTextbook) {
+      this.checkWordsNumbersFromTextbook();
+    } else {
+      this.checkWordsNumbers();
+    }
     const translation = this.generateTranslation();
     const { word } = this.active20Words[this.activeWordNumber];
     this.myModuleView.renderWord(word, translation);
@@ -115,6 +119,7 @@ export class ModuleModel {
     } else {
       this.activeWordNumber += 1;
     }
+    // console.log(this.active20Words[this.activeWordNumber].id);
   }
 
   generateTranslation():string {
@@ -133,8 +138,7 @@ export class ModuleModel {
       this.analyzeTrueAnswer();
       sprintData.seriesArr.push(1);
       sprintData.allAnswers.push(true);
-      sprintData.rightAnswers.push(this.active20Words[this.activeWordNumber].id);
-      console.log(sprintData);
+      sprintData.allAnswersId.push(this.active20Words[this.activeWordNumber].id);
     } else {
       this.wrongAnswerAudio.play();
       this.arrayOfAnswers.push(false);
