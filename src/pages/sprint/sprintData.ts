@@ -14,7 +14,7 @@ function dataNow(): string {
 
 export const objSprintDate:IOptionalStatisticGame = {
   date: dataNow(),
-  newWordsSprint: 0,
+  newWords: 0,
   percentOfRightAnswersSprint: 0,
   longestSeriesOfRightAnswersSprint: 0,
   rightAnswersSprint: 0,
@@ -75,7 +75,7 @@ export const sprintData: SprintData = {
     this.amountOfRightAnswers = 0;
   },
   updateobjSprintDate(arr: number[]): void {
-    console.log(arr);
+    // console.log(arr);
     // objSprintDate.newWordsSprint = arr[0] + word
     objSprintDate.longestSeriesOfRightAnswersSprint = (arr[1] > this.longestSeries)
       ? arr[1] : this.longestSeries;
