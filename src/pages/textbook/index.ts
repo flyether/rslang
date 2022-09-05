@@ -51,7 +51,8 @@ const TextbookPage: ITextbookPage = {
       view = `
          <div class="textbook-navigation unit-navigation">
             <button class="btn-round" id="go-back"></button>
-            <p class="unit-name">Раздел ${this.unitDifficultWords === unit ? '"Сложные слова"' : unit}</p>
+            <p class="unit-name" 
+              data-unit=${unit}>Раздел ${this.unitDifficultWords === unit ? '"Сложные слова"' : unit}</p>
          </div>
          <ul class="unit-pages">
             ${this.renderPages(unit)}
@@ -60,7 +61,7 @@ const TextbookPage: ITextbookPage = {
       view = `<div class=${this.classname}>
       <div class="textbook-navigation">
         <button class="btn-round" id="go-back"></button>
-        <p class="unit-name">Раздел ${this.unitDifficultWords === unit ? '"Сложные слова"' : unit}
+        <p class="unit-name" data-unit=${unit}>Раздел ${this.unitDifficultWords === unit ? '"Сложные слова"' : unit}
          <span class="unit-page-name">страница ${page}</span>
         </p>
       </div>
