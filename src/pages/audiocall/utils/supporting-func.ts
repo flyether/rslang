@@ -99,6 +99,7 @@ class Support {
     this.objStatistic = {
       percentOfRightAnswers: 0,
       newWords: 0,
+      newWordsSprint: 0,
       longestSeriesOfRightAnswers: 0,
       percentOfRightAnswersSprint: 0,
       longestSeriesOfRightAnswersSprint: 0,
@@ -173,6 +174,7 @@ class Support {
         this.objStatistic = {
           percentOfRightAnswers: 0,
           newWords: 0,
+          newWordsSprint: 0,
           longestSeriesOfRightAnswers: 0,
           percentOfRightAnswersSprint: 0,
           longestSeriesOfRightAnswersSprint: 0,
@@ -229,11 +231,14 @@ class Support {
           resolve();
         }).catch(() => {
           this.objStatistic = {
-            longestSeriesOfRightAnswers: 0,
-            newWords: 0,
             percentOfRightAnswers: 0,
-            rightAnswers: 0,
-            AllAnswersFromGame: 0,
+            newWords: 0,
+            newWordsSprint: 0,
+            longestSeriesOfRightAnswers: 0,
+            percentOfRightAnswersSprint: 0,
+            longestSeriesOfRightAnswersSprint: 0,
+            rightAnswersSprint: 0,
+            AllAnswersFromGameSprint: 0,
             answer: [],
           };
           resolve();
