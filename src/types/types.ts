@@ -141,6 +141,7 @@ export interface ILongStatisticsStore {
   date?: string[];
 }
 export interface IStatistic {
+  id?: string;
   learnedWords?: number;
   optional?: IOptionalStatisticWrapper;
 }

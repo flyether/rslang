@@ -168,19 +168,6 @@ const api = {
     }
   },
 
-  // async GetAllUserAggregatedWords(userId: string, page:string, wordsPerPage: string, filter: string ): Promise<IWord[] | undefined > {
-  //   try {
-  //     const response = await fetch(`${apiPath}${usersEndpoint}/${userId}/${wordsEndpoint}/${page}/${wordsPerPage}/${filter}`, { method: 'GET' });
-  //     if (response.ok) {
-  //       return await response.json() as IWord[];
-  //     } else {
-  //       return await Promise.reject(new Error(response.statusText));
-  //     }
-  //   } catch (error) {
-  //     throw new Error('Error getting words');
-  //   }
-  // },
-
   async GetUserAggregatedWordById(userId: string, wordID: string): Promise<IUserWords | undefined> {
     try {
       const response = await fetch(`${apiPath}${usersEndpoint}/${userId}/aggregatedWords/${wordID}`,
