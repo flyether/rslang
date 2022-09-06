@@ -34,6 +34,22 @@ class ModuleController {
 
   statisticsConteiner !: HTMLElement;
 
+  burger !: HTMLElement;
+
+  burgerMenu !: HTMLElement;
+
+  menuMainBurger !: HTMLElement;
+
+  menuTextbookBurger !: HTMLElement;
+
+  menuStaticticsBurger !: HTMLElement;
+
+  menuAudiocallBurger !: HTMLElement;
+
+  menuSprintBurger !: HTMLElement;
+
+  menuTeamBurger !: HTMLElement;
+
   init(container: HTMLElement, model: ModuleModel): void {
     this.myModuleContainer = container;
     this.myModuleModel = model;
@@ -82,10 +98,13 @@ class ModuleController {
       team: this.menuTeam,
     };
     if (this.menuMain) {
-      console.log('yes', this.menuMain);
       this.myModuleModel.highlightActiveMenuItem(obj, hash);
       this.myModuleModel.checkUserAuthorization(this.menuStatictics);
     }
+    this.burger = document.querySelector('.burger') as HTMLElement;
+    this.burger.addEventListener('click', () => {
+      setTimeout(() => this.findBurgerMenuElements(window.location.hash), 300);
+    });
   }
 
   addButtonsAboutSprintGameListeners(): void {
@@ -108,6 +127,32 @@ class ModuleController {
         setTimeout(() => this.myModuleModel.checkUserAuthorization(this.menuStatictics), 500);
       }
     });
+  }
+
+  findBurgerMenuElements(hashName: string) {
+    this.burgerMenu = document.querySelector('.burger-menu') as HTMLElement;
+    if (this.burgerMenu) {
+      this.menuMainBurger = document.querySelector('.menu__main__burger') as HTMLElement;
+      this.menuTextbookBurger = document.querySelector('.menu__textbook__burger') as HTMLElement;
+      this.menuStaticticsBurger = document.querySelector('.menu__statictics__burger') as HTMLElement;
+      this.menuAudiocallBurger = document.querySelector('.menu__audiocall__burger') as HTMLElement;
+      this.menuSprintBurger = document.querySelector('.menu__sprint__burger') as HTMLElement;
+      this.menuTeamBurger = document.querySelector('.menu__team__burger') as HTMLElement;
+      const obj: MenuItems = {
+        main: this.menuMainBurger,
+        textbook: this.menuTextbookBurger,
+        statistics: this.menuStaticticsBurger,
+        audiocall: this.menuAudiocallBurger,
+        audiocallgame: this.menuAudiocallBurger,
+        sprint: this.menuSprintBurger,
+        aboutsprint: this.menuSprintBurger,
+        team: this.menuTeamBurger,
+      };
+      const hash: string = hashName.split('/')[0];
+
+      this.myModuleModel.checkUserAuthorization(this.menuStaticticsBurger);
+      this.myModuleModel.highlightActiveMenuItemBurger(obj, hash);
+    }
   }
 }
 

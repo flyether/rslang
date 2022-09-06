@@ -21,6 +21,10 @@ class ModuleModel {
     this.myModuleView.highlightActiveMenuItem(obj, hashName);
   }
 
+  highlightActiveMenuItemBurger(obj: MenuItems, hashName: string): void {
+    this.myModuleView.highlightActiveMenuItemBurger(obj, hashName);
+  }
+
   checkUserAuthorization(elem: HTMLElement): void {
     const user = localStorage.getItem('user');
     if (!user && window.location.hash === '#statistics') { window.location.hash = '#main'; }
