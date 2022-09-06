@@ -214,7 +214,7 @@ export async function staticGetSprint() : Promise<void> {
         longestSeriesOfRightAnswersSprint: 0,
         rightAnswersSprint: 0,
         AllAnswersFromGameSprint: 0,
-
+        newWordsSprint: 0,
       };
       textbookStatistic = {
         learnedWordss: 0,
