@@ -177,6 +177,7 @@ export async function staticGet() : Promise<void> {
       objAudiocallDate = {
         percentOfRightAnswers: 0,
         newWords: 0,
+        newWordsSprint: 0,
         longestSeriesOfRightAnswers: 0,
         percentOfRightAnswersSprint: 0,
         longestSeriesOfRightAnswersSprint: 0,
@@ -194,7 +195,6 @@ export async function staticGet() : Promise<void> {
 export async function staticGetSprint() : Promise<void> {
   return api.GetsStatistics(userId)
     .then((res) => {
-      console.log('get', res, objAudiocallDate);
       if (objAudiocallDate.date === res?.optional?.games?.date) {
         objAudiocallDate.percentOfRightAnswersSprint = res?.optional?.games?.percentOfRightAnswersSprint;
         objAudiocallDate.percentOfRightAnswers = res?.optional?.games?.percentOfRightAnswers;
@@ -214,7 +214,7 @@ export async function staticGetSprint() : Promise<void> {
         longestSeriesOfRightAnswersSprint: 0,
         rightAnswersSprint: 0,
         AllAnswersFromGameSprint: 0,
-
+        newWordsSprint: 0,
       };
       textbookStatistic = {
         learnedWordss: 0,
