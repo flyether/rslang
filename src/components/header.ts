@@ -43,14 +43,14 @@ const Header = {
             <nav class="header__menu">
               <ul class="menu__list">
                 <li class="menu__item">
-                  <a href="${hashes.main}" class="menu__main menu__item_active">Главная</a></li>
-                <li class="menu__item"><a href="${hashes.textbook}" class="menu__textbook">Учебник</a></li>
+                  <a href="${hashes.main}" class="menu__main__burger menu__item_active">Главная</a></li>
+                <li class="menu__item"><a href="${hashes.textbook}" class="menu__textbook__burger">Учебник</a></li>
                 <li class="menu__item">
-                  <a href="${hashes.statistics}" class="menu__statictics menu__item_disable">Статистика</a>
+                  <a href="${hashes.statistics}" class="menu__statictics__burger menu__item_disable">Статистика</a>
                 </li>
-                <li class="menu__item"><a href="${hashes.audiocall}" class="menu__audiocall">Аудиовызов</a></li>
-                <li class="menu__item"><a href="${hashes.sprint}" class="menu__sprint">Спринт</a></li>
-                <li class="menu__item"><a href="${hashes.team}" class="menu__team">О команде</a></li>
+                <li class="menu__item"><a href="${hashes.audiocall}" class="menu__audiocall__burger">Аудиовызов</a></li>
+                <li class="menu__item"><a href="${hashes.aboutsprint}" class="menu__sprint__burger">Спринт</a></li>
+                <li class="menu__item"><a href="${hashes.team}" class="menu__team__burger">О команде</a></li>
               </ul>
             </nav>
             </div>
