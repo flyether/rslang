@@ -87,7 +87,6 @@ export const sprintData: SprintData = {
     this.amountOfRightAnswers = 0;
   },
   updateobjSprintDate(obj: IOptionalStatisticGame): void {
-    console.log(obj);
     objSprintDate.newWords = obj.newWords;
     objSprintDate.longestSeriesOfRightAnswers = obj.longestSeriesOfRightAnswers;
     objSprintDate.percentOfRightAnswers = obj.percentOfRightAnswers;
