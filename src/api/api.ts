@@ -52,45 +52,6 @@ const api = {
     }
   },
 
-  async UpsertsNewSettings(userId: string): Promise<ISettings | undefined> {
-    try {
-      const response = await fetch(`${apiPath}${usersEndpoint}/${userId}/settings`, {
-        method: 'PUT',
-        headers: {
-          Authorization: `Bearer ${storage.user?.token}`,
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(storage.settings),
-      });
-      if (response.ok) {
-        return await response.json() as ISettings;
-      } else {
-        return undefined;
-      }
-    } catch (error) {
-      throw new Error('error puting new settings');
-    }
-  },
-
-  async GetSettings(userId: string): Promise<ISettings | undefined> {
-    try {
-      const response = await fetch(`${apiPath}${usersEndpoint}/${userId}/settings`, {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${storage.user?.token}`,
-        },
-      });
-      if (response.ok) {
-        return await response.json() as ISettings;
-      } else {
-        return await Promise.reject(new Error(response.statusText));
-      }
-    } catch (error) {
-      throw new Error('Error getting settings');
-    }
-  },
-
   async getAllUserWords(userId: string): Promise<IUserWord[] | undefined> {
     try {
       const response = await fetch(`${apiPath}${usersEndpoint}/${userId}/${wordsEndpoint}`,
@@ -167,19 +128,6 @@ const api = {
       throw new Error('Error deleting user word');
     }
   },
-
-  // async GetAllUserAggregatedWords(userId: string, page:string, wordsPerPage: string, filter: string ): Promise<IWord[] | undefined > {
-  //   try {
-  //     const response = await fetch(`${apiPath}${usersEndpoint}/${userId}/${wordsEndpoint}/${page}/${wordsPerPage}/${filter}`, { method: 'GET' });
-  //     if (response.ok) {
-  //       return await response.json() as IWord[];
-  //     } else {
-  //       return await Promise.reject(new Error(response.statusText));
-  //     }
-  //   } catch (error) {
-  //     throw new Error('Error getting words');
-  //   }
-  // },
 
   async GetUserAggregatedWordById(userId: string, wordID: string): Promise<IUserWords | undefined> {
     try {
