@@ -9,9 +9,6 @@ import audioPathRight from '../../../assets/audio/right-answer.mp3';
 import { soundAudio, support } from './supporting-func';
 import { gameArea } from './game-render';
 
-// import { StatisticsPageAudiocallShortTeam } from '../../statistics/statisticsShortTerm';
-// import { staticGet } from '../../statistics/statisticsData';
-
 class ListenerAudioCall {
   keyboard(): void {
     document.addEventListener('keydown', (e) => {
@@ -54,9 +51,6 @@ class ListenerAudioCall {
 
       if ((e.target as HTMLElement).classList.contains('restart')) {
         support.clearLocalStorage();
-        // const audioSection = document.querySelector('.audio-container-game') as HTMLElement;
-
-        // audioSection.outerHTML = gameArea;
         document.querySelector('.game')!.innerHTML = gameArea;
         support.printBtnString();
       }
