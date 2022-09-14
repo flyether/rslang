@@ -194,6 +194,74 @@ View имеет доступ к контейнеру и списку наших 
 В коде вызываеться функция showUser отрисовывающая логотип и никнейм и рисующая кнопку 'выйти'.
 Так же присутствует блок ловли ошибок.
 </details>
+  
+<details>
+
+  <summary>Электронный учебник</summary>
+  
+ У учебника постоянно вызывается метод render, он вызывает строку, которая вставляется в блок SPA с id SPA. В методе render за верстку отвечает view. В проверках я проверяю, если unit не задан, то отрисовывается выбор раздела. Если unit задан, а page нет, то во view отрисовываются страницы ( на них переход ). Если есть page и unit, то отрисовываются слова через метод getCards. View рендерится вместе с header и footer на 83 строке.
+В getCards сначала проверяется, зарегистрирован ли пользователь. Потом деструктурирую this, чтобы получить из него класс wordList и переменную isAuth. UserId изначально делаю пустой строкой, но если isAuth есть, то записываю userId из localStorage. JSON.parse нужен потому что в localStorage нельзя хранить объекты, можно только строки, поэтому обернула строку в JSON, потом распарсиваю.
+Затем пишу функцию renderCards, которая вставляет карточки.
+Дальше пишу асинхронный код в IIFE. В ней мы берём слова пользователя, которые на сервере. Изначально объявляю userWords как пустой массив. Но если userWords есть, то в массив userWords вставляются getAllUserWords - т.е. слова с сервера.
+У меня есть файл words.ts, там где объявлено, что в нем есть статические массивы aggregatedWords и learnedWords. Просто из вначале опустошили, потом перебираю массив userWords со словами что пришли с сервера, они либо сложные либо изученные. Делаю проверку - если слово сложное, то вставляю его id в сложные слова, если изученное - то в изученные.
+  
+ ```javascript
+  
+  if (unit === this.unitDifficultWords) {
+        (async () => {
+          const words: IWord[] = [];
+          const requests = [];
+          const wordsPerPage = 20;
+          const rest = Words.aggregatedWords.length % wordsPerPage;
+          const maxPage = Math.ceil(Words.aggregatedWords.length / wordsPerPage);
+          const startValue = (page - 1) * wordsPerPage;
+          let numberOfWords = wordsPerPage;
+          if (page === maxPage) {
+            numberOfWords = rest;
+          }
+          for (let i = startValue; i < startValue + numberOfWords; i += 1) {
+            requests.push(api.getWord(Words.aggregatedWords[i])
+              .then((res) => {
+                words.push(res as IWord);
+              }));
+          }
+          await Promise.all(requests);
+          renderCards(words);
+          document.querySelector('.spinner')?.remove();
+          this.checkWords(words);
+        })();
+        return;
+      }
+  
+   ```
+  
+Если unit равен разделу «Сложные слова», то создаю массив со словами и массив с запросами, которые отправятся на сервер. Чтобы не делать await-in-loop, вначале я поместила запросы в массив requests и сделала requests.push. Запушила туда api.getWords, то есть запрос который пушит в words, getWord делается по id. Затем просто выполняются все эти запросы через Promise.all, рендерятся карточки с тем массивом слов, который получился, проверяются слова ( сложные или изученные).
+Дальше делаю запрос на сервер, чтоб бежал слова по unit и page.
+Если массив со словами есть, то записывается в Words.words(это было нужно для мини игр), дальше проверяю слова на изученные и сложные в этом res. Дальше снова вызывается renderCards.
+В renderCards вначале получаю контейнер со словами, потом на стр.108 если он у нас есть то его опустошаю ( делаю innerHTML пустым), потом в цикле for пробегаюсь по массиву words, который передается в renderCards. Проверяется слово изученное или сложное, новое или угаданное. На стр115 проверяю, если передался еще массив со словами userWords ( массив с пользовательскими словами), то из пересылаю, то есть пробегаюсь по userWords, если слова aggregated или learned или new ( у него статус true или false). Дальше записываются в верстку карточки. Создаются переменная, потом в неё добавляется класс, потом в нее  вставляется верстка. В верстке words[i] это слово, которое я создаю в верстке и к него беру свойства ( wordTranslate, transcription, audio и т.д.). Здесь также используется isWordInDifficult, isWordLearned в тернарках. Делается либо кнопку disabled, либо текст в ней меняется либо что то еще.
+Дальше карточка вставляется в wordContainer. Для чего используется async IIFE: без неё метод render вернул бы ту верстку с wordContainer просто как строку, а не как DOMElement. А по строке мы не можем делать поиск через querySelector, чтобы в нее что то вставлять. Т.е. getCards делает следующее: если слова сложные, то делается запрос на сложные слова, если мы находимся в любом другом разделе, то делается запрос на слова и они вставляются в wordContainer со всякими проверками.
+Метод checkWords проверяет слова на сложные и изученные. Вначале получаю хэш, потом сплутую по слэшу, чтобы получить unit и page.
+Дальше делается цикл по запросу который нам пришёл.
+  
+  ```javascript
+  
+  for (let i = 0; i < res.length; i += 1) {
+      const isWordLearned = Words.learnedWords.some((word) => word === res[i].id);
+      const isAggregatedWord = Words.aggregatedWords.some((word) => word === res[i].id);
+      areWordsLearned.push(isWordLearned || isAggregatedWord);
+    }
+  
+  ```
+  
+  Пробегаюсь по этим словам в цикле for и проверяю изученное слово или сложное. 
+Если да, то пушим в areWordsLearned, если массив будет содержать только true (то есть на странице все слова либо сложные либо изученные) то беру наш wordList, ему добавляется класс learned-page, также textbook-game становится disabled.
+После того как все отрисовалось вызывается controllerTextbook.init.
+В controllerTextbook.ts вызывается метод setEventListeners. В нем вначале проверяется userId( вошел ли пользователь). Если вошел то userId будет в localeStorage и мы его оттуда заберём.
+На стр.28  функция click, которая будет передана в обработчик события. В нее передается MouseEvent. Дальше делаем проверки. 
+В конце делаю document.onclick = click. Пробовала делать с document.addEventListener, но он почему то вызывался много раз.  
+  
+  
+</details>
 
 <details>
 
